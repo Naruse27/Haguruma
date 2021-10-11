@@ -1,3 +1,4 @@
+/[Xx]64/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -5,6 +6,7 @@
 /[Bb]uilds/
 /[Bb]in/
 /[Aa]pk/
+/[Dd]ebug/
 /[Aa]ssetBundle/
 /Assets/AssetStoreTools*
 # Visual Studio cache directory
