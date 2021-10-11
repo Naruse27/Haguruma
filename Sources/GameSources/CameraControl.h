@@ -23,7 +23,7 @@ private:
 	DirectX::XMFLOAT3 eye = { 0, 0, 0 };
 	DirectX::XMFLOAT3 oldEye = { 0, 0, 0 };
 	float             rollSpeed = DirectX::XMConvertToRadians(90);
-	float             range = 10.0f;
+	float             range = 25.0f;
 
 	float maxAngleX = DirectX::XMConvertToRadians(45);
 	float minAngleX = DirectX::XMConvertToRadians(-45);

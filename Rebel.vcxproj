@@ -60,6 +60,7 @@
     <ClCompile Include="Sources\GameSources\Stage.cpp" />
     <ClCompile Include="Sources\GameSources\StageMain.cpp" />
     <ClCompile Include="Sources\GameSources\StageManager.cpp" />
+    <ClCompile Include="Sources\GameSources\StageWall.cpp" />
     <ClCompile Include="Sources\ImGui\imgui.cpp" />
     <ClCompile Include="Sources\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Sources\ImGui\imgui_impl_dx11.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="Sources\GameSources\Stage.h" />
     <ClInclude Include="Sources\GameSources\StageMain.h" />
     <ClInclude Include="Sources\GameSources\StageManager.h" />
+    <ClInclude Include="Sources\GameSources\StageWall.h" />
     <ClInclude Include="Sources\GameSources\Telegram.h" />
     <ClInclude Include="Sources\ImGui\imconfig.h" />
     <ClInclude Include="Sources\ImGui\imgui.h" />

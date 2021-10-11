@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "CameraControl.h"
 #include "StageMain.h"
+#include "StageWall.h"
 
 class SceneGame : public Scene
 {
@@ -26,6 +27,7 @@ public:
 private:
 	Player* player = nullptr;
 	StageMain* stageMain = nullptr;
+	StageWall* stageWall = nullptr;
 	CameraControl* cameraController = nullptr;
 
 };

@@ -240,6 +240,9 @@
     <ClCompile Include="Sources\GameSources\SceneGame.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\GameSources\StageWall.cpp">
+      <Filter>Game\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\GameSources\Easing.h">
@@ -412,6 +415,9 @@
     </ClInclude>
     <ClInclude Include="Sources\GameSources\SceneGame.h">
       <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\StageWall.h">
+      <Filter>Game\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,7 +30,7 @@ float4 main(VS_OUT pin) : SV_TARGET
     normal = (normal * 2.0) - 1.0;
     N = normalize((normal.x * T) + (normal.y * B) + (normal.z * N));
     float3 L = normalize(-lightDirection.xyz); // ÉâÉCÉg
-    float3 diffuse = color.rgb * max(0, dot(N, L)); // ägéUåı
+    float3 diffuse = color.rgb * max(0.5f, dot(N, L)); // ägéUåı
     float3 V = normalize(cameraPosition.xyz - pin.worldPosition.xyz);
     float3 specular = pow(max(0, dot(N, normalize(V + L))), 128); // ãæñ îΩéÀ   pow(íl, ó›èÊ)
     return float4(diffuse + specular, alpha) * pin.color;

@@ -14,6 +14,7 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
     cameraController = new CameraControl();
     player = new Player(this->device);
     stageMain = new StageMain(this->device);
+    stageWall = new StageWall(this->device);
     //titleSprite = new Sprite(device, L"./Data/Sprite/screenshot.jpg");
     //StageManager::Instance().Register(stageMain);
 
@@ -25,6 +26,7 @@ void SceneGame::Finalize()
     delete player;
     delete cameraController;
     delete stageMain;
+    delete stageWall;
     //StageManager::Instance().Clear();
     //StageManager::Destory();
     //delete titleSprite;
@@ -42,6 +44,7 @@ void SceneGame::Update(float elapsedTime)
     player->Update(elapsedTime);
     //StageManager::Instance().Update(elapsedTime);
     stageMain->Update(elapsedTime);
+    stageWall->Update(elapsedTime);
 }
 
 // •`‰æˆ—
@@ -53,6 +56,7 @@ void SceneGame::Render(float elapsedTime)
         //StageManager::Instance().Render(deviceContext, elapsedTime);
 
         stageMain->Render(deviceContext, elapsedTime);
+        stageWall->Render(deviceContext, elapsedTime);
     }
 
     // 2D•`‰æ
