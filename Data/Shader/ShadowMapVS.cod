@@ -54,7 +54,7 @@ dcl_temps 3
 //   o1.x <- <main return value>.Depth.x; o1.y <- <main return value>.Depth.y; o1.z <- <main return value>.Depth.z; o1.w <- <main return value>.Depth.w; 
 //   o0.x <- <main return value>.Position.x; o0.y <- <main return value>.Position.y; o0.z <- <main return value>.Position.z; o0.w <- <main return value>.Position.w
 //
-#line 9 "D:\自作\Rebel\Shader\ShadowMapVS.hlsl"
+#line 9 "D:\チE"
 mov r0.xyz, v0.xyzx  // r0.x <- P.x; r0.y <- P.y; r0.z <- P.z
 mov r0.w, l(1.000000)  // r0.w <- P.w
 

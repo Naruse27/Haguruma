@@ -85,6 +85,9 @@
     <Filter Include="Library\Graphics">
       <UniqueIdentifier>{ee5ac0ab-4334-4b19-b0cc-389522e603c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Character\Player">
+      <UniqueIdentifier>{a9ec120e-76be-4484-8d61-8f0139d824af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\GameSources\Easing.cpp">
@@ -230,6 +233,12 @@
     </ClCompile>
     <ClCompile Include="Sources\GameSources\StageManager.cpp">
       <Filter>Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\Player.cpp">
+      <Filter>Game\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\SceneGame.cpp">
+      <Filter>Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -397,6 +406,12 @@
     </ClInclude>
     <ClInclude Include="Sources\GameSources\StageManager.h">
       <Filter>Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\Player.h">
+      <Filter>Game\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\SceneGame.h">
+      <Filter>Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

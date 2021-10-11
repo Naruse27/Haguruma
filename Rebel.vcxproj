@@ -51,7 +51,9 @@
     <ClCompile Include="Sources\GameSources\EffectManager.cpp" />
     <ClCompile Include="Sources\GameSources\Mathf.cpp" />
     <ClCompile Include="Sources\GameSources\MetaAI.cpp" />
+    <ClCompile Include="Sources\GameSources\Player.cpp" />
     <ClCompile Include="Sources\GameSources\PlayerTemp.cpp" />
+    <ClCompile Include="Sources\GameSources\SceneGame.cpp" />
     <ClCompile Include="Sources\GameSources\SceneLoading.cpp" />
     <ClCompile Include="Sources\GameSources\SceneManager.cpp" />
     <ClCompile Include="Sources\GameSources\SceneTitle.cpp" />
@@ -104,8 +106,10 @@
     <ClInclude Include="Sources\GameSources\EffectManager.h" />
     <ClInclude Include="Sources\GameSources\Mathf.h" />
     <ClInclude Include="Sources\GameSources\MetaAI.h" />
+    <ClInclude Include="Sources\GameSources\Player.h" />
     <ClInclude Include="Sources\GameSources\PlayerTemp.h" />
     <ClInclude Include="Sources\GameSources\Scene.h" />
+    <ClInclude Include="Sources\GameSources\SceneGame.h" />
     <ClInclude Include="Sources\GameSources\SceneLoading.h" />
     <ClInclude Include="Sources\GameSources\SceneManager.h" />
     <ClInclude Include="Sources\GameSources\SceneTitle.h" />

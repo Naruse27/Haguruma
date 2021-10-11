@@ -249,35 +249,35 @@ void Character::UpdateVerticalMove(float elapsedTime)
         // レイの終点位置は移動後の位置
         DirectX::XMFLOAT3 end = { position.x, position.y + my, position.z };
 
-        // レイキャストによる地面判定
-        HitResult hit;
-        if (StageManager::Instance().RayCast(start, end, hit)) {
-            // 法線ベクトルを取得
-            normal = hit.normal;
-
-            // 地面に接地している
-            position.x = hit.position.x;
-            position.y = hit.position.y;
-            position.z = hit.position.z;
-
-            // 回転
-            angle.y += hit.rotation.y;
-
-            //  傾斜率の計算
-            float normalLengthXZ = sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z);
-            slopeRate = 1.0f - (hit.normal.y / (normalLengthXZ + hit.normal.y));
-
-            // 着地した
-            if (!isGround) OnLanding();
-
-            isGround = true;
-            velocity.y = 0.0f;
-        }
-        else {
-            // 空中に浮いてる
-            position.y += my;
-            isGround = false;
-        }
+        //// レイキャストによる地面判定
+        //HitResult hit;
+        //if (StageManager::Instance().RayCast(start, end, hit)) {
+        //    // 法線ベクトルを取得
+        //    normal = hit.normal;
+        //
+        //    // 地面に接地している
+        //    position.x = hit.position.x;
+        //    position.y = hit.position.y;
+        //    position.z = hit.position.z;
+        //
+        //    // 回転
+        //    angle.y += hit.rotation.y;
+        //
+        //    //  傾斜率の計算
+        //    float normalLengthXZ = sqrtf(hit.normal.x * hit.normal.x + hit.normal.z * hit.normal.z);
+        //    slopeRate = 1.0f - (hit.normal.y / (normalLengthXZ + hit.normal.y));
+        //
+        //    // 着地した
+        //    if (!isGround) OnLanding();
+        //
+        //    isGround = true;
+        //    velocity.y = 0.0f;
+        //}
+        //else {
+        //    // 空中に浮いてる
+        //    position.y += my;
+        //    isGround = false;
+        //}
     }
     // 上昇中
     else if (my > 0.0f) {
@@ -298,4 +298,9 @@ void Character::UpdateVerticalMove(float elapsedTime)
         //angle.z = Mathf::Lerp(angle.z, az, 0.2f);
     }
 
+}
+
+void Character::Jump(float speed)
+{
+    velocity.y = speed;
 }

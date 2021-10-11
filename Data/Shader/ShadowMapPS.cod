@@ -28,7 +28,7 @@ dcl_temps 1
 //   v1.x <- input.Depth.x; v1.y <- input.Depth.y; v1.z <- input.Depth.z; v1.w <- input.Depth.w; 
 //   o0.x <- <main return value>.x; o0.y <- <main return value>.y; o0.z <- <main return value>.z; o0.w <- <main return value>.w
 //
-#line 8 "D:\自作\Rebel\Shader\ShadowMapPS.hlsl"
+#line 8 "D:\チE"
 div r0.xyz, v1.zzzz, v1.wwww  // r0.x <- color.x; r0.y <- color.y; r0.z <- color.z
 
 #line 9

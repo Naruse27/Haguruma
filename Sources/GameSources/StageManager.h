@@ -13,9 +13,10 @@ ClassName& operator=(const ClassName&&);
 class StageManager
 {
 private:
-	StageManager() {};
-	~StageManager() {};
+	StageManager() = default;
+	~StageManager() = default;
 	static StageManager* instance;
+
 public:
 	DISALLOW_COPY_AND_ASSIGN(StageManager);
 

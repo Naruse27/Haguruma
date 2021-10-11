@@ -1,18 +1,16 @@
-#ifndef SCENETITLE
-#define SCENETITLE
+#ifndef SCENEGAME
+#define SCENEGAME
 
 #include "Scene.h"
-#include "PlayerTemp.h"
-#include "../GameLibSource/Sprite.h"
-#include "StageMain.h"
+#include "Player.h"
 #include "CameraControl.h"
+#include "StageMain.h"
 
-// タイトルシーン
-class SceneTitle : public Scene
+class SceneGame : public Scene
 {
 public:
-	SceneTitle() {}
-	~SceneTitle() override {}
+	SceneGame() {};
+	~SceneGame() override {};
 
 	// 初期化
 	virtual void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext) override;
@@ -26,7 +24,10 @@ public:
 	// 描画処理
 	virtual void Render(float elapsedTime) override;
 private:
+	Player* player = nullptr;
+	StageMain* stageMain = nullptr;
+	CameraControl* cameraController = nullptr;
 
 };
 
-#endif // !SCENETITLE
+#endif // !SCENEGAME
