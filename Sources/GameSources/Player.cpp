@@ -45,7 +45,6 @@ void Player::Render(ID3D11DeviceContext* deviceContext)
 
 void Player::DebugImGui()
 {
-#if 1
 #ifdef USE_IMGUI
     ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
@@ -63,7 +62,6 @@ void Player::DebugImGui()
 
         ImGui::End();
     }
-#endif
 #endif
 }
 

@@ -401,7 +401,7 @@ void Framework::Render(float elapsedTime/*Elapsed seconds from last frame*/) {
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 #endif
 
-    UINT syncInterval = 0;
+    UINT syncInterval = 1;
 
     //— ‚Ì‰æ–Ê‚ðŽ‚Á‚Ä‚­‚é
     swapChain->Present(syncInterval, 0);
