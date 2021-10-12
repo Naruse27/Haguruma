@@ -24,6 +24,9 @@ private:
 	// ˆÚ“®“ü—Íˆ—
 	bool InputMove(float elapsedTime);
 
+	// ’…’n‚µ‚½‚ÉŒÄ‚Î‚ê‚é
+	void OnLanding() override;
+
 private:
 	float moveSpeed = 5.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);

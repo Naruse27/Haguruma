@@ -411,7 +411,7 @@ void SkinnedMesh::CreateComObjects(ID3D11Device* device, const char* fbxFilename
 		}
 		hr = device->CreateBuffer(&bufferDesc, &subresourceData, mesh.indexBuffer.ReleaseAndGetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-#if 1
+#if 0
 		mesh.vertices.clear();
 		mesh.indices.clear();
 #endif

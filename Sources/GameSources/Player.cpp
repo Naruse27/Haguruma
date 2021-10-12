@@ -135,3 +135,11 @@ bool Player::InputMove(float elapsedTime)
     // 進行ベクトルがゼロベクトルでない場合は入力された
     return moveVec.x || moveVec.y || moveVec.z;
 }
+
+void Player::OnLanding()
+{
+    //jumpCount = 0;
+
+    // 下方向の速力が一定以上なら着地ステートへ
+    //if (velocity.y < gravity * 5.0f) TransitionLandState();
+}

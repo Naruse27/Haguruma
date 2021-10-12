@@ -2,7 +2,7 @@
 
 StageWall::StageWall(ID3D11Device* device)
 {
-    model = new Model(device, "Data/Model/Stage/wall.fbx", true, 0, TRUE);
+    model.reset(new Model(device, "Data/Model/Stage/wall.fbx", true, 0, TRUE));
 
     scale = { 2.0f, 2.0f, 2.0f };
 
@@ -11,7 +11,7 @@ StageWall::StageWall(ID3D11Device* device)
 
 StageWall::~StageWall()
 {
-    delete model;
+    //delete model;
 }
 
 void StageWall::Update(float elapsedTime)
@@ -30,7 +30,7 @@ void StageWall::Update(float elapsedTime)
 
 bool StageWall::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit)
 {
-    return Collision::IntersectRayVsModel(start, end, model, hit);
+    return Collision::IntersectRayVsModel(start, end, model.get(), hit);
 }
 
 void StageWall::gimmickOn(float elapsedTime)

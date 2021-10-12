@@ -2,20 +2,20 @@
 
 StageMain::StageMain(ID3D11Device* device)
 {
-    model = new Model(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE);
+    model .reset(new Model(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE));
 
-    scale = { 1.0f, 1.0f, 1.0f };
+    //scale = { 1.0f, 1.0f, 1.0f };
 }
 
 StageMain::~StageMain()
 {
-    delete model;
+   // delete model;
 }
 
 void StageMain::Update(float elapsedTime)
 {
 
-    UpdateTransform();
+    //UpdateTransform();
 
     // モデルアニメーション更新処理
     //model->UpdateAnimation(elapsedTime);
@@ -31,5 +31,5 @@ void StageMain::Render(ID3D11DeviceContext* deviceContext, float elapsedTime)
 
 bool StageMain::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit)
 {
-    return Collision::IntersectRayVsModel(start, end, model, hit);
+    return Collision::IntersectRayVsModel(start, end, model.get(), hit);
 }

@@ -8,7 +8,7 @@ Model::Model(ID3D11Device* device, const char* fbxFilename, bool triangulate, fl
 {
 	SkinnedMesh mesh(device, fbxFilename, triangulate, samplingRate);
 	mesh.Init(device, handedCoordinateSystem);
-	model.emplace(this->index, mesh);
+	model.emplace(this->index, std::move(mesh));
 }
 
 //Model::Model(ID3D11Device* device, const char* fbxFilename, std::vector<std::string>& animationFilenames, bool triangulate, float samplingRate, int index)
