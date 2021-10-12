@@ -68,6 +68,6 @@ void SceneGame::Render(float elapsedTime)
 
     // デバック
     {
-        //player->DebugImGui();
+        player->DebugImGui();
     }
 }

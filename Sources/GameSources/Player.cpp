@@ -45,7 +45,7 @@ void Player::Render(ID3D11DeviceContext* deviceContext)
 
 void Player::DebugImGui()
 {
-#if 0
+#if 1
 #ifdef USE_IMGUI
     ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
@@ -56,17 +56,9 @@ void Player::DebugImGui()
         // トランスフォーム
         if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            ImGui::SliderFloat("Position X", &position.x, -2000, 2000);
-            ImGui::SliderFloat("Position Y", &position.y, -2000, 2000);
-            ImGui::SliderFloat("Position Z", &position.z, -2000, 2000);
-
-            ImGui::SliderFloat("Scale X", &scale.x, 0.01f, 1.0f);
-            ImGui::SliderFloat("Scale Y", &scale.y, 0.01f, 1.0f);
-            ImGui::SliderFloat("Scale Z", &scale.z, 0.01f, 1.0f);
-
-            ImGui::SliderFloat("Angle X", &angle.x, DirectX::XMConvertToRadians(-180), DirectX::XMConvertToRadians(180));
-            ImGui::SliderFloat("Angle Y", &angle.y, DirectX::XMConvertToRadians(-180), DirectX::XMConvertToRadians(180));
-            ImGui::SliderFloat("Angle Z", &angle.z, DirectX::XMConvertToRadians(-180), DirectX::XMConvertToRadians(180));
+            ImGui::SliderFloat("Position X", &velocity.x, -2000, 2000);
+            ImGui::SliderFloat("Position Y", &velocity.y, -2000, 2000);
+            ImGui::SliderFloat("Position Z", &velocity.z, -2000, 2000);
         }
 
         ImGui::End();
