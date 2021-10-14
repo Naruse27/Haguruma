@@ -21,7 +21,7 @@ protected:
 	void UpdateTransform();
 
 protected:
-	Model* model = nullptr;
+	std::unique_ptr<Model> model;
 
 	Vector3 position = { 0, 0, 0 };
 	Vector3 angle = { 0, 0 ,0 };

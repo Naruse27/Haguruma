@@ -2,14 +2,13 @@
 
 StageMain::StageMain(ID3D11Device* device)
 {
-    model = new Model(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE);
+    model = std::make_unique<Model>(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE);
 
     scale = { 1.0f, 1.0f, 1.0f };
 }
 
 StageMain::~StageMain()
 {
-    delete model;
 }
 
 void StageMain::Update(float elapsedTime)
@@ -31,5 +30,5 @@ void StageMain::Render(ID3D11DeviceContext* deviceContext, float elapsedTime)
 
 bool StageMain::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit)
 {
-    return Collision::IntersectRayVsModel(start, end, model, hit);
+    return Collision::IntersectRayVsModel(start, end, model.get(), hit);
 }
