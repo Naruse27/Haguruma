@@ -1,5 +1,7 @@
 #include "StageManager.h"
 
+StageManager* StageManager::instance = nullptr;
+
 void StageManager::Update(float elapsedTime)
 {
     for (Stage* stage : stages) stage->Update(elapsedTime);

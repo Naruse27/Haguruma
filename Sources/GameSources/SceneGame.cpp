@@ -11,13 +11,15 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
     this->deviceContext = deviceContext;
 
     //ID3D11Device* device = Framework::GetInstance().GetDevice().Get();
+    StageManager::Create();
+
     cameraController = new CameraControl();
     player = new Player(this->device);
     stageMain = new StageMain(this->device);
     stageWall = new StageWall(this->device);
     //titleSprite = new Sprite(device, L"./Data/Sprite/screenshot.jpg");
-    //StageManager::Instance().Register(stageMain);
-
+    StageManager::Instance().Register(stageMain);
+    StageManager::Instance().Register(stageWall);
 }
 
 // I—¹‰»
@@ -28,7 +30,7 @@ void SceneGame::Finalize()
     delete stageMain;
     delete stageWall;
     //StageManager::Instance().Clear();
-    //StageManager::Destory();
+    StageManager::Destory();
     //delete titleSprite;
 }
 
@@ -42,9 +44,9 @@ void SceneGame::Update(float elapsedTime)
     cameraController->Update(elapsedTime, &CameraManager::Instance().mainView);
 
     player->Update(elapsedTime);
-    //StageManager::Instance().Update(elapsedTime);
-    stageMain->Update(elapsedTime);
-    stageWall->Update(elapsedTime);
+    StageManager::Instance().Update(elapsedTime);
+    //stageMain->Update(elapsedTime);
+    //stageWall->Update(elapsedTime);
 }
 
 // •`‰æˆ—
@@ -53,10 +55,10 @@ void SceneGame::Render(float elapsedTime)
     // ƒ‚ƒfƒ‹•`‰æ
     {
         player->Render(deviceContext);
-        //StageManager::Instance().Render(deviceContext, elapsedTime);
+        StageManager::Instance().Render(deviceContext, elapsedTime);
 
-        stageMain->Render(deviceContext, elapsedTime);
-        stageWall->Render(deviceContext, elapsedTime);
+        //stageMain->Render(deviceContext, elapsedTime);
+        //stageWall->Render(deviceContext, elapsedTime);
     }
 
     // 2D•`‰æ
@@ -66,6 +68,6 @@ void SceneGame::Render(float elapsedTime)
 
     // ƒfƒoƒbƒN
     {
-        //player->DebugImGui();
+        player->DebugImGui();
     }
 }

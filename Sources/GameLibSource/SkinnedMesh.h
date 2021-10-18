@@ -241,8 +241,7 @@ public:
 		std::vector<uint32_t> indices;
 		Skeleton bindPose;
 
-		const std::vector<Vertex>& GetVertexs() { return vertices; }
-		const std::vector<uint32_t>& GetIndices() { return indices; }
+
 
 
 		struct Subset
@@ -260,8 +259,6 @@ public:
 			}
 		};
 		std::vector<Subset> subsets;
-		const std::vector<Subset>& GetSubsets() { return subsets; }
-
 
 		DirectX::XMFLOAT4X4 defaultGlobalTransform = {
 			1, 0, 0, 0,
@@ -348,7 +345,7 @@ private:
 
 public:
 	SkinnedMesh(ID3D11Device* device, const char* fbxFilename, bool triangulate = false, float samplingRate = 0);
-	virtual ~SkinnedMesh() = default;
+	virtual ~SkinnedMesh() {};
 
 	void FetchMeshes(FbxScene* fbxScene, std::vector<Mesh>& meshes);
 	void FetchMaterials(FbxScene* fbxScene, std::unordered_map<uint64_t, Material>& materials);
@@ -364,7 +361,7 @@ public:
 	bool AppendAnimation(const char* animationFilename, float samplingRate);
 	void BlendAnimations(const Animation::Keyframe* keyframes[2], float factor, Animation::Keyframe& keyframe);
 
-	const std::vector<Mesh>& GetMeshs() { return meshes; }
+	const std::vector<Mesh>& GetMeshs() const { return meshes; }
 	const std::vector<Animation>& GetAnimation() { return animationClips; }
 
 protected:

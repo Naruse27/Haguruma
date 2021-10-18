@@ -2,19 +2,20 @@
 
 StageMain::StageMain(ID3D11Device* device)
 {
-    model = std::make_unique<Model>(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE);
+    model = new Model(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE);
 
-    scale = { 1.0f, 1.0f, 1.0f };
+    //scale = { 1.0f, 1.0f, 1.0f };
 }
 
 StageMain::~StageMain()
 {
+    delete model;
 }
 
 void StageMain::Update(float elapsedTime)
 {
 
-    UpdateTransform();
+    //UpdateTransform();
 
     // モデルアニメーション更新処理
     //model->UpdateAnimation(elapsedTime);

@@ -42,7 +42,7 @@ public:
 	void Preparation(ID3D11DeviceContext* immediateContext, Shader shader, bool wireframe);
 	void Render(ID3D11DeviceContext* immediateContext, const Vector4 materialColor = { 1.0f, 1.0f, 1.0f, 1.0f });// , const Animation::Keyframe* keyframe = nullptr);
 
-	const std::vector<SkinnedMesh::Mesh>& GetMeshs()
+	const std::vector<SkinnedMesh::Mesh>& GetMeshs() const
 	{
 		auto it = model.find(this->index);
 		return it->second.GetMeshs();

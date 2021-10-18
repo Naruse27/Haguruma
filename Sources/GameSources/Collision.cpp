@@ -676,11 +676,9 @@ bool Collision::IntersectRayVsModel(
 	// ワールド空間のレイの長さ 
 	DirectX::XMStoreFloat(&result.distance, WorldRayLength);
 	bool hit = false;
-	
-	Model a = *model;
-	
+
 	//const ModelResource* resource = model->GetResource();
-	for (const SkinnedMesh::Mesh& mesh : a.GetMeshs())
+	for (const SkinnedMesh::Mesh& mesh : model->GetMeshs())
 	{
 		// メッシュノード取得 
 		//const SkinnedMesh::Mesh& mesh = a.GetKeyframe().nodes.at(mesh.nodeIndex);//model->GetNodes().at(mesh.nodeIndex);
