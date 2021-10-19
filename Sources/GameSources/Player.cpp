@@ -30,16 +30,13 @@ Player::~Player()
 
 void Player::Update(float elapsedTime)
 {
-    Vector3 targetPos = position;
-    targetPos.y += height;
+    setPosition = position;
+    setPosition.y += height;
     for (int i = 0; i < GEAR_NUM; i++) {
-        gear[i]->SetTarget(targetPos);
+        gear[i]->SetTarget(setPosition);
     }
 
-    angle.y += 1.0f * elapsedTime;
-
-
-    InputMove(elapsedTime);
+     InputMove(elapsedTime);
 
     // ë¨óÕçXêVèàóù
     UpdateVelocity(elapsedTime);
@@ -233,11 +230,7 @@ void Player::MouseRay(
             for (int i = 0; i < GEAR_NUM; i++)
             {
                 if (gear[i]->GetSetFlag()) continue;
-
-                Vector3 pos = position;
-                pos.y += height;
-
-                gear[i]->Launch(dir, pos);
+                gear[i]->Launch(dir, setPosition);
             }
         }
         else {
@@ -256,24 +249,22 @@ void Player::MouseRay(
             {
                 if (gear[i]->GetSetFlag()) continue;
                 else {
-                    Vector3 pos = position;
-                    pos.y += height;
-
-                    gear[i]->Launch(dir, pos);
-
+                    gear[i]->Launch(dir, setPosition);
                     break;
                 }
             }
         }
+    }
 
-     
+    if (mouse.GetButtonDown() & Mouse::BTN_RIGHT) {
+        check = true;
+        for (auto& g : gear) {
+            if (!g->GetSetFlag()) continue;
         
-
-        if (mouse.GetButtonDown() & Mouse::BTN_RIGHT) {
-            for (auto& g : gear) {
-                if (!g->GetSetFlag()) continue;
-
-                Vector3 vec = g->GetPosition() - position;
+            Vector3 vec = g->GetPosition() - position;
+            float length = sqrtf(vec.x * vec.x + vec.y * vec.y);
+            if (length < distance) {
+                g->Collection();
             }
         }
     }

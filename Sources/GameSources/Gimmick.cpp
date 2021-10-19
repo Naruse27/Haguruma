@@ -5,8 +5,6 @@ void Gimmick::UpdateTransform()
     // スケール行列を作成
     DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 
-    //DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
-
     // 回転行列を作成
     DirectX::XMMATRIX X = DirectX::XMMatrixRotationX(angle.x);
     DirectX::XMMATRIX Y = DirectX::XMMatrixRotationY(angle.y);

@@ -19,9 +19,7 @@ Stand::~Stand()
 // 更新
 void Stand::Update(float elapsedTime)
 {
-    angle.y += 1.0f * elapsedTime;
-
-    //オブジェクト行列更新
+        //オブジェクト行列更新
     UpdateTransform();
 
     //モデル行列更新

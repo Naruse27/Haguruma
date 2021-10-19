@@ -16,7 +16,7 @@ class CameraManager
 private:
 	CameraManager() = default;
 	~CameraManager() = default;
-	static CameraManager* instance;
+	inline static CameraManager* instance;
 
 public:
 	//CameraManager(const CameraManager&) = delete;

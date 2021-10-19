@@ -44,7 +44,9 @@ private:
 
 	Gear* gear[GEAR_NUM];
 
-	float distance = 4.0f;
+	Vector3 setPosition = { position.x, position.y + height, position.z };
+
+	float distance = 8.0f;
 
 	// debug
 	bool check = false;

@@ -1,6 +1,7 @@
 #include "Gear.h"
 #include "Collision.h"
 #include "GameLibSource/Framework.h"
+#include "GimmickManager.h"
 
 Gear::Gear(ID3D11Device* device)
 {
@@ -62,8 +63,16 @@ void Gear::IsSetPosition(const Vector3& position)
     state = STATE::Set;
 }
 
+void Gear::Collection()
+{
+    this->position = target;
+    state = STATE::Wait;
+}
+
 void Gear::StraitThrow(float elapsedTime)
 {
+    GimmickManager::Instance().CollisionGimmickGimmicks(this);
+
     if (setFlag) {
         state = STATE::Set;
         straitTimer = 4.0f;

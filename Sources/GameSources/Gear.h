@@ -39,6 +39,8 @@ public:
 
 	void IsSetPosition(const Vector3& position) override;
 
+	void Collection();
+
 private:
 	// ‘O‚É”ò‚Î‚·
 	void StraitThrow(float elapsedTime);

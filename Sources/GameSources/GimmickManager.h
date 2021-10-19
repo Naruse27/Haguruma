@@ -33,7 +33,7 @@ public:
 
 	int GetGimmickCount()const { return static_cast<int>(gimmicks.size()); }
 
-	void CollisionGimmickGimmicks();
+	void CollisionGimmickGimmicks(Gimmick* gimmck);
 
 	// エネミー取得
 	Gimmick* GetGimmick(int index) { return gimmicks.at(index); }

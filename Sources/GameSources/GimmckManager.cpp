@@ -5,8 +5,6 @@
 void GimmickManager::Update(float elapsedTime)
 {
     for (Gimmick* gimmick : gimmicks) gimmick->Update(elapsedTime);
-
-    CollisionGimmickGimmicks();
 }
 
 void GimmickManager::Render(ID3D11DeviceContext* deviceContext, float elapsedTIme)
@@ -46,50 +44,35 @@ bool GimmickManager::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFL
     return result;
 }
 
-void GimmickManager::CollisionGimmickGimmicks()
+void GimmickManager::CollisionGimmickGimmicks(Gimmick* gimmick)
 {
     GimmickManager& enemyManager = GimmickManager::Instance();
 
     // ‚·‚×‚Ä‚Ì“G‚Æ‘“–‚½‚è”»’è
     int gimmickCount = enemyManager.GetGimmickCount();
-    for (int i = 0; i < gimmickCount; ++i) {
-        Gimmick* gimmick = enemyManager.GetGimmick(i);
 
-        if (gimmick->GetSetFlag()) continue;
+    for (int j = 0; j < gimmickCount; ++j)
+    {
+        Gimmick* gimmick2 = enemyManager.GetGimmick(j);
 
-        for (int j = i + 1; j < gimmickCount; ++j)
+        if (gimmick->GetIdentity() == gimmick2->GetIdentity()) continue;
+        if (gimmick2->GetSetFlag()) continue;
+
+        // Õ“Ëˆ—
+        if (Collision::AabbVsAabb(
+            gimmick->GetPosition(),
+            gimmick->GetWidth(),
+            gimmick->GetHeight(),
+            gimmick2->GetPosition(),
+            gimmick2->GetWidth(),
+            gimmick2->GetHeight()))
         {
-            Gimmick* gimmick2 = enemyManager.GetGimmick(j);
-
-            if (gimmick->GetIdentity() == gimmick2->GetIdentity()) continue;
-            if (gimmick2->GetSetFlag()) continue;
-
-            // Õ“Ëˆ—
-            if (Collision::AabbVsAabb(
-                gimmick->GetPosition(),
-                gimmick->GetWidth(),
-                gimmick->GetHeight(),
-                gimmick2->GetPosition(),
-                gimmick2->GetWidth(),
-                gimmick2->GetHeight()))
-            {
-                // ‰Ÿ‚µo‚µŒã‚ÌˆÊ’uİ’è
-                if (static_cast<int>(Identity::Stand) == gimmick->GetIdentity()) {
-                    Vector3 pos = gimmick->GetPosition();
-                    pos.y += 5.0f;//gimmick->GetHeight();
-                    gimmick2->IsSetPosition(pos);
-                    gimmick->IsSetFlag(true);
-                    gimmick2->IsSetFlag(true);
-                }
-                if (static_cast<int>(Identity::Stand) == gimmick2->GetIdentity()) {
-                    Vector3 pos = gimmick2->GetPosition();
-                    pos.y += 5.0f;//gimmick2->GetHeight();
-                    gimmick->IsSetPosition(pos);
-                    gimmick->IsSetFlag(true);
-                    gimmick2->IsSetFlag(true);
-                }
-            }
-        } 
+                Vector3 pos = gimmick2->GetPosition();
+                pos.y += 5.0f;//gimmick2->GetHeight();
+                gimmick->IsSetPosition(pos);
+                gimmick->IsSetFlag(true);
+                gimmick2->IsSetFlag(true);
+        }
     }
 }
 

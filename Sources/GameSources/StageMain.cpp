@@ -14,11 +14,6 @@ StageMain::~StageMain()
 void StageMain::Update(float elapsedTime)
 {
 
-    //UpdateTransform();
-
-    // モデルアニメーション更新処理
-    //model->UpdateAnimation(elapsedTime);
-
     model->UpdateTransform(transform);
 }
 

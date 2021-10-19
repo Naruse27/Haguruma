@@ -9,7 +9,7 @@
 #include "../GameSources/CameraManager.h"
 #include "GameSources/EffectManager.h"
 
-CameraManager* CameraManager::instance = nullptr;
+//CameraManager* CameraManager::instance = nullptr;
 EffectManager* EffectManager::instance = nullptr;
 
 
