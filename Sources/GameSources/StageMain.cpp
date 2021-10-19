@@ -2,14 +2,14 @@
 
 StageMain::StageMain(ID3D11Device* device)
 {
-    model .reset(new Model(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE));
+    model = new Model(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE);
 
     //scale = { 1.0f, 1.0f, 1.0f };
 }
 
 StageMain::~StageMain()
 {
-   // delete model;
+    delete model;
 }
 
 void StageMain::Update(float elapsedTime)
