@@ -3,12 +3,24 @@
 #include "../GameLibSource/Shader.h"
 #include "Input/Input.h"
 #include "CameraManager.h"
+#include "Input/Mouse.h"
+#include "GimmickManager.h"
+#include "Gear.h"
+#include "StageManager.h"
 
 Player::Player(ID3D11Device* device)
 {
-    model = new Model(device, "Data/Model/Player/nico.fbx", false, 0, TRUE);
+    model = new Model(device, "Data/Model/Player/test1.fbx", true, 0, TRUE);
 
-    scale = { 0.01f, 0.01f, 0.01f };
+    //model = new Model(device, "Data/Model/Gimmick/test.fbx", true, 0, TRUE);
+    for (int i = 0; i < GEAR_NUM; i++) {
+        gear[i] = new Gear(device);
+        GimmickManager::Instance().Register(gear[i], Identity::Gear);
+    }
+    position = { 0.0f, 0.0f, 0.0f };
+
+
+    scale = { 0.03f, 0.03f, 0.03f };
 }
 
 Player::~Player()
@@ -18,6 +30,15 @@ Player::~Player()
 
 void Player::Update(float elapsedTime)
 {
+    Vector3 targetPos = position;
+    targetPos.y += height;
+    for (int i = 0; i < GEAR_NUM; i++) {
+        gear[i]->SetTarget(targetPos);
+    }
+
+    angle.y += 1.0f * elapsedTime;
+
+
     InputMove(elapsedTime);
 
     // 速力更新処理
@@ -30,7 +51,7 @@ void Player::Update(float elapsedTime)
     UpdateTransform();
 
     // モデルアニメーション更新処理
-    model->UpdateAnimation(elapsedTime);
+    //model->UpdateAnimation(elapsedTime);
 
     //モデル行列更新
     model->UpdateTransform(transform);
@@ -49,16 +70,23 @@ void Player::DebugImGui()
     ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
     //ImGui::PushStyleColor(ImGuiCond_FirstUseEver, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
-
+    
     if (ImGui::Begin("Player", nullptr, ImGuiWindowFlags_None))
     {
         // トランスフォーム
         if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            ImGui::SliderFloat("Position X", &velocity.x, -2000, 2000);
-            ImGui::SliderFloat("Position Y", &velocity.y, -2000, 2000);
-            ImGui::SliderFloat("Position Z", &velocity.z, -2000, 2000);
+            Vector3 pos = gear[0]->GetPosition();
+            ImGui::SliderFloat("Gear Position X", &pos.x ,-2000, 2000);
+            ImGui::SliderFloat("Gear Position Y", &pos.y, -2000, 2000);
+            ImGui::SliderFloat("Gear Position Z", &pos.z, -2000, 2000);
+
+            ImGui::SliderFloat("Position X", &position.x, -2000, 2000);
+            ImGui::SliderFloat("Position Y", &position.y, -2000, 2000);
+            ImGui::SliderFloat("Position Z", &position.z, -2000, 2000);
         }
+    
+        ImGui::RadioButton("radio", check);
 
         ImGui::End();
     }
@@ -132,4 +160,118 @@ void Player::OnLanding()
 
     // 下方向の速力が一定以上なら着地ステートへ
     //if (velocity.y < gravity * 5.0f) TransitionLandState();
+}
+
+void Player::MouseRay(
+    ID3D11Device* device,
+    ID3D11DeviceContext* dc,
+    const DirectX::XMFLOAT4X4& view,
+    const DirectX::XMFLOAT4X4& projection)
+{
+    // ビューポート
+    CD3D11_VIEWPORT viewport;
+    UINT numViewports = 1;
+    dc->RSGetViewports(&numViewports, &viewport);
+
+    // 変換行列
+    DirectX::XMMATRIX View = DirectX::XMLoadFloat4x4(&view);
+    DirectX::XMMATRIX Projection = DirectX::XMLoadFloat4x4(&projection);
+    DirectX::XMMATRIX World = DirectX::XMMatrixIdentity();
+
+    Mouse& mouse = Input::Instance().GetMouse();
+    if (mouse.GetButtonDown() & Mouse::BTN_LEFT) {
+        // マウスカーソル座標を取得
+        DirectX::XMFLOAT3 screenPosition;
+        screenPosition.x = static_cast<float>(mouse.GetPositionX());
+        screenPosition.y = static_cast<float>(mouse.GetOldPositionY());
+        screenPosition.z = 0;
+        DirectX::XMVECTOR ScreenPosition = DirectX::XMLoadFloat3(&screenPosition);
+        DirectX::XMVECTOR WorldPosition = DirectX::XMVector3Unproject(
+            ScreenPosition,
+            viewport.TopLeftX,
+            viewport.TopLeftY,
+            viewport.Width,
+            viewport.Height,
+            viewport.MinDepth,
+            viewport.MaxDepth,
+            Projection,
+            View,
+            World
+        );
+        DirectX::XMFLOAT3 rayStart;
+        DirectX::XMStoreFloat3(&rayStart, WorldPosition);
+
+        screenPosition.z = 1.0f;
+        ScreenPosition = DirectX::XMLoadFloat3(&screenPosition);
+        WorldPosition = DirectX::XMVector3Unproject(
+            ScreenPosition,
+            viewport.TopLeftX,
+            viewport.TopLeftY,
+            viewport.Width,
+            viewport.Height,
+            viewport.MinDepth,
+            viewport.MaxDepth,
+            Projection,
+            View,
+            World
+        );
+        DirectX::XMFLOAT3 rayEnd;
+        DirectX::XMStoreFloat3(&rayEnd, WorldPosition);
+
+        HitResult hit;
+        if (StageManager::Instance().RayCast(rayStart, rayEnd, hit)) {
+            DirectX::XMFLOAT3 vector;
+            vector.x = hit.position.x - position.x;
+            vector.y = hit.position.y - position.y;
+            vector.z = hit.position.z - position.z;
+            DirectX::XMVECTOR Vector = DirectX::XMLoadFloat3(&vector);
+            DirectX::XMVECTOR Dir = DirectX::XMVector3Normalize(Vector);
+            Vector3 dir;
+            //DirectX::XMFLOAT3 dir;
+            DirectX::XMStoreFloat3(&dir, Dir);
+
+            for (int i = 0; i < GEAR_NUM; i++)
+            {
+                if (gear[i]->GetSetFlag()) continue;
+
+                Vector3 pos = position;
+                pos.y += height;
+
+                gear[i]->Launch(dir, pos);
+            }
+        }
+        else {
+
+            DirectX::XMFLOAT3 vector;
+            vector.x = rayEnd.x - position.x;
+            vector.y = rayEnd.y - position.y;
+            vector.z = rayEnd.z - position.z;
+            DirectX::XMVECTOR Vector = DirectX::XMLoadFloat3(&vector);
+            DirectX::XMVECTOR Dir = DirectX::XMVector3Normalize(Vector);
+            Vector3 dir;
+            //DirectX::XMFLOAT3 dir;
+            DirectX::XMStoreFloat3(&dir, Dir);
+
+            for (int i = 0; i < GEAR_NUM; i++)
+            {
+                if (gear[i]->GetSetFlag()) continue;
+                
+                Vector3 pos = position;
+                pos.y += height;
+
+                gear[i]->Launch(dir, pos);
+            }
+        }
+
+     
+        
+
+        if (mouse.GetButtonDown() & Mouse::BTN_RIGHT) {
+            for (auto& g : gear) {
+                if (!g->GetSetFlag()) continue;
+
+                Vector3 vec = g->GetPosition() - position;
+            }
+        }
+    }
 }

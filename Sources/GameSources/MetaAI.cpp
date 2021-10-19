@@ -1,26 +1,14 @@
 #include "MetaAI.h"
-//
-//static Meta* instance = nullptr;
-//
-//Meta& Meta::Instance()
-//{
-//	return *instance;
-//}
-//
-//Meta::Meta(PlayerTemp* pl, PlayerTemp* manager) : player(pl), manager(manager)
-//{
-//	instance = this;
-//}
-//
-//void Meta::Update()
-//{
-//	// ここで自発的にメタAIが監視している処理があれば記載する
-//	// 今課題ではメタAIのイベントトリガーはメッセージを受信したときのため記述する処理は無し
-//}
-//
+
+void Meta::Update()
+{
+	// ここで自発的にメタAIが監視している処理があれば記載する
+	// 今課題ではメタAIのイベントトリガーはメッセージを受信したときのため記述する処理は無し
+}
+
 //// このメソッドはtelegramクラスを作成して
 //// Enemyを継承するクラスのメッセージレシーバーの処理を呼び出す。
-//void Meta::Discharge(PlayerTemp* receiver, const Telegram& telegram)
+//void Meta::Discharge(Gimmick* receiver, const Telegram& telegram)
 //{
 //	//受信できなかったときの処理
 //	if (!receiver->HandleMessage(telegram)) _RPT0(_CRT_WARN, "\n error:Enemy Receive Failed");
@@ -45,9 +33,9 @@
 //// メッセージ受信したときの処理
 //bool Meta::OnMessage(const Telegram& telegram)
 //{
-//	std::vector<Enemy*> enmVec;
+//	std::vector<Gimmick*> enmVec;
 //	enmVec.clear();
-//	int enemyCount = enemyManager->GetEnemyCount();
+//	int enemyCount = gimmickManager->GetEnemyCount();
 //	switch (telegram.msg)
 //	{
 //	case MESSAGE_TYPE::MSG_CALL_HELP://だれかがプレイヤーを発見したので他の敵を呼ぶ
@@ -114,7 +102,7 @@
 //
 //void Meta::SendMessaging(int sender, int receiver, MESSAGE_TYPE msg)
 //{
-//	if (receiver == static_cast<int>(Meta::Identity::Meta))
+//	if (receiver == static_cast<int>(Identity::Meta))
 //	{// MetaAI宛の時
 //		//メッセージデータを作成
 //		Telegram telegram(sender, receiver, msg);
@@ -124,7 +112,7 @@
 //	else
 //	{// エネミーが受信者のときどのエネミーに送信するか
 //		// 受信者のポインタを取得
-//		Enemy* receiveEnemy = enemyManager->GetEnemyFromId(receiver);
+//		Gimmick* receiveEnemy = gimmickManager->GetGimmickFromId(receiver);
 //		//レシーバー居ないとき関数を終了する
 //		if (receiveEnemy == nullptr) return;
 //		//メッセージデータを作成

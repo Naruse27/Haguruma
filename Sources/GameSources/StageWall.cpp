@@ -1,8 +1,12 @@
 #include "StageWall.h"
 
+#include "Input/Input.h"
+
+
+
 StageWall::StageWall(ID3D11Device* device)
 {
-    model.reset(new Model(device, "Data/Model/Stage/wall.fbx", true, 0, TRUE));
+    model = std::make_unique<Model>(device, "Data/Model/Stage/Wall.fbx", true, 0, TRUE);
 
     scale = { 2.0f, 2.0f, 2.0f };
 
@@ -11,20 +15,20 @@ StageWall::StageWall(ID3D11Device* device)
 
 StageWall::~StageWall()
 {
-    //delete model;
 }
 
 void StageWall::Update(float elapsedTime)
 {
+    GamePad& gamePad = Input::Instance().GetGamePad();
+    if (gamePad.GetButtonDown() & GamePad::BTN_A) gear = !gear;
 
-    UpdateTransform();
+    gear ? gimmickOn(elapsedTime) : gimmickOff(elapsedTime);
 
-
-    gimmickOn(elapsedTime);
 
     // モデルアニメーション更新処理
     //model->UpdateAnimation(elapsedTime);
 
+    UpdateTransform();
     model->UpdateTransform(transform);
 }
 
@@ -35,14 +39,12 @@ bool StageWall::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3&
 
 void StageWall::gimmickOn(float elapsedTime)
 {
-    position.y += elapsedTime;
-
+    if (UPMAX > position.y) position.y += elapsedTime * speed;
 }
 
 void StageWall::gimmickOff(float elapsedTime)
 {
-
-
+    if (DOWNMAX < position.y) position.y -= elapsedTime * speed;
 }
 
 void StageWall::Render(ID3D11DeviceContext* deviceContext, float elapsedTime)

@@ -799,16 +799,16 @@ bool Collision::AabbVsAabb(
 	float widthB,
 	float heightB)
 {
-	if (positionA.x + widthA > positionB.x - widthB) return true;
-	if (positionB.x + widthB > positionA.x - widthA) return true;
+	if (positionA.x + widthA < positionB.x - widthB) return false;
+	if (positionB.x + widthB < positionA.x - widthA) return false;
 
-	if (positionA.y < positionB.y + heightB) return true;
-	if (positionB.y < positionA.y + heightA) return true;
+	if (positionA.z + widthA < positionB.z - widthB) return false;
+	if (positionB.z + widthB < positionA.z - widthA) return false;
 
-	if (positionA.z + widthA > positionB.z - widthB) return true;
-	if (positionB.z + widthB > positionA.z - widthA) return true;
+	if (positionA.y + heightA < positionB.y) return false;
+	if (positionB.y + heightB < positionA.y) return false;
 
-	return false;
+	return true;
 }
 
 

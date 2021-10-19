@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Stage.h"
+#include "ImGui/imgui.h"
+
 
 class StageWall : public Stage
 {
@@ -22,8 +24,8 @@ public:
 private:
 
 
-	const float UPMAX = 100;
+	const float UPMAX = 10;
 	const float DOWNMAX = 0;
 	bool gear = false;
-
+	float speed = 2;
 };

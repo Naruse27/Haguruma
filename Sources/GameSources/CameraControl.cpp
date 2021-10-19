@@ -2,7 +2,7 @@
 #include "CameraControl.h"
 #include "Input/Input.h"
 #include "Mathf.h"
-
+#include "StageManager.h"
 //#include "InputDevice.h"
 //#include "imgui.h"
 
@@ -171,7 +171,7 @@ void CameraControl::Update(float elapsedTime, Camera* camera)
 	eye.y = target.y + front.y * range;
 	eye.z = target.z - front.z * range;
 
-	//CameraRay();
+	CameraRay();
 
 	//eye.x = Mathf::Lerp(oldEye.x, eye.x, 0.1f);
 	//eye.y = Mathf::Lerp(oldEye.y, eye.y, 0.1f);
@@ -179,4 +179,16 @@ void CameraControl::Update(float elapsedTime, Camera* camera)
 
 	// ƒJƒƒ‰‚ÌŽ‹“_‚Æ’Ž‹“_‚ðÝ’è
 	camera->SetLookAt(eye, target, DirectX::XMFLOAT3(0, 1, 0));
+}
+
+bool CameraControl::CameraRay()
+{
+	HitResult hit;
+	if (StageManager::Instance().RayCast(target, eye, hit)) {
+		eye.x = hit.position.x;
+		eye.y = hit.position.y;
+		eye.z = hit.position.z;
+		return true;
+	}
+	return false;
 }

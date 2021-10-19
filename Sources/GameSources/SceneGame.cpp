@@ -3,6 +3,9 @@
 #include "CameraManager.h"
 #include "StageManager.h"
 #include "Input/Input.h"
+#include "GimmickManager.h"
+#include "Stand.h"
+#include "Gear.h"
 
 // ‰Šú‰»
 void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -20,6 +23,9 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
     //titleSprite = new Sprite(device, L"./Data/Sprite/screenshot.jpg");
     StageManager::Instance().Register(stageMain);
     StageManager::Instance().Register(stageWall);
+
+    Stand* stand = new Stand(device);
+    GimmickManager::Instance().Register(stand, Identity::Stand);
 }
 
 // I—¹‰»
@@ -30,6 +36,8 @@ void SceneGame::Finalize()
     delete stageMain;
     delete stageWall;
     //StageManager::Instance().Clear();
+    GimmickManager::Instance().Clear();
+
     StageManager::Destory();
     //delete titleSprite;
 }
@@ -45,6 +53,9 @@ void SceneGame::Update(float elapsedTime)
 
     player->Update(elapsedTime);
     StageManager::Instance().Update(elapsedTime);
+    GimmickManager::Instance().Update(elapsedTime);
+
+    player->MouseRay(device, deviceContext, CameraManager::Instance().mainView.GetView(), CameraManager::Instance().mainView.GetProjection());
     //stageMain->Update(elapsedTime);
     //stageWall->Update(elapsedTime);
 }
@@ -56,7 +67,7 @@ void SceneGame::Render(float elapsedTime)
     {
         player->Render(deviceContext);
         StageManager::Instance().Render(deviceContext, elapsedTime);
-
+        GimmickManager::Instance().Render(deviceContext, elapsedTime);
         //stageMain->Render(deviceContext, elapsedTime);
         //stageWall->Render(deviceContext, elapsedTime);
     }

@@ -13,7 +13,7 @@ public:
 	// ターゲット位置設定
 	void SetTarget(const DirectX::XMFLOAT3& target) { this->target = target; }
 
-	//bool CameraRay();
+	bool CameraRay();
 
 	const DirectX::XMFLOAT3& GetEye() const { return eye; }
 

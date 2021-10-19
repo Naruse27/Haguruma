@@ -461,17 +461,6 @@ void SkinnedMesh::CreateComObjects(ID3D11Device* device, const char* fbxFilename
 
 	//シーン定数バッファオブジェクト生成
 	D3D11_BUFFER_DESC bufferDesc{};
-	//{
-	//	bufferDesc.ByteWidth = sizeof(SceneConstants);
-	//	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	//	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	//	bufferDesc.CPUAccessFlags = 0;
-	//	bufferDesc.MiscFlags = 0;
-	//	bufferDesc.StructureByteStride = 0;
-	//}
-	//hr = device->CreateBuffer(&bufferDesc, nullptr, this->constantBuffers[0].GetAddressOf());
-	//_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
 	{
 		bufferDesc.ByteWidth = sizeof(Constants);
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;

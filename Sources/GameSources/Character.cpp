@@ -133,20 +133,6 @@ void Character::UpdateVerticalVelocitiy(float elapsedFrame)
 
 void Character::UpdateVerticalMove(float elapsedTime)
 {
-    //// d—Íˆ—
-    //position.y += velocity.y * elapsedTime;
-    //
-    //// ’n–Ê”»’è
-    //if (position.y < 0.0f) {
-    //    position.y = 0.0f;
-    //    velocity.y = 0.0f;
-    //
-    //    if (!isGround) OnLanding();
-    //
-    //    isGround = true;
-    //}
-    //else isGround = false;
-
     // ‚’¼•ûŒü‚ÌˆÚ“®—Ê
     float my = velocity.y * elapsedTime;
 
@@ -336,6 +322,17 @@ void Character::UpdateHorizontalMove(float elapsedTime)
                 position.x = hit2.position.x;
                 position.z = hit2.position.z;
             }
+
+            HitResult hit3; // •â³ˆÊ’u‚ª•Ç‚É–„‚Ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+            if (!GimmickManager::Instance().RayCast(hit.position, collectPosition, hit2)) {
+                position.x = collectPosition.x;
+                position.z = collectPosition.z;
+            }
+            else {
+                position.x = hit3.position.x;
+                position.z = hit3.position.z;
+            }
+
         }
         else {
             position.x += mx;

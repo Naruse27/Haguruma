@@ -6,6 +6,14 @@ void CameraManager::Init(ID3D11Device* device)
 {
     CreateBuffer(device);
 
+    //D3D11_VIEWPORT viewport;
+    //UINT numViewports = 1;
+    ////deviceContext->RSGetViewports(&numViewports, &viewport);
+    //
+    //float aspectRatio = viewport.Width / viewport.Height;
+
+ 
+
     mainView.SetLookAt(DirectX::XMFLOAT3(424.242f, 0.0f, -10.0f),
         DirectX::XMFLOAT3(0, 0, 0),
         DirectX::XMFLOAT3(0, 1, 0));
@@ -44,7 +52,14 @@ void CameraManager::SetCameraView(ID3D11DeviceContext* deviceContext, Camera* ca
     deviceContext->RSGetViewports(&numViewports, &viewport);
 
     float aspectRatio = viewport.Width / viewport.Height;
-    DirectX::XMMATRIX P = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(30), aspectRatio, 0.1f, 1000.0f);
+    mainView.SetPerspectiveFov(
+        DirectX::XMConvertToRadians(30),
+        aspectRatio,
+        0.1f,
+        1000.0f
+    );
+    //DirectX::XMMATRIX P = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(30), aspectRatio, 0.1f, 1000.0f);
+    DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&camera->GetProjection());
     DirectX::XMVECTOR eye = DirectX::XMLoadFloat3(&camera->GetEye());
     DirectX::XMVECTOR focus = DirectX::XMVectorSet(camera->GetForcus().x, camera->GetForcus().y, camera->GetForcus().z, 0.0f);
     DirectX::XMVECTOR up = DirectX::XMVectorSet(camera->GetUp().x, camera->GetUp().y, camera->GetUp().z, 0.0f);
@@ -58,6 +73,7 @@ void CameraManager::SetCameraView(ID3D11DeviceContext* deviceContext, Camera* ca
 
     SceneConstants data{};
     DirectX::XMStoreFloat4x4(&data.viewProjection, V * P);
+    //camera->SetProjection(data.viewProjection);
     data.lightDirection = lightDirection;
     data.cameraPosition = c;
     deviceContext->UpdateSubresource(this->constntBuffer.Get(), 0, 0, &data, 0, 0);

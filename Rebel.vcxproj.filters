@@ -88,6 +88,12 @@
     <Filter Include="Game\Character\Player">
       <UniqueIdentifier>{a9ec120e-76be-4484-8d61-8f0139d824af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Gimmick">
+      <UniqueIdentifier>{380dcf51-0106-4c44-97be-ce80ea60249e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Shaders\ConveyorSkinnedMesh">
+      <UniqueIdentifier>{eead5be1-68cf-4f23-9e99-9086cdd25f4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\GameSources\Easing.cpp">
@@ -241,6 +247,24 @@
       <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Sources\GameSources\StageWall.cpp">
+      <Filter>Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\Gimmick.cpp">
+      <Filter>Game\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\Gear.cpp">
+      <Filter>Game\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\GimmckManager.cpp">
+      <Filter>Game\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\Stand.cpp">
+      <Filter>Game\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\StageConveyor.cpp">
+      <Filter>Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\StageWindmill.cpp">
       <Filter>Game\Stage</Filter>
     </ClCompile>
   </ItemGroup>
@@ -419,6 +443,24 @@
     <ClInclude Include="Sources\GameSources\Character.h">
       <Filter>Game\Character</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\GameSources\Gear.h">
+      <Filter>Game\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\Gimmick.h">
+      <Filter>Game\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\GimmickManager.h">
+      <Filter>Game\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\Stand.h">
+      <Filter>Game\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\StageConveyor.h">
+      <Filter>Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\StageWindmill.h">
+      <Filter>Game\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\GeometricPrimitive.hlsli">
@@ -447,6 +489,9 @@
     </None>
     <None Include="Shader\ShadowMap.hlsli">
       <Filter>Library\Shaders\ShadowMap</Filter>
+    </None>
+    <None Include="Shader\ConveyorSkinnedMesh.hlsli">
+      <Filter>Library\Shaders\ConveyorSkinnedMesh</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -491,6 +536,12 @@
     </FxCompile>
     <FxCompile Include="Shader\ShadowMapPS.hlsl">
       <Filter>Library\Shaders\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ConveyorSkinnedMeshPS.hlsl">
+      <Filter>Library\Shaders\ConveyorSkinnedMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\ConveyorSkinnedMeshVS.hlsl">
+      <Filter>Library\Shaders\ConveyorSkinnedMesh</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

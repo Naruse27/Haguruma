@@ -3,12 +3,13 @@
 
 #include "GameLibSource/Vector.h"
 #include "GameLibSource/Model.h"
+#include "GimmickManager.h"
 
 class Character
 {
 public:
-	Character() {};
-	virtual ~Character() {};
+	Character() {}
+	virtual ~Character() {}
 
 	// s—ñXVˆ—
 	void UpdateTransform();
