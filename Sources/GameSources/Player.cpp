@@ -255,11 +255,14 @@ void Player::MouseRay(
             for (int i = 0; i < GEAR_NUM; i++)
             {
                 if (gear[i]->GetSetFlag()) continue;
-                
-                Vector3 pos = position;
-                pos.y += height;
+                else {
+                    Vector3 pos = position;
+                    pos.y += height;
 
-                gear[i]->Launch(dir, pos);
+                    gear[i]->Launch(dir, pos);
+
+                    break;
+                }
             }
         }
 
