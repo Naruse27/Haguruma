@@ -96,7 +96,7 @@ protected:
 	float invincibleTimer = 1.0f;
 	float friction = 0.5f;
 	float acceleration = 1.0f;
-	float maxMoveSpeed = 10.0f;
+	float maxMoveSpeed = 30.0f;
 	float moveVecX = 0.0f;
 	float moveVecZ = 0.0f;
 	float airControl = 0.3f;

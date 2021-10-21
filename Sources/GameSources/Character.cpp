@@ -190,12 +190,12 @@ void Character::UpdateVerticalMove(float elapsedTime)
 
     // 地面の向きに沿うようにXZ軸回転
     {
-        //// Y軸が法線ベクトル方向に向くオイラー角回転を算出する
-        //angle.x = atan2f(normal.z, normal.y);
-        //angle.z = -atan2f(normal.x, normal.y);
-        //float ax = atan2f(normal.z, normal.y);
-        //float az = -atan2f(normal.x, normal.y);
-        //// 線形補完で滑らかに回転する
+        // Y軸が法線ベクトル方向に向くオイラー角回転を算出する
+        angle.x = atan2f(normal.z, normal.y);
+        angle.z = -atan2f(normal.x, normal.y);
+        float ax = atan2f(normal.z, normal.y);
+        float az = -atan2f(normal.x, normal.y);
+        // 線形補完で滑らかに回転する
         //angle.x = Mathf::Lerp(angle.x, ax, 0.2f);
         //angle.z = Mathf::Lerp(angle.z, az, 0.2f);
     }
@@ -324,7 +324,7 @@ void Character::UpdateHorizontalMove(float elapsedTime)
             }
 
             HitResult hit3; // 補正位置が壁に埋まっているかどうか
-            if (!GimmickManager::Instance().RayCast(hit.position, collectPosition, hit2)) {
+            if (!GimmickManager::Instance().RayCast(hit.position, collectPosition, hit3)) {
                 position.x = collectPosition.x;
                 position.z = collectPosition.z;
             }

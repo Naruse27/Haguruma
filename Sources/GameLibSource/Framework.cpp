@@ -9,16 +9,11 @@
 #include "../GameSources/CameraManager.h"
 #include "GameSources/EffectManager.h"
 
-//CameraManager* CameraManager::instance = nullptr;
 EffectManager* EffectManager::instance = nullptr;
 
 
 Framework::Framework(HWND hwnd) : hwnd(hwnd) , input(hwnd)
 {
-
-    
-
-
 }
 
 bool Framework::Initialize()

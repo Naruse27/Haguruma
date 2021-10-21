@@ -40,19 +40,45 @@
 // TEXCOORD                 0   xy          2     NONE   float   xy  
 //
 vs_5_0
-dcl_globalFlags refactoringAllowed
+dcl_globalFlags refactoringAllowed | skipOptimization
 dcl_constantbuffer CB0[5], immediateIndexed
 dcl_input v0.xyzw
 dcl_input v2.xy
 dcl_output_siv o0.xyzw, position
 dcl_output o1.xyzw
 dcl_output o2.xy
-dcl_temps 1
-mul r0.xyzw, v0.yyyy, cb0[1].xyzw
-mad r0.xyzw, v0.xxxx, cb0[0].xyzw, r0.xyzw
-mad r0.xyzw, v0.zzzz, cb0[2].xyzw, r0.xyzw
-mad o0.xyzw, v0.wwww, cb0[3].xyzw, r0.xyzw
-mov o1.xyzw, cb0[4].xyzw
-mov o2.xy, v2.xyxx
+dcl_temps 3
+//
+// Initial variable locations:
+//   v0.x <- position.x; v0.y <- position.y; v0.z <- position.z; v0.w <- position.w; 
+//   v1.x <- normal.x; v1.y <- normal.y; v1.z <- normal.z; v1.w <- normal.w; 
+//   v2.x <- texcoord.x; v2.y <- texcoord.y; 
+//   o2.x <- <main return value>.texcoord.x; o2.y <- <main return value>.texcoord.y; 
+//   o1.x <- <main return value>.color.x; o1.y <- <main return value>.color.y; o1.z <- <main return value>.color.z; o1.w <- <main return value>.color.w; 
+//   o0.x <- <main return value>.position.x; o0.y <- <main return value>.position.y; o0.z <- <main return value>.position.z; o0.w <- <main return value>.position.w
+//
+#line 6 "D:\チE"
+mul r0.xyzw, v0.xxxx, cb0[0].xyzw
+mul r1.xyzw, v0.yyyy, cb0[1].xyzw
+add r0.xyzw, r0.xyzw, r1.xyzw
+mul r1.xyzw, v0.zzzz, cb0[2].xyzw
+add r0.xyzw, r0.xyzw, r1.xyzw
+mul r1.xyzw, v0.wwww, cb0[3].xyzw
+add r0.xyzw, r0.xyzw, r1.xyzw  // r0.x <- vout.position.x; r0.y <- vout.position.y; r0.z <- vout.position.z; r0.w <- vout.position.w
+
+#line 11
+mov r1.xyz, cb0[4].xyzx  // r1.x <- vout.color.x; r1.y <- vout.color.y; r1.z <- vout.color.z
+
+#line 12
+mov r1.w, cb0[4].w  // r1.w <- vout.color.w
+
+#line 13
+mov r2.xy, v2.xyxx  // r2.x <- vout.texcoord.x; r2.y <- vout.texcoord.y
+
+#line 14
+mov o0.xyzw, r0.xyzw
+mov o1.xyz, r1.xyzx
+mov o1.w, r1.w
+mov o2.xy, r2.xyxx
 ret 
-// Approximately 7 instruction slots used
+// Approximately 15 instruction slots used

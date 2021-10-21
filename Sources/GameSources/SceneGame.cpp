@@ -15,7 +15,8 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
 
     //ID3D11Device* device = Framework::GetInstance().GetDevice().Get();
     StageManager::Create();
-
+    Stand* stand = new Stand(device);
+    GimmickManager::Instance().Register(stand, Identity::Stand); 
     cameraController = new CameraControl();
     player = new Player(this->device);
     stageMain = new StageMain(this->device);
@@ -24,8 +25,7 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
     StageManager::Instance().Register(stageMain);
     StageManager::Instance().Register(stageWall);
 
-    Stand* stand = new Stand(device);
-    GimmickManager::Instance().Register(stand, Identity::Stand);
+    
 }
 
 // 終了化
@@ -46,8 +46,8 @@ void SceneGame::Finalize()
 void SceneGame::Update(float elapsedTime)
 {
     // カメラコントローラー更新
-    DirectX::XMFLOAT3 target = player->GetPosition();
-    target.y += 0.5f;
+    Vector3 target = player->GetPosition();
+    target.y += player->GetHeight();
     cameraController->SetTarget(target);
     cameraController->Update(elapsedTime, &CameraManager::Instance().mainView);
 
@@ -79,6 +79,7 @@ void SceneGame::Render(float elapsedTime)
 
     // デバック
     {
-        player->DebugImGui();
+        //player->DebugImGui();
+        cameraController->RenderDebugGui(&CameraManager::Instance().mainView);
     }
 }

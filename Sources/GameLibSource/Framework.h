@@ -30,8 +30,8 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 extern ImWchar glyphRangesJapanese[];
 #endif
 
-CONST LONG SCREEN_WIDTH = 1280;
-CONST LONG SCREEN_HEIGHT = 720;
+CONST LONG SCREEN_WIDTH = 1920;
+CONST LONG SCREEN_HEIGHT = 1080;
 CONST BOOL FULLSCREEN = FALSE;
 CONST LPCWSTR APPLICATION_NAME = L"Rebel";
 
@@ -247,6 +247,7 @@ public:
 #ifdef USE_IMGUI
 		if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) { return true; }
 #endif
+		int zelta = 0;
 		switch (msg) {
 		case WM_PAINT: {
 			PAINTSTRUCT ps{};
@@ -268,6 +269,11 @@ public:
 			break;
 		case WM_ENTERSIZEMOVE:
 			tictoc.stop();
+			break;
+		case WM_MOUSEWHEEL:
+			zelta = GET_WHEEL_DELTA_WPARAM(wparam);
+
+			input.GetMouse().SetWheel(zelta);
 			break;
 		case WM_EXITSIZEMOVE:
 			tictoc.start();

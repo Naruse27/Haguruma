@@ -39,17 +39,21 @@ public:
 
 	void	    SetId(int id) { this->id = id; }
 	int		GetId() { return id; }
+	void SetSenderID(int id) { senderId = id; }
+
 
 	const int GetIdentity() { return static_cast<int>(identitiy); }
 
 	bool GetSetFlag() { return setFlag; }
 	void IsSetFlag(bool set) { setFlag = set; }
-
+	bool GetFiringFlag() { return firingFlag; }
+	void IsFiringFlag(bool set) { firingFlag = set; }
 
 
 	// メッセージ受信したときの処理
 	virtual bool OnMessage(const Telegram& telegram);
 	bool HandleMessage(const Telegram& msg);
+
 
 
 protected:
@@ -74,8 +78,11 @@ protected:
 	float height = 5.0f; // とりあえず
 	float width = 5.0f;
 
+	bool firingFlag = false;
 	bool setFlag = false;
 	int id = 0;
+
+	int senderId = 0; // セットされた相手のID
 };
 
 #endif // !GIMMICK

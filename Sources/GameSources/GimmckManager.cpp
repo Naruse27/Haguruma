@@ -34,6 +34,7 @@ bool GimmickManager::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFL
 
     for (Gimmick* gimmick : gimmicks) {
         HitResult tmp;
+        if (gimmick->GetIdentity() == static_cast<int>(Identity::Gear)) continue;
         if (gimmick->RayCast(start, end, tmp)) {
             if (tmp.distance < hit.distance) {
                 hit = tmp;
@@ -72,6 +73,7 @@ void GimmickManager::CollisionGimmickGimmicks(Gimmick* gimmick)
                 gimmick->IsSetPosition(pos);
                 gimmick->IsSetFlag(true);
                 gimmick2->IsSetFlag(true);
+                gimmick2->SetSenderID(gimmick->GetId());
         }
     }
 }

@@ -3,8 +3,42 @@
 #include "Input/Input.h"
 #include "Mathf.h"
 #include "StageManager.h"
-//#include "InputDevice.h"
-//#include "imgui.h"
+#include "ImGui/imgui.h"
+
+CameraControl::CameraControl()
+{
+	ConttollerFunction[Select::FIXED] = &CameraControl::FixedCameraUpdate;
+	ConttollerFunction[Select::PAD_CONTOROL] = &CameraControl::PadControlUpdate;
+}
+
+void CameraControl::FixedCameraUpdate(float elapsedTime, Camera* camera)
+{
+	range += Input::Instance().GetMouse().GetWheel() *0.03;
+	if (range > rangeMax) range = rangeMax;
+	if (rangeMin > range) range = rangeMin;
+
+	// カメラ回転値を回転行列に変換
+	DirectX::XMMATRIX Transform = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
+
+	// 回転行列から前方向ベクトルを取り出す
+	DirectX::XMVECTOR Front = Transform.r[2];
+	DirectX::XMFLOAT3 front;
+	DirectX::XMStoreFloat3(&front, Front);
+
+	// 注視点から後ろベクトル方向に一定距離離れたカメラ視点を求める
+	eye.x = target.x + front.x * -range;
+	eye.y = target.y + front.y * -range;
+	eye.z = target.z - front.z * -range;
+
+	CameraRay();
+
+	//eye.x = Mathf::Lerp(oldEye.x, eye.x, 0.1f);
+	//eye.y = Mathf::Lerp(oldEye.y, eye.y, 0.1f);
+	//eye.z = Mathf::Lerp(oldEye.z, eye.z, 0.1f);
+
+	// カメラの視点と注視点を設定
+	camera->SetLookAt(eye, target, DirectX::XMFLOAT3(0, 1, 0));
+}
 
 void CameraControl::MouseControlUpdate( Camera* camera )
 {
@@ -105,26 +139,7 @@ void CameraControl::MouseControlUpdate( Camera* camera )
 	//DirectX::XMStoreFloat3(&camera->foward, _foward);
 }
 
-void CameraControl::PadControlUpdate(Camera* camera)
-{
-	//camera->rotateY += (static_cast<float>(xInput[0].sRX) / 1000.0f) * 2 * 0.01745f;
-	//camera->rotateX += (static_cast<float>(xInput[0].sRY) / 1000.0f)  * 2 * 0.01745f;
-	//if (0.3f < camera->rotateX)
-	//{
-	//	camera->rotateX = 0.3f;
-	//}
-	//if (camera->rotateX < 0.05f)
-	//{
-	//	camera->rotateX = 0.05f;
-	//}
-}
-
-void CameraControl::CameraRotation(Camera* camera )
-{
-	//camera->rotateY += 1 * 0.01745f;
-}
-
-void CameraControl::Update(float elapsedTime, Camera* camera)
+void CameraControl::PadControlUpdate(float elapsedTime, Camera* camera)
 {
 	GamePad& gamepad = Input::Instance().GetGamePad();
 	float ax = gamepad.GetAxisRX();
@@ -181,6 +196,16 @@ void CameraControl::Update(float elapsedTime, Camera* camera)
 	camera->SetLookAt(eye, target, DirectX::XMFLOAT3(0, 1, 0));
 }
 
+void CameraControl::CameraRotation(Camera* camera )
+{
+	//camera->rotateY += 1 * 0.01745f;
+}
+
+void CameraControl::Update(float elapsedTime, Camera* camera)
+{
+	(this->*ConttollerFunction[Select::FIXED])(elapsedTime, camera);
+}
+
 bool CameraControl::CameraRay()
 {
 	HitResult hit;
@@ -191,4 +216,27 @@ bool CameraControl::CameraRay()
 		return true;
 	}
 	return false;
+}
+
+void CameraControl::RenderDebugGui(Camera* camera)
+{
+	ImGui::Begin("Camera");
+
+	//if (ImGui::TreeNode("Eye")) {
+		DirectX::XMFLOAT3 eye = camera->GetEye();
+		ImGui::SliderFloat3("eye", &eye.x, -10000.0f, +10000.0f);
+		ImGui::SliderFloat3("angle", &angle.x, DirectX::XMConvertToRadians(-45), DirectX::XMConvertToRadians(45));
+
+	//}
+	//if (ImGui::TreeNode("Target")) {
+		DirectX::XMFLOAT3 forcus = camera->GetForcus();
+		ImGui::SliderFloat3("forcus", &forcus.x, -10000.0f, +10000.0f);
+
+		ImGui::SliderFloat("rangeMax", &rangeMax, 0, 100);
+		ImGui::SliderFloat("rangeMin", &rangeMin, 0, 65.0f);
+
+		ImGui::SliderFloat("range", &range, -100, 100);
+
+	//}
+	ImGui::End();
 }

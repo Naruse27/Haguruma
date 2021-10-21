@@ -39,7 +39,10 @@ public:
 
 	void IsSetPosition(const Vector3& position) override;
 
+	// ‰ñŽû
 	void Collection();
+
+
 
 private:
 	// ‘O‚É”ò‚Î‚·
@@ -64,6 +67,7 @@ private:
 	float moveSpeed = 10.0f;
 	bool tracking_check = false;
 	float turnSpeed = DirectX::XMConvertToRadians(360);
+	float stepOffset = 1.0f;
 
 
 

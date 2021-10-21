@@ -1,5 +1,6 @@
 #include "Stand.h"
 #include "GameLibSource/Shader.h"
+#include "GimmickManager.h"
 
 Stand::Stand(ID3D11Device* device)
 {
@@ -19,7 +20,9 @@ Stand::~Stand()
 // 更新
 void Stand::Update(float elapsedTime)
 {
-        //オブジェクト行列更新
+    if (setFlag) SenderSetFragCheck();
+
+    //オブジェクト行列更新
     UpdateTransform();
 
     //モデル行列更新
@@ -70,4 +73,12 @@ bool Stand::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end
         return true;
     }
     return false;
+}
+
+void Stand::SenderSetFragCheck()
+{
+    Gimmick* gimmick = GimmickManager::Instance().GetGimmickFromId(senderId);
+
+    if (!gimmick->GetSetFlag()) setFlag = false;
+    else setFlag = true;
 }

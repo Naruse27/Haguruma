@@ -33,13 +33,15 @@ private:
 	// ˆÚ“®“ü—Íˆ—
 	bool InputMove(float elapsedTime);
 
+	bool InputJump();
+
 	// ’…’n‚µ‚½‚ÉŒÄ‚Î‚ê‚é
 	void OnLanding() override;
 
 	
 
 private:
-	float moveSpeed = 5.0f;
+	float moveSpeed = 10.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 
 	Gear* gear[GEAR_NUM];
@@ -47,6 +49,10 @@ private:
 	Vector3 setPosition = { position.x, position.y + height, position.z };
 
 	float distance = 8.0f;
+
+	float jumpSpeed = 20.0f;
+	int jumpCount = 0;
+	int jumpLimit = 1;
 
 	// debug
 	bool check = false;

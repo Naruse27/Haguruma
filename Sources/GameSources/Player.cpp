@@ -20,7 +20,7 @@ Player::Player(ID3D11Device* device)
     position = { 0.0f, 0.0f, 0.0f };
 
 
-    scale = { 0.03f, 0.03f, 0.03f };
+    scale = { 0.05f, 0.05f, 0.05f };
 }
 
 Player::~Player()
@@ -37,6 +37,8 @@ void Player::Update(float elapsedTime)
     }
 
      InputMove(elapsedTime);
+
+     InputJump();
 
     // 速力更新処理
     UpdateVelocity(elapsedTime);
@@ -151,9 +153,24 @@ bool Player::InputMove(float elapsedTime)
     return moveVec.x || moveVec.y || moveVec.z;
 }
 
+bool Player::InputJump()
+{
+    GamePad& gamePad = Input::Instance().GetGamePad();
+    if (gamePad.GetButtonDown() & GamePad::BTN_SPACE) {
+        if (jumpCount < jumpLimit) {
+            ++jumpCount;
+            Jump(jumpSpeed);
+
+            // ジャンプ入力した
+            return true;
+        }
+    }
+    return false;
+}
+
 void Player::OnLanding()
 {
-    //jumpCount = 0;
+    jumpCount = 0;
 
     // 下方向の速力が一定以上なら着地ステートへ
     //if (velocity.y < gravity * 5.0f) TransitionLandState();
@@ -229,8 +246,12 @@ void Player::MouseRay(
 
             for (int i = 0; i < GEAR_NUM; i++)
             {
+                if (gear[i]->GetFiringFlag()) continue;
                 if (gear[i]->GetSetFlag()) continue;
-                gear[i]->Launch(dir, setPosition);
+                else {
+                    gear[i]->Launch(dir, setPosition);
+                    break;
+                }
             }
         }
         else {
@@ -247,6 +268,7 @@ void Player::MouseRay(
 
             for (int i = 0; i < GEAR_NUM; i++)
             {
+                if (gear[i]->GetFiringFlag()) continue;
                 if (gear[i]->GetSetFlag()) continue;
                 else {
                     gear[i]->Launch(dir, setPosition);
