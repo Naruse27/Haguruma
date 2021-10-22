@@ -45,3 +45,6 @@ Thumbs.db
 *.log
 #python bytecode cache, for some plugins.
 *.pyc
+*.obj
+*.cso
+*.cod
