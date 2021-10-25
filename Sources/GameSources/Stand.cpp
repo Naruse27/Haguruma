@@ -32,7 +32,7 @@ void Stand::Update(float elapsedTime)
 // •`‰æ
 void Stand::Render(ID3D11DeviceContext* deviceContext, float elapsedTime)
 {
-      model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::DEFAULT), true);
+      model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::NORMAL_MAP), true);
       model->Render(deviceContext);
 }
 

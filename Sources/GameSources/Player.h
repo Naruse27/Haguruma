@@ -3,7 +3,7 @@
 
 #include "Character.h"
 #include "Gear.h"
-
+#include "GameLibSource/Sprite.h"
 #define GEAR_NUM 3
 
 class Player : public Character
@@ -26,6 +26,15 @@ public:
 
 	// Debug用
 	void DebugImGui();
+
+	// メッセージ受け取り
+	bool OnMessage(const Telegram& msg) override;
+
+	bool GetDeathFlag() { return deathFlag; }
+
+	void SetStartGimmickID(int id) { startGimmickID = id; }
+	const int GetStartGimmickID() const { return startGimmickID; }
+
 private:
 	// スティック入力値から移動ベクトルを所得
 	Vector3 GetMoveVec() const;
@@ -33,14 +42,17 @@ private:
 	// 移動入力処理
 	bool InputMove(float elapsedTime);
 
+	// ジャンプ処理
 	bool InputJump();
 
 	// 着地した時に呼ばれる
 	void OnLanding() override;
 
-	
+	// 地面から落ちた時に呼ばれる
+	void DropProcessing() override;
 
 private:
+	std::unique_ptr<Sprite> blackOut;
 	float moveSpeed = 10.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 
@@ -54,8 +66,19 @@ private:
 	int jumpCount = 0;
 	int jumpLimit = 1;
 
+	int deathCount = 0;
+
+	int startGimmickID = 0;
+
+	// 2d用
+	
+	Vector2 scale2d = { 1.0f, 1.0f };
+
+	float scaleMax = 10.0f;
 	// debug
 	bool check = false;
+
+
 };
 
 

@@ -34,6 +34,7 @@
     <ClCompile Include="Sources\GameLibSource\Model.cpp" />
     <ClCompile Include="Sources\GameLibSource\ResourceManager.cpp" />
     <ClCompile Include="Sources\GameLibSource\Shader.cpp" />
+    <ClCompile Include="Sources\GameLibSource\ShadowMap.cpp" />
     <ClCompile Include="Sources\GameLibSource\SkinnedMesh.cpp" />
     <ClCompile Include="Sources\GameLibSource\Sprite.cpp" />
     <ClCompile Include="Sources\GameLibSource\SpriteBatch.cpp" />
@@ -52,6 +53,7 @@
     <ClCompile Include="Sources\GameSources\Gear.cpp" />
     <ClCompile Include="Sources\GameSources\GimmckManager.cpp" />
     <ClCompile Include="Sources\GameSources\Gimmick.cpp" />
+    <ClCompile Include="Sources\GameSources\GimmickPoint.cpp" />
     <ClCompile Include="Sources\GameSources\Mathf.cpp" />
     <ClCompile Include="Sources\GameSources\MetaAI.cpp" />
     <ClCompile Include="Sources\GameSources\Player.cpp" />
@@ -59,6 +61,8 @@
     <ClCompile Include="Sources\GameSources\SceneGame.cpp" />
     <ClCompile Include="Sources\GameSources\SceneLoading.cpp" />
     <ClCompile Include="Sources\GameSources\SceneManager.cpp" />
+    <ClCompile Include="Sources\GameSources\SceneSelect.cpp" />
+    <ClCompile Include="Sources\GameSources\SceneSelect2.cpp" />
     <ClCompile Include="Sources\GameSources\SceneTitle.cpp" />
     <ClCompile Include="Sources\GameSources\Stage.cpp" />
     <ClCompile Include="Sources\GameSources\StageConveyor.cpp" />
@@ -95,6 +99,7 @@
     <ClInclude Include="Sources\GameLibSource\Model.h" />
     <ClInclude Include="Sources\GameLibSource\ResourceManager.h" />
     <ClInclude Include="Sources\GameLibSource\Shader.h" />
+    <ClInclude Include="Sources\GameLibSource\ShadowMap.h" />
     <ClInclude Include="Sources\GameLibSource\SkinnedMesh.h" />
     <ClInclude Include="Sources\GameLibSource\Sprite.h" />
     <ClInclude Include="Sources\GameLibSource\SpriteBatch.h" />
@@ -114,6 +119,7 @@
     <ClInclude Include="Sources\GameSources\Gear.h" />
     <ClInclude Include="Sources\GameSources\Gimmick.h" />
     <ClInclude Include="Sources\GameSources\GimmickManager.h" />
+    <ClInclude Include="Sources\GameSources\GimmickPoint.h" />
     <ClInclude Include="Sources\GameSources\Mathf.h" />
     <ClInclude Include="Sources\GameSources\MetaAI.h" />
     <ClInclude Include="Sources\GameSources\Player.h" />
@@ -122,6 +128,8 @@
     <ClInclude Include="Sources\GameSources\SceneGame.h" />
     <ClInclude Include="Sources\GameSources\SceneLoading.h" />
     <ClInclude Include="Sources\GameSources\SceneManager.h" />
+    <ClInclude Include="Sources\GameSources\SceneSelect.h" />
+    <ClInclude Include="Sources\GameSources\SceneSelect2.h" />
     <ClInclude Include="Sources\GameSources\SceneTitle.h" />
     <ClInclude Include="Sources\GameSources\Stage.h" />
     <ClInclude Include="Sources\GameSources\StageConveyor.h" />
@@ -150,6 +158,7 @@
     <None Include="Shader\Function.hlsli" />
     <None Include="Shader\GeometricPrimitive.hlsli" />
     <None Include="Shader\NormalMapSkinnedMesh.hlsli" />
+    <None Include="Shader\PhongSkinnedMesh.hlsli" />
     <None Include="Shader\ShadowMap.hlsli" />
     <None Include="Shader\SkinnedMesh.hlsli" />
     <None Include="Shader\Sprite.hlsli" />
@@ -185,6 +194,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\NormalMapSkinnedMeshVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongSkinnedMeshPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\PhongSkinnedMeshVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>

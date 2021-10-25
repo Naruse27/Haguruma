@@ -7,6 +7,8 @@
 #include <string>
 #include "Vector.h"
 
+static const float UV_ADJUST = 1.0f;// 0.99994f;
+
 class Sprite
 {
 private:
@@ -28,31 +30,38 @@ private:
 public:
 	Sprite(ID3D11Device* device);
 	Sprite(ID3D11Device* device, const wchar_t* filename);
+	Sprite(ID3D11Device*, const wchar_t*, int aaaa, int nBufSize = (4));
 	~Sprite() {}
 
 	void Render(ID3D11DeviceContext* immediateContext,
-		Vector2 position, Vector2 size,
+		Vector2 position,Vector2 scale, Vector2 size,
 		float sx, float sy, float sw, float sh,
 		float angle/*degree*/,
 		Vector4 color
 	);
 
 	void Render(ID3D11DeviceContext* immediateContext,
-		Vector2 position, Vector2 size,
+		Vector2 position, Vector2 scale, Vector2 size,
 		float sx, float sy, float sw, float sh,
 		float angle/*degree*/
 	);
 
 	void Render(ID3D11DeviceContext* immediateContext,
-		Vector2 position, Vector2 size,
+		Vector2 position, Vector2 scale, Vector2 size,
 		float angle/*degree*/);
 
-	void Render(ID3D11DeviceContext* immediateContext, Vector2 position, Vector2 size);
+	void Render(ID3D11DeviceContext* immediateContext, Vector2 position, Vector2 scale, Vector2 size);
 
 	void Texout(ID3D11DeviceContext* immediateContext,
 		std::string s,
 		float x, float y, float w, float h, Vector4 color = {1.0f, 1.0f, 1.0f, 1.0f });
 
+	void render(ID3D11DeviceContext* context,
+		const Vector2& position, const Vector2& scale,
+		const Vector2& texPos, const Vector2& texSize,
+		const Vector2& center, float angle,
+		const Vector4& color
+	) const;
 private:
 	void CreateStates(ID3D11Device* device);
 

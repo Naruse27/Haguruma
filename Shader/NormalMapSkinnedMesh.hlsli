@@ -32,3 +32,5 @@ cbuffer SCENE_CONSTANT_BUFFER : register(b1)
     float4 lightDirection;
     float4 cameraPosition;
 };
+
+

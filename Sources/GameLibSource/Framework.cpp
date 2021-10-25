@@ -293,6 +293,8 @@ bool Framework::Initialize()
         SceneManager::Instance().Init(device.Get(), deviceContext.Get());
         SceneManager::Instance().ChangeScene(new SceneTitle);
 
+        ShaderSystem::GetInstance()->Init(device.Get());
+
     }
     return true;
 }
@@ -312,39 +314,6 @@ void Framework::Update(float elapsedTime/*Elapsed seconds from last frame*/)
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 #endif
-
-#ifdef USE_IMGUI
-    ImGui::Begin("ImGUI");
-
-    DirectX::XMFLOAT3 pos = CameraManager::Instance().mainView.GetEye();
-    ImGui::SliderFloat("camera_position.x", &pos.x, -2000.0f, 2000.0f);
-    ImGui::SliderFloat("camera_position.y", &pos.y, -2000.0f, 2000.0f);
-    ImGui::SliderFloat("camera_position.z", &pos.z, -2000.0f, 2000.0f);
-    CameraManager::Instance().mainView.SetEye(pos);
-
-    ImGui::SliderFloat("light_direction.x", &lightDirection.x, 0.0f, 1.0f);
-    ImGui::SliderFloat("light_direction.y", &lightDirection.y, 0.0f, 1.0f);
-    ImGui::SliderFloat("light_direction.z", &lightDirection.z, 0.0f, 1.0f);
-    //ImGui::SliderFloat("scale.x", &scale.x, 0.0f, 5.0f);
-    //ImGui::SliderFloat("scale.y", &scale.y, 0.0f, 5.0f);
-    //ImGui::SliderFloat("scale.z", &scale.z, 0.0f, 5.0f);
-    //ImGui::SliderFloat("rotate.x", &rotate.x, DirectX::XMConvertToRadians(-180), DirectX::XMConvertToRadians(180));
-    //ImGui::SliderFloat("rotate.y", &rotate.y, DirectX::XMConvertToRadians(-180), DirectX::XMConvertToRadians(180));
-    //ImGui::SliderFloat("rotate.z", &rotate.z, DirectX::XMConvertToRadians(-180), DirectX::XMConvertToRadians(180));
-    //ImGui::SliderFloat("translate.x", &translate.x, -1000.0f, 1000.0f);
-    //ImGui::SliderFloat("translate.y", &translate.y, -1000.0f, 1000.0f);
-    //ImGui::SliderFloat("translate.z", &translate.z, -1000.0f, 1000.0f);
-    //ImGui::SliderFloat("materialColor.r", &materialColor.x, 0.0f, 1.0f);
-    //ImGui::SliderFloat("materialColor.g", &materialColor.y, 0.0f, 1.0f);
-    //ImGui::SliderFloat("materialColor.b", &materialColor.z, 0.0f, 1.0f);
-    //ImGui::SliderFloat("materialColor.a", &materialColor.w, 0.0f, 1.0f);
-   
-    ImGui::SliderFloat("rotationAxis.x", &rotationAxis.x, 0.0f, 1.0f);
-    ImGui::SliderFloat("rotationAxis.y", &rotationAxis.y, 0.0f, 1.0f);
-    ImGui::SliderFloat("rotationAxis.z", &rotationAxis.z, 0.0f, 1.0f);
-    
-    ImGui::End();
-#endif
 }
 
 void Framework::Render(float elapsedTime/*Elapsed seconds from last frame*/) {
@@ -361,7 +330,7 @@ void Framework::Render(float elapsedTime/*Elapsed seconds from last frame*/) {
     deviceContext->PSSetSamplers(2, 1, this->samplerStates[static_cast<size_t>(SAMPLER_STATE::ANISOTROPIC)].GetAddressOf());
 
     //深度ステンシルステートオブジェクトを設定
-    deviceContext->OMSetDepthStencilState(this->depthStencilStates[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 1);
+    //deviceContext->OMSetDepthStencilState(this->depthStencilStates[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_OFF)].Get(), 1);
 
     //blending state object 設定
     //ラスタライザステート設定
@@ -370,7 +339,7 @@ void Framework::Render(float elapsedTime/*Elapsed seconds from last frame*/) {
     CameraManager::Instance().SetCameraView(deviceContext.Get(), &CameraManager::Instance().mainView);
 
     //深度ステンシルステートオブジェクトを設定
-    deviceContext->OMSetDepthStencilState(this->depthStencilStates[static_cast<size_t>(DEPTH_STATE::ZT_ON_ZW_ON)].Get(), 1);
+    //deviceContext->OMSetDepthStencilState(this->depthStencilStates[static_cast<size_t>(DEPTH_STATE::ZT_OFF_ZW_OFF)].Get(), 1);
 
     // シーン描画処理
     SceneManager::Instance().Render(elapsedTime);

@@ -26,7 +26,7 @@ public:
 	// •`‰æˆ—
 	virtual void Render(float elapsedTime) override;
 private:
-
+	Sprite* titleSprite = nullptr;
 };
 
 #endif // !SCENETITLE

@@ -14,13 +14,19 @@ enum class Identity : int
 {
 	Meta = 0,
 	Player = 1,	// プレイヤーIDは1～4
+
 	//Enemy = 5	,// エネミーIDは5以降を付与
-	Gear = 5,
-	Stand = 25,
+	Start = 5,
+	End,
+	Gear = 15,
+	Stand = 30,
 };
 
 enum class MESSAGE_TYPE : int
 {
+	MSG_PLAYER_DEATH,                                                  // プレイヤーの死亡
+	MSG__CALL_REVIVAL_POSSIBLE,                            // 復活可能 
+	MSG_CALL_START_POINT,
 	MSG_SIGNAL_GIAR,			                                           	// ギアの信号
 	MSG_SIGNAL_STAND,	                                                // 台の信号
 	MSG_SIGNAL_GIAR_COALESCENCE,              	    	// ギアからの合体信号

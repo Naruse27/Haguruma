@@ -57,6 +57,103 @@ Sprite::Sprite(ID3D11Device* device, const wchar_t* filename)
     Texture::LoadTextureFromFile(device, filename, shaderResourceView.GetAddressOf(), &texture2dDesc);
 }
 
+Sprite::Sprite(ID3D11Device* device, const wchar_t* fileName,int aaaa, int nBufSize)
+{
+    //VertexBufferの作成
+    //vertex vertices[4] = {};
+    D3D11_BUFFER_DESC bd = {};
+    bd.Usage = D3D11_USAGE_DYNAMIC;
+    bd.ByteWidth = sizeof(Vertex) * nBufSize;   // 頂点バッファのサイズ
+    bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;    // 頂点バッファ
+    bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // GPU→読み取りのみ　CPU→書き込みのみ
+    bd.MiscFlags = 0;
+    bd.StructureByteStride = 0;
+    //D3D11_SUBRESOURCE_DATA initData = {};
+    //initData.pSysMem = vertices;                // 頂点のアドレス
+    //initData.SysMemPitch = 0;
+    //initData.SysMemSlicePitch = 0;
+    if (FAILED(device->CreateBuffer(&bd, nullptr, &vertexBuffer)))
+    {
+        assert(!"頂点バッファの作成に失敗(Sprite)");
+        return;
+    }
+
+    // 頂点宣言
+    // 入力レイアウトの定義
+    D3D11_INPUT_ELEMENT_DESC layout[] = {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0,     D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR",	  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 4 * 3, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, 4 * 7, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+    UINT numElements = ARRAYSIZE(layout);
+
+    //	頂点シェーダーの読み込み
+    ResourceManager::CreateVsFromCso(device, "./Data/Shader/SpriteVS.cso", vertexShader.GetAddressOf(),
+        inputLayout.GetAddressOf(), layout, _countof(layout));
+    ResourceManager::CreatePsFromCso(device, "./Data/Shader/SpritePS.cso", pixelShader.GetAddressOf());
+
+    //	ラスタライザステートの設定
+    D3D11_RASTERIZER_DESC rsDesc = {};
+    rsDesc.FillMode = D3D11_FILL_SOLID;//
+    rsDesc.CullMode = D3D11_CULL_NONE;//	カリング
+    rsDesc.FrontCounterClockwise = false;
+    rsDesc.DepthBias = 0;
+    rsDesc.DepthBiasClamp = 0;
+    rsDesc.SlopeScaledDepthBias = 0;
+    rsDesc.DepthClipEnable = false;
+    rsDesc.ScissorEnable = false;
+    rsDesc.MultisampleEnable = false;
+    rsDesc.AntialiasedLineEnable = false;
+    if (FAILED(device->CreateRasterizerState(&rsDesc, &rasterizerState)))
+    {
+        assert(!"ラスタライザステートの作成に失敗(Sprite)");
+        return;
+    }
+
+    //	テクスチャ画像読み込み
+    Texture::LoadTextureFromFile(device, fileName, shaderResourceView.GetAddressOf(), &texture2dDesc);
+
+
+    //	サンプラーステート設定
+    D3D11_SAMPLER_DESC	samplerDesc;
+    SecureZeroMemory(&samplerDesc, sizeof(D3D11_SAMPLER_DESC));
+    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+    samplerDesc.MipLODBias = 0;
+    samplerDesc.MaxAnisotropy = 16;
+    samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+    samplerDesc.MinLOD = 0;
+    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+    if (FAILED(device->CreateSamplerState(&samplerDesc, &samplerState)))
+    {
+        assert(!"サンプラーステートの生成に失敗(Sprite)");
+        return;
+    }
+
+    D3D11_DEPTH_STENCIL_DESC dsDesc;
+    dsDesc.DepthEnable = true;
+    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+    dsDesc.StencilEnable = FALSE;
+    dsDesc.StencilReadMask = 0xFF;
+    dsDesc.StencilWriteMask = 0xFF;
+    dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+    dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+    dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    if (FAILED(device->CreateDepthStencilState(&dsDesc, &depthStencilState)))
+    {
+        assert(!"デプスステンシルステートの作成に失敗(Sprite)");
+        return;
+    }
+}
+
 Sprite::Sprite(ID3D11Device* device)
 {
     HRESULT hr = S_OK;
@@ -117,11 +214,13 @@ Sprite::Sprite(ID3D11Device* device)
 }
 
 void Sprite::Render(ID3D11DeviceContext* immediateContext,
-    Vector2 position, Vector2 size,
+    Vector2 position, Vector2 scale, Vector2 size,
     float sx, float sy, float sw, float sh,
     float angle/*degree*/,
     Vector4 color)
 {
+    if (scale.x == 0.0f || scale.y == 0.0f) return;
+
     // スクリーン（ビューポート）のサイズを取得する
     D3D11_VIEWPORT viewport{};
     UINT num_viewports{ 1 };
@@ -148,11 +247,11 @@ void Sprite::Render(ID3D11DeviceContext* immediateContext,
     HRESULT hr{ S_OK };
     D3D11_MAPPED_SUBRESOURCE mappedSubresource{}; // サブリソースデータへのアクセスを提供
     hr = immediateContext->Map(
-        vertexBuffer.Get(),                     // ID3D11Resourceインターフェースへのポインター
-        0,                                             // インデックス番号
+        vertexBuffer.Get(),                           // ID3D11Resourceインターフェースへのポインター
+        0,                                                          // インデックス番号
         D3D11_MAP_WRITE_DISCARD,  // リソースに対するCPUの読み取りおよび書き込み権限を指定するD3D11_MAPタイプの値
-        0,                                             // GPUがビジーのときにCPUが何をするかを指定
-        &mappedSubresource                // マップされたサブリソースのD3D11_MAPPED_SUBRESOURCE構造体へのポインター
+        0,                                                          // GPUがビジーのときにCPUが何をするかを指定
+        &mappedSubresource                   // マップされたサブリソースのD3D11_MAPPED_SUBRESOURCE構造体へのポインター
     );
     _ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
@@ -229,29 +328,29 @@ void Sprite::Render(ID3D11DeviceContext* immediateContext,
 }
 
 void Sprite::Render( ID3D11DeviceContext* immediateContext,
-    Vector2 position, Vector2 size,
+    Vector2 position, Vector2 scale, Vector2 size,
     float sx, float sy, float sw, float sh,
     float angle/*degree*/)
 {
-    Render(immediateContext, position, size, sx, sy, sw, sh, angle, { 1.0f, 1.0f, 1.0f, 1.0f });
+    Render(immediateContext, position, scale, size, sx, sy, sw, sh, angle, { 1.0f, 1.0f, 1.0f, 1.0f });
 }
 
 void Sprite::Render(ID3D11DeviceContext* immediateContext,
-    Vector2 position, Vector2 size,
+    Vector2 position, Vector2 scale, Vector2 size,
     float angle/*degree*/)
 {
     Render(immediateContext,
-        position, size,
+        position, scale, size,
         0.0f, 0.0f, static_cast<float>(texture2dDesc.Width), static_cast<float>(texture2dDesc.Height),
         angle,
         {1.0f, 1.0f, 1.0f, 1.0f});
 }
 
 void Sprite::Render(ID3D11DeviceContext* immediateContext,
-    Vector2 position, Vector2 size)
+    Vector2 position, Vector2 scale, Vector2 size)
 {
     Render(immediateContext,
-        position, size,
+        position, scale, size,
         0.0f, 0.0f, static_cast<float>(texture2dDesc.Width), static_cast<float>(texture2dDesc.Height),
         0.0f,
         {1.0f, 1.0f, 1.0f, 1.0f});
@@ -269,7 +368,7 @@ void Sprite::Texout(ID3D11DeviceContext* immediateContext,
     for (auto c : s)
     {
         LONG sx = c % 0x0F;
-        Render(immediateContext, { x + cursor, y }, { w, h }, sw * (c & 0x0F), sh * (c >> 4), sw, sh, 0, color);
+        Render(immediateContext, { x + cursor, y }, {1.0f, 1.0f}, { w, h }, sw* (c & 0x0F), sh* (c >> 4), sw, sh, 0, color);
         cursor += w;
     }
 }
@@ -326,4 +425,97 @@ void Sprite::CreateStates(ID3D11Device* device)
 
     // *******************************************************************************
 
+}
+
+#include <utility>
+void Sprite::render(ID3D11DeviceContext* context,
+    const Vector2& position, const Vector2& scale,
+    const Vector2& texPos, const Vector2& texSize,
+    const Vector2& center, float angle,
+    const Vector4& color) const
+{
+    if (scale.x == 0.0f || scale.y == 0.0f) return;
+
+    D3D11_VIEWPORT viewport;
+    UINT numViewports = 1;
+    context->RSGetViewports(&numViewports, &viewport);
+
+    float tw = texSize.x;
+    float th = texSize.y;
+    if (tw == FLT_MIN && th == FLT_MIN)
+    {
+        tw = (float)texture2dDesc.Width;
+        th = (float)texture2dDesc.Height;
+    }
+
+    Vertex vertices[4] = {};
+#ifdef GAMELIB_PLUS_UP
+    vertices[0] = { VECTOR3(0.0f, 1.0f, 0), color, VECTOR2(0, 0) };
+    vertices[1] = { VECTOR3(1.0f, 1.0f, 0), color, VECTOR2(1, 0) };
+    vertices[2] = { VECTOR3(0.0f, 0.0f, 0), color, VECTOR2(0, 1) };
+    vertices[3] = { VECTOR3(1.0f, 0.0f, 0), color, VECTOR2(1, 1) };
+#else
+    vertices[0] = { Vector3(0.0f, 1.0f, 0), color, Vector2(0, 1) };
+    vertices[1] = { Vector3(1.0f, 1.0f, 0), color, Vector2(1, 1) };
+    vertices[2] = { Vector3(0.0f, 0.0f, 0), color, Vector2(0, 0) };
+    vertices[3] = { Vector3(1.0f, 0.0f, 0), color, Vector2(1, 0) };
+#endif
+
+    float sinValue = sinf(angle);
+    float cosValue = cosf(angle);
+    float mx = (tw * scale.x) / tw * center.x;
+    float my = (th * scale.y) / th * center.y;
+    for (int i = 0; i < 4; i++)
+    {
+        vertices[i].position.x *= (tw * scale.x);
+        vertices[i].position.y *= (th * scale.y);
+
+        vertices[i].position.x -= mx;
+        vertices[i].position.y -= my;
+
+        float rx = vertices[i].position.x;
+        float ry = vertices[i].position.y;
+        vertices[i].position.x = rx * cosValue - ry * sinValue;
+        vertices[i].position.y = rx * sinValue + ry * cosValue;
+
+        vertices[i].position.x += mx;
+        vertices[i].position.y += my;
+
+        vertices[i].position.x += (position.x - scale.x * center.x);
+        vertices[i].position.y += (position.y - scale.y * center.y);
+
+        vertices[i].position.x = -1.0f + vertices[i].position.x * 2 / viewport.Width;
+        vertices[i].position.y = 1.0f - vertices[i].position.y * 2 / viewport.Height;
+#ifdef GAMELIB_PLUS_UP
+        vertices[i].position.y = -vertices[i].position.y;
+#endif
+
+        // UV座標の調整
+        vertices[i].texcoord.x = (std::min)(vertices[i].texcoord.x, UV_ADJUST);
+        vertices[i].texcoord.y = (std::min)(vertices[i].texcoord.y, UV_ADJUST);
+
+        vertices[i].texcoord.x = (texPos.x + vertices[i].texcoord.x * tw) / texture2dDesc.Width;
+        vertices[i].texcoord.y = (texPos.y + vertices[i].texcoord.y * th) / texture2dDesc.Height;
+    }
+
+    D3D11_MAPPED_SUBRESOURCE msr;
+    context->Map(vertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+    memcpy(msr.pData, vertices, sizeof(vertices));
+    context->Unmap(vertexBuffer.Get(), 0);
+
+    UINT stride = sizeof(Vertex);
+    UINT offset = 0;
+    context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+    context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+    context->IASetInputLayout(inputLayout.Get());
+    context->RSSetState(rasterizerState.Get());
+    context->VSSetShader(vertexShader.Get(), nullptr, 0);
+    context->PSSetShader(pixelShader.Get(), nullptr, 0);
+
+    context->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
+    context->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+
+    context->OMSetDepthStencilState(depthStencilState.Get(), 1);
+
+    context->Draw(4, 0);
 }

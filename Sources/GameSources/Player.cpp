@@ -10,7 +10,7 @@
 
 Player::Player(ID3D11Device* device)
 {
-    model = new Model(device, "Data/Model/Player/test1.fbx", true, 0, TRUE);
+    model = new Model(device, "Data/Model/Player/character_tanomuzo.fbx", true, 0, TRUE);
 
     //model = new Model(device, "Data/Model/Gimmick/test.fbx", true, 0, TRUE);
     for (int i = 0; i < GEAR_NUM; i++) {
@@ -21,6 +21,8 @@ Player::Player(ID3D11Device* device)
 
 
     scale = { 0.05f, 0.05f, 0.05f };
+
+    blackOut.reset(new Sprite(device, L"./Data/Sprite/BlackOut.png", 4));
 }
 
 Player::~Player()
@@ -54,13 +56,36 @@ void Player::Update(float elapsedTime)
 
     //モデル行列更新
     model->UpdateTransform(transform);
+
+   
+
+    if (deathFlag) {
+        scale2d.x += 1.0f * elapsedTime;
+        scale2d.y += 1.0f * elapsedTime;
+    }
 }
 
 void Player::Render(ID3D11DeviceContext* deviceContext)
 {
+
+
     //ID3D11DeviceContext* deviceContext = Framework::GetInstance().GetContext().Get();
-    model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::DEFAULT), true);
+    model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::NORMAL_MAP), true);
     model->Render(deviceContext);
+
+    if (deathFlag) blackOut->render(deviceContext, { 860, 540 }, { scale2d.x, scale2d.y }, { 0.0f,0.0f }, { 256, 256 }, { 128,128 }, 0, { 1,1,1,1 });
+
+}
+
+bool Player::OnMessage(const Telegram& msg)
+{
+    if (MESSAGE_TYPE::MSG__CALL_REVIVAL_POSSIBLE == msg.msg) {
+        deathFlag = false;
+        //position = { 0,0,0 };
+        return true;
+    }
+
+    return false;
 }
 
 void Player::DebugImGui()
@@ -85,7 +110,8 @@ void Player::DebugImGui()
             ImGui::SliderFloat("Position Z", &position.z, -2000, 2000);
         }
     
-        ImGui::RadioButton("radio", check);
+        ImGui::RadioButton("death", deathFlag);
+   
 
         ImGui::End();
     }
@@ -175,6 +201,13 @@ void Player::OnLanding()
     // 下方向の速力が一定以上なら着地ステートへ
     //if (velocity.y < gravity * 5.0f) TransitionLandState();
 }
+
+void Player::DropProcessing()
+{
+    ++deathCount;
+    deathFlag = true;
+}
+
 
 void Player::MouseRay(
     ID3D11Device* device,

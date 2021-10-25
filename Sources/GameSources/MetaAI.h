@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "GimmickManager.h"
 
+//using MSG_ID = int;
+
 class Meta
 {
 private:
@@ -35,17 +37,21 @@ public:
 	// 更新処理
 	void Update();
 
-	//// このメソッドはtelegramクラスを作成して
-	//// Enemyを継承するクラスのメッセージレシーバーの処理を呼び出す。
-	//void Discharge(Gimmick* receiver, const Telegram& telegram);
-	//// MetaAI用のレシーブ処理を指定
-	//void Discharge(const Telegram& telegram);
-	//// メッセージ受信しているか
-	//bool HandleMessage(const Telegram& msg);
-	//// メッセージ受信したときの処理
-	//bool OnMessage(const Telegram& msg);
-	//// メッセージ送信関数
-	//void SendMessaging(int sender, int receiver, MESSAGE_TYPE msg);
+	// このメソッドはtelegramクラスを作成して
+	// Enemyを継承するクラスのメッセージレシーバーの処理を呼び出す。
+	void Discharge(Gimmick* receiver, const Telegram& telegram);
+	void Discharge(Character* receiver, const Telegram& telegram);
+	// MetaAI用のレシーブ処理を指定
+	void Discharge(const Telegram& telegram);
+	// メッセージ受信しているか
+	bool HandleMessage(const Telegram& msg);
+	// メッセージ受信したときの処理
+	bool OnMessage(const Telegram& msg);
+	// メッセージ送信関数
+	void SendMessaging(int sender, int receiver, MESSAGE_TYPE msg);
+
+private:
+	int deathCount = 0;
 };
 
 #endif // !METAAI

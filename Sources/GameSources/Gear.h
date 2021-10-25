@@ -10,11 +10,12 @@ public:
 	{
 		Strait,
 		Wait,
+		FlyIdle,
 		Back,
 		Set,
 		End,
 	};
-
+	//std::map<STATE, pFunc> map_Funcs;
 public:
 	Gear(ID3D11Device* device);
 	~Gear() override;
@@ -57,19 +58,22 @@ private:
 	// •t’…
 	void AdhesionGear(float elapsedTime);
 
+	// ‹ó’†‘Ò‹@
+	void FryIdeleGear(float elapsedTime);
+
 private:
 	STATE state = STATE::Wait;
 
 	Vector3 direction = { 0,0,1 };
 	Vector3 target = { 0,0,0 };
-	float speed = 10.0f;
+	float speed = 20.0f;
 	float straitTimer = 4.0f;
 	float moveSpeed = 10.0f;
 	bool tracking_check = false;
 	float turnSpeed = DirectX::XMConvertToRadians(360);
 	float stepOffset = 1.0f;
 
-
+	float flyIdleTimer = 4.0f;
 
 	template<class Type, typename Return, typename ...Args>
 	using Temp = Return(Type::*)(Args...);

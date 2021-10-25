@@ -1,6 +1,7 @@
 #include "SceneTitle.h"
 #include "SceneManager.h"
 #include "SceneGame.h"
+#include "SceneSelect.h"
 #include "Input/Input.h"
 #include "../GameLibSource/Framework.h"
 #include "CameraManager.h"
@@ -14,7 +15,7 @@ void SceneTitle::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
     //cameraController = new CameraControl();
     //player = new PlayerTemp(this->device);
     //stageMain = new StageMain(this->device);
-    //titleSprite = new Sprite(device, L"./Data/Sprite/screenshot.jpg");
+    titleSprite = new Sprite(device, L"./Data/Sprite/title.png");
 }
 
 // 終了化
@@ -23,7 +24,7 @@ void SceneTitle::Finalize()
     //delete player;
     //delete stageMain;
     //delete cameraController;
-    //delete titleSprite;
+    delete titleSprite;
 }
 
 // 更新処理
@@ -50,8 +51,22 @@ void SceneTitle::Update(float elapsedTime)
         | GamePad::BTN_X
         | GamePad::BTN_Y;
 
+    Mouse& mouse = Input::Instance().GetMouse();
+    DirectX::XMFLOAT3 screenPosition;
+    screenPosition.x = static_cast<float>(mouse.GetPositionX());
+    screenPosition.y = static_cast<float>(mouse.GetPositionY());
+
+    //マウス左クリックでマップ選択
+    const MouseButton mouseClick =
+        Mouse::BTN_LEFT;
+
     //if (gamePad.GetButtonDown() & anyButton) SceneManager::Instance().ChangeScene(new SceneTitle);
-    if (gamePad.GetButtonDown() & anyButton) SceneManager::Instance().ChangeScene(new SceneGame);
+    //if (gamePad.GetButtonDown() & anyButton) SceneManager::Instance().ChangeScene(new SceneGame);
+    if (screenPosition.x > 0 && screenPosition.x < 1280 &&
+        screenPosition.y > 0 && screenPosition.y < 720)
+    {
+        if (mouse.GetButtonDown()) SceneManager::Instance().ChangeScene(new SceneSelect);
+    }
 
     //// カメラコントローラー更新
     //DirectX::XMFLOAT3 target = player->GetPosition();
@@ -74,7 +89,7 @@ void SceneTitle::Render(float elapsedTime)
 
     // 2D描画
     {
-        //titleSprite->Render(Framework::GetInstance().GetContext().Get(), { 0, 0 }, {1600, 900});
+        titleSprite->Render(deviceContext, { 0, 0 }, {1.0f,1.0f}, {1280, 720});
     }
 
     // デバック

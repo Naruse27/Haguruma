@@ -6,6 +6,8 @@
 #include "CameraControl.h"
 #include "StageMain.h"
 #include "StageWall.h"
+#include "MetaAI.h"
+
 
 class SceneGame : public Scene
 {
@@ -29,7 +31,7 @@ private:
 	StageMain* stageMain = nullptr;
 	StageWall* stageWall = nullptr;
 	CameraControl* cameraController = nullptr;
-
+	std::unique_ptr<Meta> metaAi;
 };
 
 #endif // !SCENEGAME

@@ -15,6 +15,7 @@ Gear::Gear(ID3D11Device* device)
 
     GearFunction[STATE::Wait] = &Gear::WaitGear;
     GearFunction[STATE::Strait] = &Gear::StraitThrow;
+    GearFunction[STATE::FlyIdle] = &Gear::FryIdeleGear;
     GearFunction[STATE::Back] = &Gear::ComeBackStrait;
     GearFunction[STATE::Set] = &Gear::AdhesionGear;
 }
@@ -42,13 +43,13 @@ void Gear::Update(float elapsedTime)
 // ï`âÊ
 void Gear::Render(ID3D11DeviceContext* deviceContext, float elapsedTime)
 {
-    model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::DEFAULT), true);
+    model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::NORMAL_MAP), true);
     model->Render(deviceContext);
 }
 
 bool Gear::OnMessage(const Telegram& telegram)
 {
-    return true;
+    return false;
 }
 
 void Gear::Launch(const Vector3& direction, const Vector3& position)
@@ -67,6 +68,7 @@ void Gear::IsSetPosition(const Vector3& position)
     state = STATE::Set;
 }
 
+// é˚î[
 void Gear::Collection()
 {
     firingFlag = false;
@@ -75,6 +77,7 @@ void Gear::Collection()
     state = STATE::Wait;
 }
 
+// íºê¸Ç…îÚÇŒÇ∑
 void Gear::StraitThrow(float elapsedTime)
 {
     GimmickManager::Instance().CollisionGimmickGimmicks(this);
@@ -91,7 +94,7 @@ void Gear::StraitThrow(float elapsedTime)
 
     HitResult hit;
     if (StageManager::Instance().RayCast(start, end, hit)) {
-            state = STATE::Back;
+            state = STATE::FlyIdle;
             straitTimer = 4.0f;
     }
     else position = destination;
@@ -106,7 +109,7 @@ void Gear::StraitThrow(float elapsedTime)
     else {
         straitTimer -= elapsedTime;
         if (straitTimer < 0.0f) {
-            state = STATE::Back;
+            state = STATE::FlyIdle;
             straitTimer = 4.0f;
         }
     }
@@ -149,4 +152,14 @@ void Gear::AdhesionGear(float elapsedTime)
     //std::vector<std::weak_ptr<float>> aaaaaba;
     //std::vector<std::weak_ptr<std::vector<std::vector<std::shared_ptr<Gear>>>>> aaaaaaca;
     //getState(aaaaaaca);
+}
+
+// ãÛíÜë“ã@
+void Gear::FryIdeleGear(float elapsedTime)
+{
+    flyIdleTimer -= elapsedTime;
+    if (flyIdleTimer < 0) {
+        flyIdleTimer = 4.0f;
+        state = STATE::Back;
+    }
 }

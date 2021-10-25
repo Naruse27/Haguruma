@@ -1,32 +1,56 @@
 #include "PhongSkinnedMesh.hlsli"
 #include "Function.hlsli"
 
-VS_OUT main(float4 position : POSITION, float4 normal : NORMAL, float2 texcoord : TEXCOORD, float4 bone_weights : WEIGHTS, uint4 bone_indices : BONES)
+VS_OUT main(VS_IN vin)
 {
-    VS_OUT vout;
+    vin.normal.w = 0;
 
-    float3 p = { 0, 0, 0 };
-    float3 n = { 0, 0, 0 };
-    int i = 0;
-    for (i = 0; i < 4; i++)
+    float sigma = vin.tangent.w;
+    vin.tangent.w = 0;
+
+
+    float4 blendedPosition = { 0, 0, 0, 1 };
+    float4 blendedNormal = { 0, 0, 0, 0 };
+    float4 blendedTangent = { 0, 0, 0, 0 };
+    float4 blendedBinormal = { 0, 0, 0, 0 };
+    for (int boneIndex = 0; boneIndex < 4; ++boneIndex)
     {
-        p += (bone_weights[i] * mul(position, bone_transforms[bone_indices[i]])).xyz;
-        n += (bone_weights[i] * mul(float4(normal.xyz, 0), bone_transforms[bone_indices[i]])).xyz;
+        blendedPosition += vin.boneWeights[boneIndex] *
+           mul(vin.position, boneTransforms[vin.boneIndices[boneIndex]]);
+        blendedNormal += vin.boneWeights[boneIndex] *
+           mul(vin.normal, boneTransforms[vin.boneIndices[boneIndex]]);
+        blendedTangent += vin.boneWeights[boneIndex] *
+           mul(vin.tangent, boneTransforms[vin.boneIndices[boneIndex]]);
+        blendedBinormal += vin.boneWeights[boneIndex] *
+           mul(vin.binormal, boneTransforms[vin.boneIndices[boneIndex]]);
     }
-    position = float4(p, 1.0f);
-    normal = float4(n, 0.0f);
+    vin.position = float4(blendedPosition.xyz, 1.0f);
+    vin.normal = float4(blendedNormal.xyz, 0.0f);
+    vin.tangent = float4(blendedTangent.xyz, 0.0f);
+    vin.binormal = float4(blendedBinormal.xyz, 0.0f);
 
-    vout.position = mul(position, worldViewProjection);
+    VS_OUT vout;
+    vout.position = mul(vin.position, mul(world, viewProjection));
 
-    normal.w = 0;
-    float4 N = normalize(mul(normal, world));
-    float4 L = normalize(-lightDirection);
-
+    vout.worldPosition = mul(vin.position, world);
+    vout.worldNormal = normalize(mul(vin.normal, world));
+    vout.worldTangent = normalize(mul(vin.tangent, world));
+    vout.worldBinormal = normalize(mul(vin.binormal, world));
+    vout.worldTangent.w = sigma;
+ 
+    vout.texcoord = vin.texcoord;
     vout.color = materialColor;
-    vout.texcoord = texcoord;
 
-    vout.worldPos = mul(world, position).xyz;
-    vout.worldNormal = N;
-
+        // シャドウマップ用のパラメーター計算
+	{
+		// ライトから見たNDC座標を算出
+        float4 wvpPos = mul(vin.position, mul(world, lightViewProjection));
+		// NDC座標からUV座標を算出する
+        wvpPos /= wvpPos.w;
+        wvpPos.y = -wvpPos.y;
+        wvpPos.xy = 0.5f * wvpPos.xy + 0.5f;
+        vout.shadowTexcoord = float4(wvpPos.xyz, 0);
+    }
+    
     return vout;
 }

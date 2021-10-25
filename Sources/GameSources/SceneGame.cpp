@@ -6,6 +6,7 @@
 #include "GimmickManager.h"
 #include "Stand.h"
 #include "Gear.h"
+#include "GimmickPoint.h"
 
 // 初期化
 void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -15,17 +16,25 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
 
     //ID3D11Device* device = Framework::GetInstance().GetDevice().Get();
     StageManager::Create();
+    GimmickPoint* point = new GimmickPoint(device);
+    GimmickManager::Instance().Register(point, Identity::Start);
+
+    player = new Player(this->device);
+
     Stand* stand = new Stand(device);
     GimmickManager::Instance().Register(stand, Identity::Stand); 
+
     cameraController = new CameraControl();
-    player = new Player(this->device);
     stageMain = new StageMain(this->device);
     stageWall = new StageWall(this->device);
+    
     //titleSprite = new Sprite(device, L"./Data/Sprite/screenshot.jpg");
     StageManager::Instance().Register(stageMain);
     StageManager::Instance().Register(stageWall);
 
-    
+    player->SetStartGimmickID(point->GetId());
+
+    metaAi.reset(new Meta(player, &GimmickManager::Instance()));
 }
 
 // 終了化
@@ -47,7 +56,7 @@ void SceneGame::Update(float elapsedTime)
 {
     // カメラコントローラー更新
     Vector3 target = player->GetPosition();
-    target.y += player->GetHeight();
+    target.y += player->GetHeight() + 2.0f;
     cameraController->SetTarget(target);
     cameraController->Update(elapsedTime, &CameraManager::Instance().mainView);
 
@@ -58,6 +67,7 @@ void SceneGame::Update(float elapsedTime)
     player->MouseRay(device, deviceContext, CameraManager::Instance().mainView.GetView(), CameraManager::Instance().mainView.GetProjection());
     //stageMain->Update(elapsedTime);
     //stageWall->Update(elapsedTime);
+    metaAi->Update();
 }
 
 // 描画処理
@@ -79,7 +89,7 @@ void SceneGame::Render(float elapsedTime)
 
     // デバック
     {
-        //player->DebugImGui();
+        player->DebugImGui();
         cameraController->RenderDebugGui(&CameraManager::Instance().mainView);
     }
 }

@@ -33,7 +33,6 @@ cbuffer SCENE_CONSTANT_BUFFER : register(b1)
     float4 cameraPosition;
 };
 
-
 /*struct VS_OUT
 {
     float4 position : SV_POSITION;

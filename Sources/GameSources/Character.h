@@ -44,6 +44,11 @@ public:
 	// ダメージを与える
 	bool ApplyDamage(int damage, float invincibleTime);
 
+	// メッセージ受信したときの処理
+	bool HandleMessage(const Telegram& msg);
+	// 受け取り
+	virtual bool OnMessage(const Telegram& telegram);
+
 private:
 	// 垂直速力更新処理
 	void UpdateVerticalVelocitiy(float elapsedFrame);
@@ -72,6 +77,9 @@ protected:
 	// 死亡した時に呼ばれる
 	virtual void OnDead() {}
 
+	// 地面から落ちた時に呼ばれる
+	virtual void DropProcessing() {}
+
 protected:
 	Model* model = nullptr;
 
@@ -88,7 +96,10 @@ protected:
 
 	float radius = 0.5f;
 	float gravity = -1.0f;
+
 	Vector3 velocity = { 0,0,0 };
+	Vector3 velocityMax = { 0, -20, 0 };
+
 	bool isGround = false;
 	float height = 2.0f;
 	int health = 5;
@@ -102,7 +113,12 @@ protected:
 	float airControl = 0.3f;
 	float stepOffset = 1.0f;
 	float slopeRate = 1.0f;
-};
 
+
+
+	float deathbed = -40.0f;
+	bool deathFlag = false;
+
+};
 
 #endif // !CHARACTER

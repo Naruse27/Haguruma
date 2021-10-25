@@ -119,6 +119,28 @@ bool Character::ApplyDamage(int damage, float invincibleTime)
     return true;
 }
 
+bool Character::HandleMessage(const Telegram& msg)
+{
+    // メッセージの受信時の処理を実行。戻り値で成功有無を判断
+    if (OnMessage(msg)) return true;
+
+    return false;
+}
+
+bool Character::OnMessage(const Telegram& telegram)
+{
+   // return true;
+   // // それぞれのメッセージに併せた処理を記述。
+   // switch (telegram.msg)
+   // {
+   // case MESSAGE_TYPE::MSG_SIGNAL_GIAR:
+   // case MESSAGE_TYPE::MSG_SIGNAL_STAND:
+   //     break;
+   // }
+    return false;
+}
+
+
 //  無敵時間更新処理
 void Character::UpdateInvincibleTimer(float elapsedTime)
 {
@@ -129,6 +151,9 @@ void Character::UpdateVerticalVelocitiy(float elapsedFrame)
 {
     // 移動処理
     velocity.y += gravity * elapsedFrame;
+
+    // 最大値処理
+    if (velocity.y < velocityMax.y) velocity.y = velocityMax.y;
 }
 
 void Character::UpdateVerticalMove(float elapsedTime)
@@ -179,6 +204,8 @@ void Character::UpdateVerticalMove(float elapsedTime)
             // 空中に浮いてる
             position.y += my;
             isGround = false;
+
+            if (deathbed > position.y) DropProcessing();
         }
     }
     // 上昇中

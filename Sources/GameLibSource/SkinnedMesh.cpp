@@ -532,51 +532,19 @@ void SkinnedMesh::Preparation(ID3D11DeviceContext* immediateContext, Shader shad
 	// サンプラーの設定
 	immediateContext->PSSetSamplers(0, 1, samplerState.GetAddressOf());
 
-	//DirectX::XMFLOAT3 camerakari = CameraSystem::GetInstance()->mainView.GetPos();
-	//DirectX::XMFLOAT4 camera = { camerakari.x, camerakari.y, camerakari.z, 0 };
 
 	//ビュープロジェクション変換行列の計算　定数バッファへセット
 	D3D11_VIEWPORT viewport;
 	UINT numViewports = 1;
 	immediateContext->RSGetViewports(&numViewports, &viewport);
 
-	//loat aspectRatio = viewport.Width / viewport.Height;
-	//DirectX::XMMATRIX P = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(30), aspectRatio, 0.1f, 1000.0f);
-	//DirectX::XMVECTOR eye = DirectX::XMLoadFloat4(&camera);
-	//DirectX::XMVECTOR focus = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	//DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	//DirectX::XMMATRIX V = DirectX::XMMatrixLookAtLH(eye, focus, up);
+	// 入力レイアウト
+	//immediateContext->IASetInputLayout(inputLayout.Get());
+	immediateContext->IASetInputLayout(shader.GetInputLayout().Get());
+	// シェーダーの設定
+	immediateContext->VSSetShader(shader.GetVertexShader().Get(), nullptr, 0);
+	immediateContext->PSSetShader(shader.GetPixelShader().Get(), nullptr, 0);
 
-	//SceneConstants data{};
-	//DirectX::XMStoreFloat4x4(&data.viewProjection, V * P);
-	//data.lightDirection = Light::GetInstance()->lightDir;
-	//data.cameraPosition = camera;
-	//immediateContext->UpdateSubresource(this->constantBuffers[0].Get(), 0, 0, &data, 0, 0);
-	//immediateContext->VSSetConstantBuffers(1, 1, this->constantBuffers[0].GetAddressOf());
-	//immediateContext->PSSetConstantBuffers(1, 1, this->constantBuffers[0].GetAddressOf());
-
-	//// コンスタントバッファ設定
-	//Light::CBufferLight01 cb1;
-	//cb1.ambientColor = Light::GetInstance()->ambient;
-	//cb1.lightDir = Light::GetInstance()->lightDir;
-	//cb1.lightColor = Light::GetInstance()->lightColor;
-	//DirectX::XMFLOAT3 _viewPos = CameraSystem::GetInstance()->mainView.GetPos();
-	//cb1.eyePos.x = _viewPos.x;
-	//cb1.eyePos.y = _viewPos.y;
-	//cb1.eyePos.z = _viewPos.z;
-	//cb1.eyePos.w = wireframe;
-	//
-	//Light::CBufferLight02 cb2;
-	//memcpy(cb2.pointLight, Light::GetInstance()->pointLight, sizeof(Light::POINTLIGHT) * Light::POINTMAX);
-	//memcpy(cb2.spotLight, Light::GetInstance()->spotLight, sizeof(Light::SPOTLIGHT) * Light::SPOTMAX);
-	//
-	//immediateContext->UpdateSubresource(Light::GetInstance()->constantBufferLight1.Get(), 0, 0, &cb1, 0, 0);
-	//immediateContext->UpdateSubresource(Light::GetInstance()->constantBufferLight2.Get(), 0, 0, &cb2, 0, 0);
-	//
-	//immediateContext->VSSetConstantBuffers(2, 1, Light::GetInstance()->constantBufferLight1.GetAddressOf());
-	//immediateContext->VSSetConstantBuffers(3, 1, Light::GetInstance()->constantBufferLight2.GetAddressOf());
-	//immediateContext->PSSetConstantBuffers(2, 1, Light::GetInstance()->constantBufferLight1.GetAddressOf());
-	//immediateContext->PSSetConstantBuffers(3, 1, Light::GetInstance()->constantBufferLight2.GetAddressOf());
 }
 
 void SkinnedMesh::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMFLOAT4X4& world, const Vector4& materialColor, Shader shader, const Animation::Keyframe* keyframe) {
@@ -675,16 +643,6 @@ void SkinnedMesh::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMFL
 		uint32_t offset{ 0 };
 		deviceContext->IASetVertexBuffers(0, 1, mesh.vertexBuffer.GetAddressOf(), &stride, &offset);
 		deviceContext->IASetIndexBuffer(mesh.indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		deviceContext->IASetInputLayout(inputLayout.Get());
-		deviceContext->VSSetShader(vertexShader.Get(), nullptr, 0);
-		deviceContext->PSSetShader(pixelShader.Get(), nullptr, 0);
-
-		//// 入力レイアウトの設定
-		//deviceContext->IASetInputLayout(shader.GetInputLayout().Get());
-		//// シェーダーの設定
-		//deviceContext->VSSetShader(shader.GetVertexShader().Get(), nullptr, 0);
-		//deviceContext->PSSetShader(shader.GetPixelShader().Get(), nullptr, 0);
 
 		Constants data;
 		if (keyframe && keyframe->nodes.size() > 0)
@@ -715,7 +673,6 @@ void SkinnedMesh::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMFL
 				data.boneTransforms[bone_index] = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 			}
 		}
-		int a = 0;
 		for (const Mesh::Subset& subset : mesh.subsets)
 		{
 			const Material& material{ materials.at(subset.materialUniqueId) };

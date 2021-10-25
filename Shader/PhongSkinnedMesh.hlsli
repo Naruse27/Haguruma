@@ -1,65 +1,50 @@
+struct VS_IN
+{
+    float4 position : POSITION;
+    float4 normal : NORMAL;
+    float4 tangent : TANGENT;
+    float4 binormal : BINORMAL; // 最悪消す
+    float2 texcoord : TEXCOORD;
+    float4 boneWeights : WEIGHTS;
+    uint4 boneIndices : BONES;
+};
 struct VS_OUT
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
+    float4 worldPosition : POSITION;
+    float4 worldNormal : NORMAL;
+    float4 worldTangent : TANGENT;
+    float4 worldBinormal : BINORMAL; // 最悪消す
     float2 texcoord : TEXCOORD;
-
-    float3 worldNormal : TEXCOORD1;
-    float3 worldPos : TEXCOORD2;
+    float4 color : COLOR;
+    float4 shadowTexcoord : TEXCOORD1; // シャドウマップ用のパラメーター変数
 };
 
-#define MAX_BONES 128
-//-----------------------------------------
-// ポイントライト構造体
-//-----------------------------------------
-struct POINTLIGHT
+static const int MAX_BONES = 256;
+cbuffer OBJECT_CONSTANT_BUFFER : register(b0)
 {
-    float index;
-    float range;
-    float type;
-    float dumy;
-    float4 pos;
-    float4 color;
-};
-#define POINTMAX 96
-//-----------------------------------------
-// スポットライト構造体
-//-----------------------------------------
-struct SPOTLIGHT
-{
-    float index;
-    float range; //光の届く範囲
-    float type; //有効か無効か
-    float inner_corn;
-    float outer_corn;
-    float dumy0;
-    float dumy1;
-    float dumy2;
-    float4 pos;
-    float4 color;
-    float4 dir;
-};
-#define SPOTMAX 32
-
-cbuffer CONSTANT_BUFFER : register(b0)
-{
-    row_major float4x4 worldViewProjection;
     row_major float4x4 world;
     float4 materialColor;
+    row_major float4x4 boneTransforms[MAX_BONES];
+};
+
+// cbuffer 定数バッファ
+cbuffer SCENE_CONSTANT_BUFFER : register(b1)
+{
+    row_major float4x4 viewProjection;
     float4 lightDirection;
-    row_major float4x4 bone_transforms[MAX_BONES];
+    float4 cameraPosition;
 };
 
-cbuffer CONSTANT_BUFFER_LIGHT_01 : register(b2)
+cbuffer FOG_CONSTANT_BUFFER : register(b5)
 {
-    float4 LightColor; //ライトの色
-    float4 LightDir; //ライトの方向
-    float4 AmbientColor; //環境光
-    float4 EyePos; //カメラ座標
-};
-
-cbuffer CONSTANT_BUFFER_LIGHT_02 : register(b3)
-{
-    POINTLIGHT PointLight[POINTMAX]; //ポイントライト配列
-    SPOTLIGHT SpotLight[SPOTMAX]; //スポットライト配列
+    float4 fogColor;
+    float4 fogRange;
 }
+
+cbuffer SHADOWMAP_CONSTANT_BUFFER : register(b6)
+{
+    row_major float4x4 lightViewProjection;
+    float3 shadowColor;
+    float shadowBias;
+};
