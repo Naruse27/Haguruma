@@ -61,8 +61,10 @@ void SceneGame::Update(float elapsedTime)
     cameraController->Update(elapsedTime, &CameraManager::Instance().mainView);
 
     player->Update(elapsedTime);
-    StageManager::Instance().Update(elapsedTime);
     GimmickManager::Instance().Update(elapsedTime);
+    StageManager::Instance().Update(elapsedTime);
+    StageManager::Instance().getGimmickState();
+    
 
     player->MouseRay(device, deviceContext, CameraManager::Instance().mainView.GetView(), CameraManager::Instance().mainView.GetProjection());
     //stageMain->Update(elapsedTime);

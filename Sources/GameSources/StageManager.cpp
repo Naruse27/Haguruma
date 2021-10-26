@@ -6,6 +6,7 @@ StageManager* StageManager::instance = nullptr;
 void StageManager::Update(float elapsedTime)
 {
     for (Stage* stage : stages) stage->Update(elapsedTime);
+    
 }
 
 void StageManager::Render(ID3D11DeviceContext* dc, float elapsedTime)
@@ -47,8 +48,8 @@ bool StageManager::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOA
 void StageManager::getGimmickState()
 {
     for (auto& stage : stages) {
-        int stageID = stage->getID();
-        Gimmick* gim = GimmickManager::Instance().GetGimmickFromId(stageID);
-        stage->setGear(gim->GetSetFlag());
+        //int stageID = stage->getID();
+        //Gimmick* gim = GimmickManager::Instance().GetGimmickFromId(stageID);
+        //stage->setGear(gim->GetFiringFlag());
     }  
 }

@@ -21,7 +21,7 @@ StageWindmill::StageWindmill(ID3D11Device* device)
     //position = { 0,r,0 };
     pos = { 0,r,0 };
 
-
+    
 
     //‰ñ“]‚³‚¹‚½‚¢Ž²
     DirectX::XMVECTOR axis = DirectX::XMLoadFloat3(&axisZ);

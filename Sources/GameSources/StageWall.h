@@ -18,9 +18,6 @@ public:
 
 	void Render(ID3D11DeviceContext* deviceContext, float elapsedTime) override;
 
-	void setGear(bool b) { gear = b; }
-	bool getGear() { return gear; }
-
 private:
 
 

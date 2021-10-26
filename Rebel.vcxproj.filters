@@ -109,6 +109,12 @@
     <Filter Include="Library\ShadowMap">
       <UniqueIdentifier>{4ab90efe-0f4e-4100-877d-d9cbc25d5550}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Shaders\Destruction">
+      <UniqueIdentifier>{da7d9db7-489c-432e-9fc6-c333a27b6ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object">
+      <UniqueIdentifier>{999a9b64-367d-425b-99b2-119c40ae7f9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\GameSources\Easing.cpp">
@@ -500,6 +506,9 @@
     <ClInclude Include="Sources\GameSources\SceneSelect2.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\GameSources\ObjectDestruction.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\GeometricPrimitive.hlsli">
@@ -534,6 +543,9 @@
     </None>
     <None Include="Shader\PhongSkinnedMesh.hlsli">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
+    </None>
+    <None Include="Shader\Destruction.hlsli">
+      <Filter>Library\Shaders\Destruction</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -590,6 +602,15 @@
     </FxCompile>
     <FxCompile Include="Shader\PhongSkinnedMeshVS.hlsl">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DestructionVS.hlsl">
+      <Filter>Library\Shaders\Destruction</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DestructionPS.hlsl">
+      <Filter>Library\Shaders\Destruction</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DestructionGS.hlsl">
+      <Filter>Library\Shaders\Destruction</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
