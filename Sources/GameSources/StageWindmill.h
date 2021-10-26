@@ -24,7 +24,7 @@ private:
 
 	const float UPMAX = 10;
 	const float DOWNMAX = 0;
-	bool gear = false;
+
 
 	//‰ñ“]Šp“x
 	float angle = 0.0f;

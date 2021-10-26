@@ -26,6 +26,5 @@ private:
 
 	const float UPMAX = 10;
 	const float DOWNMAX = 0;
-	bool gear = false;
 	float speed = 2;
 };

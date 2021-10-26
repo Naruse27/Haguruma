@@ -16,6 +16,10 @@ public:
 
 	virtual bool RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit) = 0;
 
+	int getID() { return id; }
+	void setID(int i) { id = i; }
+	void setGear(bool b) { gear = b; }
+
 protected:
 	// s—ñXVˆ—
 	void UpdateTransform();
@@ -32,6 +36,10 @@ protected:
 		0,0,1,0,
 		0,0,0,1
 	};
+
+	
+	int id;
+	bool gear = false;
 };
 
 #endif // !STAGE

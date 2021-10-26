@@ -1,4 +1,5 @@
 #include "StageManager.h"
+#include "GimmickManager.h"
 
 StageManager* StageManager::instance = nullptr;
 
@@ -14,6 +15,8 @@ void StageManager::Render(ID3D11DeviceContext* dc, float elapsedTime)
 
 void StageManager::Register(Stage* stage)
 {
+    static int id = 0;
+    stage->setID(id++);
     stages.emplace_back(stage);
 }
 
@@ -39,4 +42,13 @@ bool StageManager::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOA
     }
 
     return result;
+}
+
+void StageManager::getGimmickState()
+{
+    for (auto& stage : stages) {
+        int stageID = stage->getID();
+        Gimmick* gim = GimmickManager::Instance().GetGimmickFromId(stageID);
+        stage->setGear(gim->GetSetFlag());
+    }  
 }

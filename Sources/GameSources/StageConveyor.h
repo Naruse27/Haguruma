@@ -25,7 +25,6 @@ private:
 
 	const float UPMAX = 10;
 	const float DOWNMAX = 0;
-	bool gear = false;
 	float power = 0.02;
 
 
