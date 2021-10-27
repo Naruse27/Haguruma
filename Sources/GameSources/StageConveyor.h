@@ -17,15 +17,11 @@ public:
 
 	void Render(ID3D11DeviceContext* deviceContext, float elapsedTime) override;
 
-	void setGear(bool b) { gear = b; }
-	bool getGear() { return gear; }
-
 private:
 
 
 	const float UPMAX = 10;
 	const float DOWNMAX = 0;
-	bool gear = false;
 	float power = 0.02;
 
 
