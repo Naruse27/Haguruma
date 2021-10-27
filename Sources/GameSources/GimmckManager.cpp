@@ -1,6 +1,10 @@
 #include "GimmickManager.h"
 #include "MetaAI.h"
 #include "Collision.h"
+#include "ImGui/imgui.h"
+
+// debug
+#include <string>
 
 void GimmickManager::Update(float elapsedTime)
 {
@@ -10,6 +14,26 @@ void GimmickManager::Update(float elapsedTime)
 void GimmickManager::Render(ID3D11DeviceContext* deviceContext, float elapsedTIme)
 {
     for (Gimmick* gimmick : gimmicks) gimmick->Render(deviceContext, elapsedTIme);
+}
+
+void GimmickManager::DebugRender()
+{
+#ifdef _DEBUG
+    ImGui::Begin("Gimmick");
+
+    for (auto& gimmick : gimmicks) {
+        std::string p = "gimmick" + std::to_string(gimmick->GetId());
+        ImGui::Separator();
+        if (ImGui::TreeNode(p.c_str()))
+        {
+            Vector3 pos = gimmick->GetPosition();
+            ImGui::SliderFloat3("translation", &pos.x, -250.0f, +250.0f);
+            gimmick->SetPosition(pos);
+            ImGui::TreePop();
+        }
+    }
+    ImGui::End();
+#endif // _DEBUG
 }
 
 void GimmickManager::Clear()
@@ -56,7 +80,7 @@ void GimmickManager::CollisionGimmickGimmicks(Gimmick* gimmick)
     {
         Gimmick* gimmick2 = enemyManager.GetGimmick(j);
 
-        if (gimmick->GetIdentity() == gimmick2->GetIdentity()) continue;
+        if (gimmick2->GetIdentity() != static_cast<int>(Identity::Stand))  continue;
         if (gimmick2->GetSetFlag()) continue;
 
         // Õ“Ëˆ—

@@ -26,9 +26,9 @@ void CameraControl::FixedCameraUpdate(float elapsedTime, Camera* camera)
 	DirectX::XMStoreFloat3(&front, Front);
 
 	// 注視点から後ろベクトル方向に一定距離離れたカメラ視点を求める
-	eye.x = target.x + front.x * -range;
-	eye.y = target.y + front.y * -range;
-	eye.z = target.z - front.z * -range;
+	eye.x = target.x + front.x * range;
+	eye.y = target.y + front.y * range;
+	eye.z = target.z - front.z * range;
 
 	CameraRay();
 

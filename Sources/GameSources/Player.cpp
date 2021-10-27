@@ -4,9 +4,9 @@
 #include "Input/Input.h"
 #include "CameraManager.h"
 #include "Input/Mouse.h"
-#include "GimmickManager.h"
 #include "Gear.h"
 #include "StageManager.h"
+#include "GimmickManager.h"
 
 Player::Player(ID3D11Device* device)
 {
@@ -38,6 +38,8 @@ void Player::Update(float elapsedTime)
         gear[i]->SetTarget(setPosition);
     }
 
+    
+
      InputMove(elapsedTime);
 
      InputJump();
@@ -63,12 +65,12 @@ void Player::Update(float elapsedTime)
         scale2d.x += 1.0f * elapsedTime;
         scale2d.y += 1.0f * elapsedTime;
     }
+
+    CollisionPlayerVSGimmick();
 }
 
 void Player::Render(ID3D11DeviceContext* deviceContext)
 {
-
-
     //ID3D11DeviceContext* deviceContext = Framework::GetInstance().GetContext().Get();
     model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::NORMAL_MAP), true);
     model->Render(deviceContext);
@@ -111,11 +113,28 @@ void Player::DebugImGui()
         }
     
         ImGui::RadioButton("death", deathFlag);
-   
+        ImGui::RadioButton("check", checkPoint);
+
 
         ImGui::End();
     }
 #endif
+}
+
+void Player::CollisionPlayerVSGimmick()
+{
+    GimmickManager& gManager = GimmickManager::Instance();
+
+    int gimmickCount = gManager.GetGimmickCount();
+    for (int i = 0; i < gimmickCount; i++) {
+        Gimmick* gimmick = gManager.GetGimmick(i);
+        if (static_cast<int>(Identity::Save) != gimmick->GetIdentity() && static_cast<int>(Identity::End) != gimmick->GetIdentity()) continue;
+
+        if (Collision::AabbVsAabb(position, width, height, gimmick->GetPosition(), gimmick->GetWidth(), gimmick->GetHeight())) {
+            if (static_cast<int>(Identity::Save) == gimmick->GetIdentity()) checkPoint = true;
+            else checkPoint = true;
+        }
+    }
 }
 
 Vector3 Player::GetMoveVec() const
@@ -166,6 +185,8 @@ Vector3 Player::GetMoveVec() const
 
 bool Player::InputMove(float elapsedTime)
 {
+    if (deathFlag) return false;
+
     // 進行ベクトル所得
     Vector3 moveVec = GetMoveVec();
 
@@ -320,6 +341,7 @@ void Player::MouseRay(
             float length = sqrtf(vec.x * vec.x + vec.y * vec.y);
             if (length < distance) {
                 g->Collection();
+                break;
             }
         }
     }

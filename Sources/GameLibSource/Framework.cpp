@@ -281,8 +281,6 @@ bool Framework::Initialize()
         hr = device->CreateRasterizerState(&rasterizerDesc, rasterizerStates[static_cast<size_t>(RASTER_STATE::AAA)].GetAddressOf());
         _ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
-        skin = std::make_unique<SkinnedMesh>(device.Get(), "Data/Model/Player/Mma_Kick.fbx", false, -1.0f);
-
         CameraManager::Create();
         CameraManager::Instance().Init(device.Get());
 
@@ -365,7 +363,7 @@ void Framework::Render(float elapsedTime/*Elapsed seconds from last frame*/) {
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 #endif
 
-    UINT syncInterval = 1;
+    UINT syncInterval = 0;
 
     //— ‚Ì‰æ–Ê‚ðŽ‚Á‚Ä‚­‚é
     swapChain->Present(syncInterval, 0);

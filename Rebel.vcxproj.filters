@@ -109,6 +109,9 @@
     <Filter Include="Library\ShadowMap">
       <UniqueIdentifier>{4ab90efe-0f4e-4100-877d-d9cbc25d5550}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Library\Shaders\Debug">
+      <UniqueIdentifier>{8e2d9626-b502-49f4-8db9-0b3d7280c6e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\GameSources\Easing.cpp">
@@ -293,6 +296,12 @@
     </ClCompile>
     <ClCompile Include="Sources\GameSources\SceneSelect2.cpp">
       <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameLibSource\Graphics\DebugRenderer.cpp">
+      <Filter>Library\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameLibSource\Graphics\Fog.cpp">
+      <Filter>Library\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,6 +509,12 @@
     <ClInclude Include="Sources\GameSources\SceneSelect2.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\GameLibSource\Graphics\DebugRenderer.h">
+      <Filter>Library\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameLibSource\Graphics\Fog.h">
+      <Filter>Library\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\GeometricPrimitive.hlsli">
@@ -534,6 +549,9 @@
     </None>
     <None Include="Shader\PhongSkinnedMesh.hlsli">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
+    </None>
+    <None Include="Shader\Debug.hlsli">
+      <Filter>Library\Shaders\Debug</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -590,6 +608,12 @@
     </FxCompile>
     <FxCompile Include="Shader\PhongSkinnedMeshVS.hlsl">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DebugPS.hlsl">
+      <Filter>Library\Shaders\Debug</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\DebugVS.hlsl">
+      <Filter>Library\Shaders\Debug</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

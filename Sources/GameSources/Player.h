@@ -4,6 +4,7 @@
 #include "Character.h"
 #include "Gear.h"
 #include "GameLibSource/Sprite.h"
+
 #define GEAR_NUM 3
 
 class Player : public Character
@@ -30,11 +31,17 @@ public:
 	// メッセージ受け取り
 	bool OnMessage(const Telegram& msg) override;
 
+	void CollisionPlayerVSGimmick();
+
 	bool GetDeathFlag() { return deathFlag; }
+
+	bool GetCheckPointFlag() { return checkPoint; }
 
 	void SetStartGimmickID(int id) { startGimmickID = id; }
 	const int GetStartGimmickID() const { return startGimmickID; }
 
+	void SetCheckPointID(int id) { checkPointID = id; }
+	const int GetCheckPointID() const { return checkPointID; }
 private:
 	// スティック入力値から移動ベクトルを所得
 	Vector3 GetMoveVec() const;
@@ -60,7 +67,7 @@ private:
 
 	Vector3 setPosition = { position.x, position.y + height, position.z };
 
-	float distance = 8.0f;
+	float distance = 5.0f;
 
 	float jumpSpeed = 20.0f;
 	int jumpCount = 0;
@@ -69,15 +76,16 @@ private:
 	int deathCount = 0;
 
 	int startGimmickID = 0;
+	int checkPointID = 0;
+
+	bool checkPoint = false;
 
 	// 2d用
-	
 	Vector2 scale2d = { 1.0f, 1.0f };
-
 	float scaleMax = 10.0f;
+
 	// debug
 	bool check = false;
-
 
 };
 

@@ -27,7 +27,7 @@ public:
 	float GetHeight() const { return height; }
 
 	// ”¼Œaæ“¾
-	float GetRadius() const { return radius; }
+	float GetWidth() const { return width; }
 
 	// ’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚é‚©
 	bool IsGround() const { return isGround; }
@@ -94,14 +94,15 @@ protected:
 	};
 	Vector3 normal = { 0,0,0 };
 
-	float radius = 0.5f;
 	float gravity = -1.0f;
 
 	Vector3 velocity = { 0,0,0 };
 	Vector3 velocityMax = { 0, -20, 0 };
 
 	bool isGround = false;
-	float height = 2.0f;
+	float height = 4.0f;
+	float width = 4.0f;
+
 	int health = 5;
 	int maxHealth = 5;
 	float invincibleTimer = 1.0f;

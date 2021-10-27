@@ -7,7 +7,7 @@
 #include "StageMain.h"
 #include "StageWall.h"
 #include "MetaAI.h"
-
+#include "GameLibSource/Graphics/Fog.h"
 
 class SceneGame : public Scene
 {
@@ -32,6 +32,7 @@ private:
 	StageWall* stageWall = nullptr;
 	CameraControl* cameraController = nullptr;
 	std::unique_ptr<Meta> metaAi;
+	std::shared_ptr<Fog> fog;
 };
 
 #endif // !SCENEGAME
