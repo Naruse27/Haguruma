@@ -10,7 +10,7 @@ void DebugRenderer::Init(ID3D11Device* device)
 	{
 		// ファイルを開く
 		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\DebugVS.cso", "rb");
+		fopen_s(&fp, "Data\\Shader\\DebugVS.cso", "rb");
 		_ASSERT_EXPR_A(fp, "CSO File not found");
 
 		// ファイルのサイズを求める
@@ -40,7 +40,7 @@ void DebugRenderer::Init(ID3D11Device* device)
 	{
 		// ファイルを開く
 		FILE* fp = nullptr;
-		fopen_s(&fp, "Shader\\DebugPS.cso", "rb");
+		fopen_s(&fp, "Data\\Shader\\DebugPS.cso", "rb");
 		_ASSERT_EXPR_A(fp, "CSO File not found");
 
 		// ファイルのサイズを求める

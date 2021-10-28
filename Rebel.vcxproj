@@ -27,6 +27,8 @@
     <ClCompile Include="Sources\GameLibSource\FontManager.cpp" />
     <ClCompile Include="Sources\GameLibSource\Framework.cpp" />
     <ClCompile Include="Sources\GameLibSource\GeometricPrimitive.cpp" />
+    <ClCompile Include="Sources\GameLibSource\Graphics\DebugRenderer.cpp" />
+    <ClCompile Include="Sources\GameLibSource\Graphics\Fog.cpp" />
     <ClCompile Include="Sources\GameLibSource\Graphics\Graphics.cpp" />
     <ClCompile Include="Sources\GameLibSource\Light.cpp" />
     <ClCompile Include="Sources\GameLibSource\Main.cpp" />
@@ -94,6 +96,8 @@
     <ClInclude Include="Sources\GameLibSource\FontManager.h" />
     <ClInclude Include="Sources\GameLibSource\Framework.h" />
     <ClInclude Include="Sources\GameLibSource\GeometricPrimitive.h" />
+    <ClInclude Include="Sources\GameLibSource\Graphics\DebugRenderer.h" />
+    <ClInclude Include="Sources\GameLibSource\Graphics\Fog.h" />
     <ClInclude Include="Sources\GameLibSource\Graphics\Graphics.h" />
     <ClInclude Include="Sources\GameLibSource\high_resolution_timer.h" />
     <ClInclude Include="Sources\GameLibSource\Light.h" />
@@ -126,7 +130,6 @@
     <ClInclude Include="Sources\GameSources\GimmickPoint.h" />
     <ClInclude Include="Sources\GameSources\Mathf.h" />
     <ClInclude Include="Sources\GameSources\MetaAI.h" />
-    <ClInclude Include="Sources\GameSources\ObjectDestruction.h" />
     <ClInclude Include="Sources\GameSources\Player.h" />
     <ClInclude Include="Sources\GameSources\PlayerTemp.h" />
     <ClInclude Include="Sources\GameSources\Scene.h" />
@@ -161,7 +164,7 @@
     <None Include="Shader\Billboard.hlsli" />
     <None Include="Shader\Constants.hlsli" />
     <None Include="Shader\ConveyorSkinnedMesh.hlsli" />
-    <None Include="Shader\Destruction.hlsli" />
+    <None Include="Shader\Debug.hlsli" />
     <None Include="Shader\Function.hlsli" />
     <None Include="Shader\GeometricPrimitive.hlsli" />
     <None Include="Shader\NormalMapSkinnedMesh.hlsli" />
@@ -188,26 +191,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\DestructionGS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Shader\DestructionPS.hlsl">
+    <FxCompile Include="Shader\DebugPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\DestructionVS.hlsl">
+    <FxCompile Include="Shader\DebugVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\GeometricPrimitivePS.hlsl">

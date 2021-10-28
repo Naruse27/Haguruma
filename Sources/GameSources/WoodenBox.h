@@ -17,15 +17,11 @@ public:
 	bool RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit)override;
 
 private:
-
+	int i;
 
 	const float UPMAX = 10;
 
 
 	//ジオメトリ用
 	Microsoft::WRL::ComPtr<ID3D11Buffer> destructionBuffer;
-
-	//壊れたかどうか
-	bool dest = false;
-	const float ERACEFLOAT = 0.005f;
 };

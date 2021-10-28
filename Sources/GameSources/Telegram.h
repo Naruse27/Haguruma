@@ -17,6 +17,7 @@ enum class Identity : int
 
 	//Enemy = 5	,// エネミーIDは5以降を付与
 	Start = 5,
+	Save,
 	End,
 	Gear = 15,
 	Stand = 30,
@@ -27,6 +28,7 @@ enum class MESSAGE_TYPE : int
 	MSG_PLAYER_DEATH,                                                  // プレイヤーの死亡
 	MSG__CALL_REVIVAL_POSSIBLE,                            // 復活可能 
 	MSG_CALL_START_POINT,
+	MSG_CALL_ARRIVAL_CHECCK_POINT,
 	MSG_SIGNAL_GIAR,			                                           	// ギアの信号
 	MSG_SIGNAL_STAND,	                                                // 台の信号
 	MSG_SIGNAL_GIAR_COALESCENCE,              	    	// ギアからの合体信号

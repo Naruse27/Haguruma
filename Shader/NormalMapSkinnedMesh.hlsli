@@ -33,4 +33,8 @@ cbuffer SCENE_CONSTANT_BUFFER : register(b1)
     float4 cameraPosition;
 };
 
-
+cbuffer FOG_CONSTANT_BUFFER : register(b5)
+{
+    float4 fogColor;
+    float4 fogRange;
+}

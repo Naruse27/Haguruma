@@ -28,7 +28,7 @@ public:
 	//};
 
 	// コンストラクタ
-	Meta(Player* pl, GimmickManager* gManager) : player(pl), gimmickManager(gManager) {}
+	Meta(Player* pl, GimmickManager* gManager);// : player(pl), gimmickManager(gManager) {}
 	~Meta() {}
 
 	//// インスタンス取得
@@ -52,6 +52,7 @@ public:
 
 private:
 	int deathCount = 0;
+	Vector3 setPosition = {0,0,0};
 };
 
 #endif // !METAAI

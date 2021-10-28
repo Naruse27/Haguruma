@@ -7,6 +7,9 @@
 #include "Stand.h"
 #include "Gear.h"
 #include "GimmickPoint.h"
+#include "GameLibSource/Graphics/DebugRenderer.h"
+
+#include "WoodenBox.h"
 
 // ‰Šú‰»
 void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -14,12 +17,26 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
     this->device = device;
     this->deviceContext = deviceContext;
 
+    DebugRenderer::Create();
+    DebugRenderer::Instance().Init(this->device);
+
     //ID3D11Device* device = Framework::GetInstance().GetDevice().Get();
     StageManager::Create();
-    GimmickPoint* point = new GimmickPoint(device);
+    GimmickPoint* point = new GimmickPoint(device, Identity::Start, false);
+    point->SetPosition({ 0,0,15 });
     GimmickManager::Instance().Register(point, Identity::Start);
+    GimmickPoint* save = new GimmickPoint(device, Identity::Save, false);
+    save->SetPosition({ -16, 0, 123 });
+    GimmickManager::Instance().Register(save, Identity::Save);
+    GimmickPoint* goal = new GimmickPoint(device, Identity::End, true);
+    goal->SetPosition({ 0,0, 230 });
+    GimmickManager::Instance().Register(goal, Identity::End);
+
 
     player = new Player(this->device);
+    player->SetPosition(point->GetPosition());
+    player->SetStartGimmickID(point->GetId());
+    player->SetCheckPointID(save->GetId());
 
     Stand* stand = new Stand(device);
     GimmickManager::Instance().Register(stand, Identity::Stand); 
@@ -32,7 +49,7 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
     StageManager::Instance().Register(stageMain);
     StageManager::Instance().Register(stageWall);
 
-    player->SetStartGimmickID(point->GetId());
+    fog.reset(new Fog(device));
 
     metaAi.reset(new Meta(player, &GimmickManager::Instance()));
 }
@@ -48,6 +65,8 @@ void SceneGame::Finalize()
     GimmickManager::Instance().Clear();
 
     StageManager::Destory();
+
+    DebugRenderer::Destory();
     //delete titleSprite;
 }
 
@@ -77,6 +96,8 @@ void SceneGame::Render(float elapsedTime)
 {
     // ƒ‚ƒfƒ‹•`‰æ
     {
+        fog->UpdateRendrer(deviceContext);
+
         player->Render(deviceContext);
         StageManager::Instance().Render(deviceContext, elapsedTime);
         GimmickManager::Instance().Render(deviceContext, elapsedTime);
@@ -93,5 +114,6 @@ void SceneGame::Render(float elapsedTime)
     {
         player->DebugImGui();
         cameraController->RenderDebugGui(&CameraManager::Instance().mainView);
+        GimmickManager::Instance().DebugRender();
     }
 }

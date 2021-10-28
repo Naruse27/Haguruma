@@ -21,6 +21,13 @@ public:
 
 	void Destroy();
 
+	const float GetWidth() const { return width; }
+	const float GetHeight() const { return height; }
+	// ポジションゲッター
+	const Vector3& GetPosition() const { return position; }
+
+	void setDest() { dest = true; }
+
 protected:
 	// 行列更新処理
 	void UpdateTransform();
@@ -49,5 +56,11 @@ protected:
 	float positionFactor = 1.0f;
 	float destruction = 0.0f;
 
+	float height = 5.0f; // とりあえず
+	float width = 5.0f;
+
+	//壊れたかどうか
+	bool dest = false;
+	const float ERACEFLOAT = 0.005f;
 	DestructionManager* mgr{};
 };

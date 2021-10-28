@@ -81,6 +81,7 @@ void Gear::Collection()
 void Gear::StraitThrow(float elapsedTime)
 {
     GimmickManager::Instance().CollisionGimmickGimmicks(this);
+    GimmickManager::Instance().CollisionGimmicksWoodenBox(this);
 
     // ˆÚ“®æ
     Vector3 destination;

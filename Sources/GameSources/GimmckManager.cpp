@@ -1,15 +1,41 @@
 #include "GimmickManager.h"
 #include "MetaAI.h"
 #include "Collision.h"
+#include "ImGui/imgui.h"
+
+// debug
+#include <string>
 
 void GimmickManager::Update(float elapsedTime)
 {
     for (Gimmick* gimmick : gimmicks) gimmick->Update(elapsedTime);
+    destructionManager->update(elapsedTime);
 }
 
 void GimmickManager::Render(ID3D11DeviceContext* deviceContext, float elapsedTIme)
 {
     for (Gimmick* gimmick : gimmicks) gimmick->Render(deviceContext, elapsedTIme);
+    destructionManager->render(deviceContext, elapsedTIme);
+}
+
+void GimmickManager::DebugRender()
+{
+#ifdef _DEBUG
+    ImGui::Begin("Gimmick");
+
+    for (auto& gimmick : gimmicks) {
+        std::string p = "gimmick" + std::to_string(gimmick->GetId());
+        ImGui::Separator();
+        if (ImGui::TreeNode(p.c_str()))
+        {
+            Vector3 pos = gimmick->GetPosition();
+            ImGui::SliderFloat3("translation", &pos.x, -250.0f, +250.0f);
+            gimmick->SetPosition(pos);
+            ImGui::TreePop();
+        }
+    }
+    ImGui::End();
+#endif // _DEBUG
 }
 
 void GimmickManager::Clear()
@@ -56,7 +82,7 @@ void GimmickManager::CollisionGimmickGimmicks(Gimmick* gimmick)
     {
         Gimmick* gimmick2 = enemyManager.GetGimmick(j);
 
-        if (gimmick->GetIdentity() == gimmick2->GetIdentity()) continue;
+        if (gimmick2->GetIdentity() != static_cast<int>(Identity::Stand))  continue;
         if (gimmick2->GetSetFlag()) continue;
 
         // 衝突処理
@@ -76,6 +102,29 @@ void GimmickManager::CollisionGimmickGimmicks(Gimmick* gimmick)
                 gimmick2->SetSenderID(gimmick->GetId());
         }
     }
+}
+
+void GimmickManager::CollisionGimmicksWoodenBox(Gimmick* gimmick)
+{
+
+    // すべての敵と総当たり判定
+    int destCount = destructionManager->getDestructionCount();
+    for (int j = 0; j < destCount; ++j)
+    {
+        ObjectDestruction* objD = destructionManager->getDestruction(j);
+        // 衝突処理
+        if (Collision::AabbVsAabb(
+            gimmick->GetPosition(),
+            gimmick->GetWidth(),
+            gimmick->GetHeight(),
+            objD->GetPosition(),
+            objD->GetWidth(),
+            objD->GetHeight()))
+        {
+            objD->setDest();
+        }
+    }
+
 }
 
 // IDからエネミーを取得する

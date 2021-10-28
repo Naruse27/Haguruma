@@ -1,4 +1,5 @@
 #include "NormalMapSkinnedMesh.hlsli"
+#include "Function.hlsli"
 
 #define POINT 0
 #define LINEAR 1
@@ -33,5 +34,8 @@ float4 main(VS_OUT pin) : SV_TARGET
     float3 diffuse = color.rgb * max(0.5f, dot(N, L)); // ägéUåı
     float3 V = normalize(cameraPosition.xyz - pin.worldPosition.xyz);
     float3 specular = pow(max(0, dot(N, normalize(V + L))), 128); // ãæñ îΩéÀ   pow(íl, ó›èÊ)
-    return float4(diffuse + specular, alpha) * pin.color;
+    
+    float4 c = float4(diffuse + specular, alpha) * pin.color;
+    c = CalcFog(c, fogColor, fogRange.xy, length(pin.worldPosition.xyz - cameraPosition.xyz));
+    return c;
 }

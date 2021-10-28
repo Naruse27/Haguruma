@@ -22,7 +22,9 @@ WoodenBox::~WoodenBox()
 
 void WoodenBox::Update(float elapsedTime)
 {
+	//“–‚½‚Á‚½‚ç‰ó‚µŽn‚ß‚é
 	if (dest) destruction += ERACEFLOAT;
+	//‰ó‚ê‚«‚Á‚½‚çíœ
 	if (destruction >= 1.0f)Destroy();
 	model->UpdateTransform(transform);
 }
