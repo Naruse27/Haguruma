@@ -91,9 +91,6 @@
     <Filter Include="Game\Gimmick">
       <UniqueIdentifier>{380dcf51-0106-4c44-97be-ce80ea60249e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Library\Shaders\ConveyorSkinnedMesh">
-      <UniqueIdentifier>{eead5be1-68cf-4f23-9e99-9086cdd25f4b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\Shader">
       <UniqueIdentifier>{f555f2c2-6474-4300-be3b-dc5d8ea1a812}</UniqueIdentifier>
     </Filter>
@@ -309,6 +306,8 @@
     <ClCompile Include="Sources\GameSources\ObjectDestruction.cpp">
       <Filter>Game\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\GameLibSource\Graphics\DebugRenderer.cpp" />
+    <ClCompile Include="Sources\GameLibSource\Graphics\Fog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\GameSources\Easing.h">
@@ -515,15 +514,14 @@
     <ClInclude Include="Sources\GameSources\SceneSelect2.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\GameSources\ObjectDestruction.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\GameSources\WoodenBox.h">
       <Filter>Game\Object</Filter>
     </ClInclude>
     <ClInclude Include="Sources\GameSources\DestructionManager.h">
       <Filter>Game\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\GameLibSource\Graphics\DebugRenderer.h" />
+    <ClInclude Include="Sources\GameLibSource\Graphics\Fog.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\GeometricPrimitive.hlsli">
@@ -553,12 +551,10 @@
     <None Include="Shader\ShadowMap.hlsli">
       <Filter>Library\Shaders\ShadowMap</Filter>
     </None>
-    <None Include="Shader\ConveyorSkinnedMesh.hlsli">
-      <Filter>Library\Shaders\ConveyorSkinnedMesh</Filter>
-    </None>
     <None Include="Shader\PhongSkinnedMesh.hlsli">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
     </None>
+    <None Include="Shader\Debug.hlsli" />
     <None Include="Shader\Destruction.hlsli">
       <Filter>Library\Shaders\Destruction</Filter>
     </None>
@@ -606,25 +602,21 @@
     <FxCompile Include="Shader\ShadowMapPS.hlsl">
       <Filter>Library\Shaders\ShadowMap</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\ConveyorSkinnedMeshPS.hlsl">
-      <Filter>Library\Shaders\ConveyorSkinnedMesh</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\ConveyorSkinnedMeshVS.hlsl">
-      <Filter>Library\Shaders\ConveyorSkinnedMesh</Filter>
-    </FxCompile>
     <FxCompile Include="Shader\PhongSkinnedMeshPS.hlsl">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
     </FxCompile>
     <FxCompile Include="Shader\PhongSkinnedMeshVS.hlsl">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\DestructionVS.hlsl">
+    <FxCompile Include="Shader\DebugPS.hlsl" />
+    <FxCompile Include="Shader\DebugVS.hlsl" />
+    <FxCompile Include="Shader\DestructionGS.hlsl">
       <Filter>Library\Shaders\Destruction</Filter>
     </FxCompile>
     <FxCompile Include="Shader\DestructionPS.hlsl">
       <Filter>Library\Shaders\Destruction</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\DestructionGS.hlsl">
+    <FxCompile Include="Shader\DestructionVS.hlsl">
       <Filter>Library\Shaders\Destruction</Filter>
     </FxCompile>
   </ItemGroup>
