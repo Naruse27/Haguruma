@@ -300,6 +300,15 @@
     <ClCompile Include="Sources\GameSources\SceneSelect2.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\GameSources\WoodenBox.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\DestructionManager.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\GameSources\ObjectDestruction.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\GameSources\Easing.h">
@@ -507,6 +516,12 @@
       <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Sources\GameSources\ObjectDestruction.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\WoodenBox.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameSources\DestructionManager.h">
       <Filter>Game\Object</Filter>
     </ClInclude>
   </ItemGroup>

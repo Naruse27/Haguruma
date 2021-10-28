@@ -53,6 +53,25 @@ void ResourceManager::CreatePsFromCso(ID3D11Device* device, const char* csoName,
     _ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 }
 
+void ResourceManager::CreateGsFromCso(ID3D11Device* device, const char* csoName, ID3D11GeometryShader** geometryShader)
+{
+    FILE* fp{ nullptr };
+    fopen_s(&fp, csoName, "rb");
+    _ASSERT_EXPR_A(fp, "GeometryShaderCSO File not found");
+
+    fseek(fp, 0, SEEK_END);
+    long cso_sz{ ftell(fp) };
+    fseek(fp, 0, SEEK_SET);
+
+    unique_ptr<unsigned char[]> cso_data{ make_unique<unsigned char[]>(cso_sz) };
+    fread(cso_data.get(), cso_sz, 1, fp);
+    fclose(fp);
+
+    HRESULT hr{ S_OK };
+    hr = device->CreateGeometryShader(cso_data.get(), cso_sz, nullptr, geometryShader);
+    _ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
+}
+
 void ResourceManager::CreateCsFromCso(ID3D11Device* device, const char* csoName, ID3D11ComputeShader** computeShader)
 {
     HRESULT hr = S_OK;

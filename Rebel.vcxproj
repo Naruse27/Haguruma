@@ -47,6 +47,7 @@
     <ClCompile Include="Sources\GameSources\CameraManager.cpp" />
     <ClCompile Include="Sources\GameSources\Character.cpp" />
     <ClCompile Include="Sources\GameSources\Collision.cpp" />
+    <ClCompile Include="Sources\GameSources\DestructionManager.cpp" />
     <ClCompile Include="Sources\GameSources\Easing.cpp" />
     <ClCompile Include="Sources\GameSources\Effect.cpp" />
     <ClCompile Include="Sources\GameSources\EffectManager.cpp" />
@@ -56,6 +57,7 @@
     <ClCompile Include="Sources\GameSources\GimmickPoint.cpp" />
     <ClCompile Include="Sources\GameSources\Mathf.cpp" />
     <ClCompile Include="Sources\GameSources\MetaAI.cpp" />
+    <ClCompile Include="Sources\GameSources\ObjectDestruction.cpp" />
     <ClCompile Include="Sources\GameSources\Player.cpp" />
     <ClCompile Include="Sources\GameSources\PlayerTemp.cpp" />
     <ClCompile Include="Sources\GameSources\SceneGame.cpp" />
@@ -71,6 +73,7 @@
     <ClCompile Include="Sources\GameSources\StageWall.cpp" />
     <ClCompile Include="Sources\GameSources\StageWindmill.cpp" />
     <ClCompile Include="Sources\GameSources\Stand.cpp" />
+    <ClCompile Include="Sources\GameSources\WoodenBox.cpp" />
     <ClCompile Include="Sources\ImGui\imgui.cpp" />
     <ClCompile Include="Sources\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Sources\ImGui\imgui_impl_dx11.cpp" />
@@ -113,6 +116,7 @@
     <ClInclude Include="Sources\GameSources\CameraManager.h" />
     <ClInclude Include="Sources\GameSources\Character.h" />
     <ClInclude Include="Sources\GameSources\Collision.h" />
+    <ClInclude Include="Sources\GameSources\DestructionManager.h" />
     <ClInclude Include="Sources\GameSources\Easing.h" />
     <ClInclude Include="Sources\GameSources\Effect.h" />
     <ClInclude Include="Sources\GameSources\EffectManager.h" />
@@ -140,6 +144,7 @@
     <ClInclude Include="Sources\GameSources\StageWindmill.h" />
     <ClInclude Include="Sources\GameSources\Stand.h" />
     <ClInclude Include="Sources\GameSources\Telegram.h" />
+    <ClInclude Include="Sources\GameSources\WoodenBox.h" />
     <ClInclude Include="Sources\ImGui\imconfig.h" />
     <ClInclude Include="Sources\ImGui\imgui.h" />
     <ClInclude Include="Sources\ImGui\imgui_impl_dx11.h" />

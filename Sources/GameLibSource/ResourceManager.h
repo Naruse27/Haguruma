@@ -14,6 +14,8 @@ public:
     // PixelShader <- CSO
     static void CreatePsFromCso(ID3D11Device* device, const char* csoName, ID3D11PixelShader** pixelShader);
 
+    static void CreateGsFromCso(ID3D11Device* device, const char* csoName, ID3D11GeometryShader** geometryShader);
+
 	static void CreateCsFromCso(ID3D11Device* device, const char* csoName, ID3D11ComputeShader** computeShader);
 };
 
