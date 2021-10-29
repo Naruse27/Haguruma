@@ -1,5 +1,9 @@
 #include "DestructionManager.h"
 
+DestructionManager::DestructionManager()
+{
+}
+
 DestructionManager::~DestructionManager() {
 	clear();
 }
@@ -41,22 +45,4 @@ void DestructionManager::clear() {
 	for (auto p : destructions) {
 		delete p;
 	}
-}
-
-bool DestructionManager::RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit)
-{
-	bool result = false;
-	hit.distance = FLT_MAX;
-
-	for (ObjectDestruction* stage : destructions) {
-		HitResult tmp;
-		if (stage->RayCast(start, end, tmp)) {
-			if (tmp.distance < hit.distance) {
-				hit = tmp;
-				result = true;
-			}
-		}
-	}
-
-	return result;
 }

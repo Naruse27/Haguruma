@@ -2,7 +2,7 @@
 
 WoodenBox::WoodenBox(ID3D11Device* device, DestructionManager* mgr) :ObjectDestruction(device,mgr)
 {
-	model.reset(new Model(device, "Data/Model/Stage/stage.fbx", true, 0, TRUE));
+	model.reset(new Model(device, "Data/Model/Stage/dai2.fbx", true, 0, TRUE));
 	//シーン定数バッファオブジェクト生成
 	D3D11_BUFFER_DESC bufferDesc{};
 	{

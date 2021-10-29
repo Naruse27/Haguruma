@@ -3,7 +3,6 @@
 
 #include "Gimmick.h"
 #include "Telegram.h"
-#include "DestructionManager.h"
 
 class GimmickManager
 {
@@ -42,7 +41,6 @@ public:
 
 	void CollisionGimmickGimmicks(Gimmick* gimmck);
 
-	void CollisionGimmicksWoodenBox(Gimmick* gimmick);
 	// エネミー取得
 	Gimmick* GetGimmick(int index) { return gimmicks.at(index); }
 
@@ -52,8 +50,6 @@ public:
 private:
 	//std::vector<std::unique_ptr<Gimmick>> gimmicks;
 	std::vector<Gimmick*> gimmicks;
-
-	DestructionManager* destructionManager{};
 public:
 	int identity = 0;	// 付与するIDの値(この値にMetaAI::Identity::Enemyを加算して付与する)
 };

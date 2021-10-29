@@ -9,13 +9,11 @@
 void GimmickManager::Update(float elapsedTime)
 {
     for (Gimmick* gimmick : gimmicks) gimmick->Update(elapsedTime);
-    destructionManager->update(elapsedTime);
 }
 
 void GimmickManager::Render(ID3D11DeviceContext* deviceContext, float elapsedTIme)
 {
     for (Gimmick* gimmick : gimmicks) gimmick->Render(deviceContext, elapsedTIme);
-    destructionManager->render(deviceContext, elapsedTIme);
 }
 
 void GimmickManager::DebugRender()
@@ -102,29 +100,6 @@ void GimmickManager::CollisionGimmickGimmicks(Gimmick* gimmick)
                 gimmick2->SetSenderID(gimmick->GetId());
         }
     }
-}
-
-void GimmickManager::CollisionGimmicksWoodenBox(Gimmick* gimmick)
-{
-
-    // すべての敵と総当たり判定
-    int destCount = destructionManager->getDestructionCount();
-    for (int j = 0; j < destCount; ++j)
-    {
-        ObjectDestruction* objD = destructionManager->getDestruction(j);
-        // 衝突処理
-        if (Collision::AabbVsAabb(
-            gimmick->GetPosition(),
-            gimmick->GetWidth(),
-            gimmick->GetHeight(),
-            objD->GetPosition(),
-            objD->GetWidth(),
-            objD->GetHeight()))
-        {
-            objD->setDest();
-        }
-    }
-
 }
 
 // IDからエネミーを取得する

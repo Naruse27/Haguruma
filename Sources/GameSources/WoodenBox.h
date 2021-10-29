@@ -2,6 +2,7 @@
 
 #include "ObjectDestruction.h"
 #include <d3d11.h>
+#include <memory>
 
 class WoodenBox : public ObjectDestruction
 {
@@ -17,10 +18,20 @@ public:
 	bool RayCast(const DirectX::XMFLOAT3& start, const DirectX::XMFLOAT3& end, HitResult& hit)override;
 
 private:
-	int i;
+	std::unique_ptr<Model> model;
 
 	const float UPMAX = 10;
-
+	struct Destruct
+	{
+		float scale;
+		float angle;
+		float position;
+		float destruction;
+	};
+	float scaleFactor = 1.0f;
+	float rotationFactor = 1.0f;
+	float positionFactor = 1.0f;
+	float destruction = 0.0f;
 
 	//ジオメトリ用
 	Microsoft::WRL::ComPtr<ID3D11Buffer> destructionBuffer;
