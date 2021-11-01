@@ -2,10 +2,11 @@
 #include "ResourceManager.h"
 #include "Framework.h"
 
-void Shader::LoadCSO(ID3D11Device* device, const char* csoNameOfVertexShader, const char* csoNameOfPixelShader, D3D11_INPUT_ELEMENT_DESC* inputElementDesc, UINT numElements)
+void Shader::LoadCSO(ID3D11Device* device, const char* csoNameOfVertexShader, const char* csoNameOfPixelShader, D3D11_INPUT_ELEMENT_DESC* inputElementDesc, UINT numElements, const char* csoNameOfGeometryShader)
 {
 	ResourceManager::CreateVsFromCso(device, csoNameOfVertexShader, vertexShader.GetAddressOf(), inputLayout.GetAddressOf(), inputElementDesc, numElements);
 	ResourceManager::CreatePsFromCso(device, csoNameOfPixelShader, pixelShader.GetAddressOf());
+	if(csoNameOfGeometryShader != nullptr)ResourceManager::CreateGsFromCso(device, csoNameOfGeometryShader, geometryShader.GetAddressOf());
 }
 
 void ShaderSystem::Init(ID3D11Device* device)
@@ -25,6 +26,18 @@ void ShaderSystem::Init(ID3D11Device* device)
 		shaderOfSkinnedMesh[ShaderOfSkinnedMesh::DEFAULT].LoadCSO(device, "Data/Shader/SkinnedMeshVS.cso", "Data/Shader/SkinnedMeshPS.cso", inputElementDesc, ARRAYSIZE(inputElementDesc));
 		//shaderOfSkinnedMesh[ShaderOfSkinnedMesh::PHONE].LoadCSO(device.Get(), "Data/Shader/PhoneSkinnedMeshVS.cso", "Data/Shader/PhoneSkinnedMeshPS.cso", ieDescOfSkinnedMesh, ARRAYSIZE(ieDescOfSkinnedMesh));
 		shaderOfSkinnedMesh[ShaderOfSkinnedMesh::NORMAL_MAP].LoadCSO(device, "Data/Shader/NormalMapSkinnedMeshVS.cso", "Data/Shader/NormalMapSkinnedMeshPS.cso", inputElementDesc, ARRAYSIZE(inputElementDesc));
+	}
+	// Load Shader Of Destruction
+	{
+		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TANGENT",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+		destructionShader.LoadCSO(device, "Data/Shader/DestructionVS.cso", "Data/Shader/DestructionPS.cso", inputElementDesc, ARRAYSIZE(inputElementDesc), "Data/Shader/DestructionGS.cso");
 	}
 	//
 	//// Load Shader Of SkinnedMeshBatch

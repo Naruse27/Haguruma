@@ -261,9 +261,6 @@
     <ClCompile Include="Sources\GameSources\Stand.cpp">
       <Filter>Game\Gimmick</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\GameSources\StageConveyor.cpp">
-      <Filter>Game\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\GameSources\StageWindmill.cpp">
       <Filter>Game\Stage</Filter>
     </ClCompile>
@@ -477,9 +474,6 @@
     </ClInclude>
     <ClInclude Include="Sources\GameSources\Stand.h">
       <Filter>Game\Gimmick</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\GameSources\StageConveyor.h">
-      <Filter>Game\Stage</Filter>
     </ClInclude>
     <ClInclude Include="Sources\GameSources\StageWindmill.h">
       <Filter>Game\Stage</Filter>

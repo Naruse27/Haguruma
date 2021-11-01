@@ -69,7 +69,6 @@
     <ClCompile Include="Sources\GameSources\SceneSelect2.cpp" />
     <ClCompile Include="Sources\GameSources\SceneTitle.cpp" />
     <ClCompile Include="Sources\GameSources\Stage.cpp" />
-    <ClCompile Include="Sources\GameSources\StageConveyor.cpp" />
     <ClCompile Include="Sources\GameSources\StageMain.cpp" />
     <ClCompile Include="Sources\GameSources\StageManager.cpp" />
     <ClCompile Include="Sources\GameSources\StageWall.cpp" />
@@ -140,7 +139,6 @@
     <ClInclude Include="Sources\GameSources\SceneSelect2.h" />
     <ClInclude Include="Sources\GameSources\SceneTitle.h" />
     <ClInclude Include="Sources\GameSources\Stage.h" />
-    <ClInclude Include="Sources\GameSources\StageConveyor.h" />
     <ClInclude Include="Sources\GameSources\StageMain.h" />
     <ClInclude Include="Sources\GameSources\StageManager.h" />
     <ClInclude Include="Sources\GameSources\StageWall.h" />

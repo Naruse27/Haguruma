@@ -32,13 +32,13 @@ void DestructionManager::render(ID3D11DeviceContext* dc, float elapsedTime) {
 	}
 }
 
-void DestructionManager::addition(ObjectDestruction* projectile) {
-	destructions.emplace_back(projectile);
+void DestructionManager::addition(ObjectDestruction* destruction) {
+	destructions.emplace_back(destruction);
 }
 
-void DestructionManager::remove(ObjectDestruction* projectile) {
+void DestructionManager::remove(ObjectDestruction* destruction) {
 	//”jŠüƒŠƒXƒg‚É’Ç‰Á
-	removes.emplace_back(projectile);
+	removes.emplace_back(destruction);
 }
 
 void DestructionManager::clear() {
