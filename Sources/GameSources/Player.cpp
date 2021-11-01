@@ -4,13 +4,23 @@
 #include "Input/Input.h"
 #include "CameraManager.h"
 #include "Input/Mouse.h"
-#include "GimmickManager.h"
 #include "Gear.h"
 #include "StageManager.h"
+#include "GimmickManager.h"
 
 Player::Player(ID3D11Device* device)
 {
-    model = new Model(device, "Data/Model/Player/character_tanomuzo.fbx", true, 0, TRUE);
+    const char* a = "Data/Model/Player/character_walk.fbx";
+    const char* b = "Data/Model/Player/nico.fbx";
+    const char* c = "Data/Model/Player/character_run";
+    std::vector<const char*> fbxFilenames;
+    fbxFilenames.emplace_back(b);
+    fbxFilenames.emplace_back(a);
+    fbxFilenames.emplace_back(c);
+
+    model = new Model(device, fbxFilenames, true, 0, TRUE);
+    //model = new Model(device, "Data/Model/Player/character_walk.fbx", true, 0, TRUE);
+    //model = new Model(device, "Data/Model/Player/a.fbx", true, 0, TRUE);
 
     //model = new Model(device, "Data/Model/Gimmick/test.fbx", true, 0, TRUE);
     for (int i = 0; i < GEAR_NUM; i++) {
@@ -23,11 +33,29 @@ Player::Player(ID3D11Device* device)
     scale = { 0.05f, 0.05f, 0.05f };
 
     blackOut.reset(new Sprite(device, L"./Data/Sprite/BlackOut.png", 4));
+
+    UpdateState[static_cast<int>(State::Idle)] = &Player::UpdateIdleState;
+    UpdateState[static_cast<int>(State::Move)] = &Player::UpdateMoveState;
+
 }
 
 Player::~Player()
 {
     delete model;
+}
+
+void Player::Init()
+{
+    position = { 0,0,0 };
+    angle = { 0,0,0 };
+    transform = {
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1
+    };
+    normal = { 0,0,0 };
+    velocity = { 0,0,0 };
 }
 
 void Player::Update(float elapsedTime)
@@ -37,6 +65,14 @@ void Player::Update(float elapsedTime)
     for (int i = 0; i < GEAR_NUM; i++) {
         gear[i]->SetTarget(setPosition);
     }
+
+    if (deathFlag) {
+        scale2d.x += 1.0f * elapsedTime;
+        scale2d.y += 1.0f * elapsedTime;
+        return;
+    }
+
+    (this->*UpdateState[static_cast<int>(state)])(elapsedTime);
 
      InputMove(elapsedTime);
 
@@ -52,23 +88,17 @@ void Player::Update(float elapsedTime)
     UpdateTransform();
 
     // モデルアニメーション更新処理
-    //model->UpdateAnimation(elapsedTime);
+    model->UpdateAnimation(elapsedTime, animationLoop);
 
     //モデル行列更新
     model->UpdateTransform(transform);
 
-   
 
-    if (deathFlag) {
-        scale2d.x += 1.0f * elapsedTime;
-        scale2d.y += 1.0f * elapsedTime;
-    }
+    CollisionPlayerVSGimmick();
 }
 
 void Player::Render(ID3D11DeviceContext* deviceContext)
 {
-
-
     //ID3D11DeviceContext* deviceContext = Framework::GetInstance().GetContext().Get();
     model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::NORMAL_MAP), true);
     model->Render(deviceContext);
@@ -111,11 +141,28 @@ void Player::DebugImGui()
         }
     
         ImGui::RadioButton("death", deathFlag);
-   
+        ImGui::RadioButton("check", checkPoint);
+
 
         ImGui::End();
     }
 #endif
+}
+
+void Player::CollisionPlayerVSGimmick()
+{
+    GimmickManager& gManager = GimmickManager::Instance();
+
+    int gimmickCount = gManager.GetGimmickCount();
+    for (int i = 0; i < gimmickCount; i++) {
+        Gimmick* gimmick = gManager.GetGimmick(i);
+        if (static_cast<int>(Identity::Save) != gimmick->GetIdentity() && static_cast<int>(Identity::End) != gimmick->GetIdentity()) continue;
+
+        if (Collision::AabbVsAabb(position, width, height, gimmick->GetPosition(), gimmick->GetWidth(), gimmick->GetHeight())) {
+            if (static_cast<int>(Identity::Save) == gimmick->GetIdentity()) checkPoint = true;
+            else goalPoint = true;
+        }
+    }
 }
 
 Vector3 Player::GetMoveVec() const
@@ -166,6 +213,8 @@ Vector3 Player::GetMoveVec() const
 
 bool Player::InputMove(float elapsedTime)
 {
+    if (deathFlag) return false;
+
     // 進行ベクトル所得
     Vector3 moveVec = GetMoveVec();
 
@@ -320,7 +369,48 @@ void Player::MouseRay(
             float length = sqrtf(vec.x * vec.x + vec.y * vec.y);
             if (length < distance) {
                 g->Collection();
+                break;
             }
         }
     }
+}
+
+// 待機ステート遷移
+void Player::TransitionIdleState()
+{
+    state = State::Idle;
+    animationLoop = false;
+
+    model->PlayAnimation(static_cast<int>(state));
+}
+
+// 待機ステート更新処理
+void Player::UpdateIdleState(float elapsedTime)
+{
+    //  移動入力処理
+    if (InputMove(elapsedTime)) TransitionMoveState();
+
+    // ジャンプ入力処理
+    if (InputJump()) TransitionMoveState();
+}
+
+// 移動ステートへ遷移
+void Player::TransitionMoveState()
+{
+    state = State::Move;
+
+    animationLoop = true;
+
+    model->PlayAnimation(static_cast<int>(state));
+}
+
+// 移動ステート更新処理
+void Player::UpdateMoveState(float elapsedTime)
+{
+    //  移動入力処理
+    if (!InputMove(elapsedTime)) TransitionIdleState();
+
+    // ジャンプ入力処理
+    //if (InputJump()) TransitionJumpState();
+    InputJump();
 }

@@ -35,13 +35,13 @@ Model::~Model()
 
 void Model::PlayAnimation(int index)
 {
-	auto it = model.find(this->index);
-	auto it2 = model.find(index);
-	SkinnedMesh::Animation::Keyframe keyframe;
-	const SkinnedMesh::Animation::Keyframe* keyframes[2] = {
-		&it->second.animationClips.at(80).sequence.at(80),
-		&it2->second.animationClips.at(0).sequence.at(0)
-	};
+	//auto it = model.find(this->index);
+	//auto it2 = model.find(index);
+	//SkinnedMesh::Animation::Keyframe keyframe;
+	//const SkinnedMesh::Animation::Keyframe* keyframes[2] = {
+	//	&it->second.animationClips.at(80).sequence.at(80),
+	//	&it2->second.animationClips.at(0).sequence.at(0)
+	//};
 	this->index = index;
 }
 
@@ -62,7 +62,7 @@ void Model::AnimationInput(const char* fbxFilename, int index)
 {
 }
 
-void Model::UpdateAnimation(float elapsedTime)
+void Model::UpdateAnimation(float elapsedTime, bool loop)
 {
 #if 0
 	float factor = 0.5f;
@@ -79,18 +79,23 @@ void Model::UpdateAnimation(float elapsedTime)
 	int clipIndex = 0;
 	int frameIndex = 0;
 	static float animationTick = 0;
+	bool check = false;
 
 	SkinnedMesh::Animation& animation = it->second.animationClips.at(clipIndex);//skinnedMeshes[0]->animationClips.at(clipIndex);
 	frameIndex = static_cast<int>(animationTick * animation.samplingRate);
 	if (frameIndex > animation.sequence.size() - 1) {
-		frameIndex = 0;
-		animationTick = 0;
+		check = true;
+		if (loop) {
+			frameIndex = 0;
+			animationTick = 0;
+			check = false;
+		}
 	}
 	else {
 		animationTick += elapsedTime;
 	}
 	
-	keyframe = &animation.sequence.at(frameIndex);
+	if (!check) keyframe = &animation.sequence.at(frameIndex);
 #endif
 }
 

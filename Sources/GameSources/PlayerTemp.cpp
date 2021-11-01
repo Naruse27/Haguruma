@@ -30,7 +30,7 @@ void PlayerTemp::Update(float elapsedTime)
 	UpdateTransform();
 	
 	// モデルアニメーション更新処理
-	model->UpdateAnimation(elapsedTime);
+    model->UpdateAnimation(elapsedTime, true);
 	
 	//モデル行列更新
 	model->UpdateTransform(transform);
@@ -38,7 +38,6 @@ void PlayerTemp::Update(float elapsedTime)
 
 void PlayerTemp::Render(ID3D11DeviceContext* deviceContext)
 {
-	//ID3D11DeviceContext* deviceContext = Framework::GetInstance().GetContext().Get();
 	model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::DEFAULT), true);
 	model->Render(deviceContext);
 }

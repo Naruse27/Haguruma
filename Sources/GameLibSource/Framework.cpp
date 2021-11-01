@@ -79,7 +79,12 @@ bool Framework::Initialize()
         swap_chain_desc1.Scaling = DXGI_SCALING_STRETCH;
         swap_chain_desc1.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
         swap_chain_desc1.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
-        hr = dxgi_factory2->CreateSwapChainForHwnd(device.Get(), hwnd, &swap_chain_desc1, nullptr, nullptr, swapChain.GetAddressOf());
+
+        DXGI_SWAP_CHAIN_FULLSCREEN_DESC swapCainFullScreen{};
+        swapCainFullScreen.Windowed = FALSE;
+        swapCainFullScreen.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+        swapCainFullScreen.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+        hr = dxgi_factory2->CreateSwapChainForHwnd(device.Get(), hwnd, &swap_chain_desc1, &swapCainFullScreen, nullptr, swapChain.GetAddressOf());
         _ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 
         Microsoft::WRL::ComPtr<ID3D11Texture2D> frame_buffer;
@@ -280,8 +285,6 @@ bool Framework::Initialize()
         }
         hr = device->CreateRasterizerState(&rasterizerDesc, rasterizerStates[static_cast<size_t>(RASTER_STATE::AAA)].GetAddressOf());
         _ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
-
-        skin = std::make_unique<SkinnedMesh>(device.Get(), "Data/Model/Player/Mma_Kick.fbx", false, -1.0f);
 
         CameraManager::Create();
         CameraManager::Instance().Init(device.Get());

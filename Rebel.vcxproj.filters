@@ -109,11 +109,8 @@
     <Filter Include="Library\ShadowMap">
       <UniqueIdentifier>{4ab90efe-0f4e-4100-877d-d9cbc25d5550}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Library\Shaders\Destruction">
-      <UniqueIdentifier>{da7d9db7-489c-432e-9fc6-c333a27b6ac9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Object">
-      <UniqueIdentifier>{999a9b64-367d-425b-99b2-119c40ae7f9c}</UniqueIdentifier>
+    <Filter Include="Library\Shaders\Debug">
+      <UniqueIdentifier>{8e2d9626-b502-49f4-8db9-0b3d7280c6e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -300,14 +297,14 @@
     <ClCompile Include="Sources\GameSources\SceneSelect2.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\GameSources\WoodenBox.cpp">
-      <Filter>Game\Object</Filter>
+    <ClCompile Include="Sources\GameLibSource\Graphics\DebugRenderer.cpp">
+      <Filter>Library\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\GameSources\DestructionManager.cpp">
-      <Filter>Game\Object</Filter>
+    <ClCompile Include="Sources\GameLibSource\Graphics\Fog.cpp">
+      <Filter>Library\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\GameSources\ObjectDestruction.cpp">
-      <Filter>Game\Object</Filter>
+    <ClCompile Include="Sources\GameSources\SceneResoult.cpp">
+      <Filter>Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -515,14 +512,14 @@
     <ClInclude Include="Sources\GameSources\SceneSelect2.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\GameSources\ObjectDestruction.h">
-      <Filter>Game\Object</Filter>
+    <ClInclude Include="Sources\GameLibSource\Graphics\DebugRenderer.h">
+      <Filter>Library\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\GameSources\WoodenBox.h">
-      <Filter>Game\Object</Filter>
+    <ClInclude Include="Sources\GameLibSource\Graphics\Fog.h">
+      <Filter>Library\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\GameSources\DestructionManager.h">
-      <Filter>Game\Object</Filter>
+    <ClInclude Include="Sources\GameSources\SceneResoult.h">
+      <Filter>Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -559,8 +556,8 @@
     <None Include="Shader\PhongSkinnedMesh.hlsli">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
     </None>
-    <None Include="Shader\Destruction.hlsli">
-      <Filter>Library\Shaders\Destruction</Filter>
+    <None Include="Shader\Debug.hlsli">
+      <Filter>Library\Shaders\Debug</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -618,14 +615,11 @@
     <FxCompile Include="Shader\PhongSkinnedMeshVS.hlsl">
       <Filter>Library\Shaders\SkinnedMesh</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\DestructionVS.hlsl">
-      <Filter>Library\Shaders\Destruction</Filter>
+    <FxCompile Include="Shader\DebugPS.hlsl">
+      <Filter>Library\Shaders\Debug</Filter>
     </FxCompile>
-    <FxCompile Include="Shader\DestructionPS.hlsl">
-      <Filter>Library\Shaders\Destruction</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\DestructionGS.hlsl">
-      <Filter>Library\Shaders\Destruction</Filter>
+    <FxCompile Include="Shader\DebugVS.hlsl">
+      <Filter>Library\Shaders\Debug</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

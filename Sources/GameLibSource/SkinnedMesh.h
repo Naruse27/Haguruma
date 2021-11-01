@@ -218,6 +218,9 @@ public:
 	{
 		DirectX::XMFLOAT4X4 world;
 		DirectX::XMFLOAT4 materialColor;
+		DirectX::XMFLOAT4 ambient;
+		DirectX::XMFLOAT4 diffuse;
+		DirectX::XMFLOAT4 speculer;
 		DirectX::XMFLOAT4X4 boneTransforms[MAX_BONES] = {
 			{ 1, 0, 0, 0,   0, 1, 0, 0,   0, 0, 1, 0,   0, 0, 0, 1 }
 		};
@@ -290,9 +293,9 @@ public:
 		uint64_t uniqueId = 0;
 		std::string name;
 
-		DirectX::XMFLOAT4 Ka = { 0.2f, 0.2f, 0.2f, 1.0f };
-		DirectX::XMFLOAT4 Kd = { 0.8f, 0.8f, 0.8f, 1.0f };
-		DirectX::XMFLOAT4 Ks = { 1.0f, 1.0f, 1.0f, 1.0f };
+		DirectX::XMFLOAT4 ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+		DirectX::XMFLOAT4 diffuse = { 0.8f, 0.8f, 0.8f, 1.0f };
+		DirectX::XMFLOAT4 speculer = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 		std::string textureFilenames[4];
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> shaderResourceViews[4];
@@ -300,7 +303,7 @@ public:
 		template < class T>
 		void serialize(T& archive)
 		{
-			archive(uniqueId, name, Ka, Kd, Ks, textureFilenames);
+			archive(uniqueId, name, ambient, diffuse, speculer, textureFilenames);
 		}
 	};
 	std::unordered_map<uint64_t, Material> materials;

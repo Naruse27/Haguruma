@@ -1,12 +1,12 @@
 #include "GimmickPoint.h"
 #include "GameLibSource/Shader.h"
 
-GimmickPoint::GimmickPoint(ID3D11Device* device)
+GimmickPoint::GimmickPoint(ID3D11Device* device, Identity itentity, bool goal)
 {
     model.reset(new Model(device, "Data/Model/Gimmick/start.fbx", true, 0, TRUE));
-    identitiy = Identity::Start;
-
-    position = { 0, 0, 10 };
+    identitiy = itentity;
+    goalFlag = goal;
+    position = { 0, 0, 0 };
 }
 
 GimmickPoint::~GimmickPoint()

@@ -1,11 +1,15 @@
 #include "MetaAI.h"
 
+Meta::Meta(Player* pl, GimmickManager* gManager) : player(pl), gimmickManager(gManager)
+{
+}
+
 void Meta::Update()
 {
 	// ここで自発的にメタAIが監視している処理があれば記載する
 	// 今課題ではメタAIのイベントトリガーはメッセージを受信したときのため記述する処理は無し
 	if (player->GetDeathFlag()) SendMessaging(static_cast<int>(Identity::Player), static_cast<int>(Identity::Meta), MESSAGE_TYPE::MSG_PLAYER_DEATH);
-	
+	if (player->GetCheckPointFlag()) SendMessaging(static_cast<int>(Identity::Player), static_cast<int>(Identity::Meta), MESSAGE_TYPE::MSG_CALL_ARRIVAL_CHECCK_POINT);
 }
 
 // このメソッドはtelegramクラスを作成して
@@ -41,13 +45,23 @@ bool Meta::HandleMessage(const Telegram& msg)
 // メッセージ受信したときの処理
 bool Meta::OnMessage(const Telegram& receiveGimmick)
 {
+	Gimmick* gimiick = nullptr;
 	switch (receiveGimmick.msg)
 	{
 	case MESSAGE_TYPE::MSG_PLAYER_DEATH:
 		++deathCount;
 
-		Gimmick* gimiick = gimmickManager->GetGimmickFromId(player->GetStartGimmickID());
+		gimiick = gimmickManager->GetGimmickFromId(player->GetStartGimmickID());
 		player->SetPosition(gimiick->GetPosition());
+
+		SendMessaging(static_cast<int>(Identity::Meta), static_cast<int>(Identity::Player), MESSAGE_TYPE::MSG__CALL_REVIVAL_POSSIBLE);
+		return true;
+		break;
+
+	case MESSAGE_TYPE::MSG_CALL_ARRIVAL_CHECCK_POINT:
+		player->SetStartGimmickID(player->GetCheckPointID());
+		//gimiick = gimmickManager->GetGimmickFromId(player->GetCheckPointID());
+		//player->SetPosition(gimiick->GetPosition());
 
 		SendMessaging(static_cast<int>(Identity::Meta), static_cast<int>(Identity::Player), MESSAGE_TYPE::MSG__CALL_REVIVAL_POSSIBLE);
 		return true;

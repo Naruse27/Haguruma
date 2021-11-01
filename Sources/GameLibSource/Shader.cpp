@@ -10,8 +10,6 @@ void Shader::LoadCSO(ID3D11Device* device, const char* csoNameOfVertexShader, co
 
 void ShaderSystem::Init(ID3D11Device* device)
 {
-	//Microsoft::WRL::ComPtr<ID3D11Device> device = Framework::GetInstance().GetDevice();
-
 	// Load Shader Of SkinnedMesh
 	{
 		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] = {
@@ -23,7 +21,7 @@ void ShaderSystem::Init(ID3D11Device* device)
 		{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		shaderOfSkinnedMesh[ShaderOfSkinnedMesh::DEFAULT].LoadCSO(device, "Data/Shader/SkinnedMeshVS.cso", "Data/Shader/SkinnedMeshPS.cso", inputElementDesc, ARRAYSIZE(inputElementDesc));
-		//shaderOfSkinnedMesh[ShaderOfSkinnedMesh::PHONE].LoadCSO(device.Get(), "Data/Shader/PhoneSkinnedMeshVS.cso", "Data/Shader/PhoneSkinnedMeshPS.cso", ieDescOfSkinnedMesh, ARRAYSIZE(ieDescOfSkinnedMesh));
+		shaderOfSkinnedMesh[ShaderOfSkinnedMesh::PHONE].LoadCSO(device, "Data/Shader/PhongSkinnedMeshVS.cso", "Data/Shader/PhongSkinnedMeshPS.cso", inputElementDesc, ARRAYSIZE(inputElementDesc));
 		shaderOfSkinnedMesh[ShaderOfSkinnedMesh::NORMAL_MAP].LoadCSO(device, "Data/Shader/NormalMapSkinnedMeshVS.cso", "Data/Shader/NormalMapSkinnedMeshPS.cso", inputElementDesc, ARRAYSIZE(inputElementDesc));
 	}
 	//

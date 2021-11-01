@@ -7,7 +7,17 @@
 #include "StageMain.h"
 #include "StageWall.h"
 #include "MetaAI.h"
+#include "GameLibSource/Graphics/Fog.h"
+#include "GameLibSource/Blender.h"
 
+struct UI
+{
+	std::shared_ptr<Sprite> uiSpr;
+	Vector2 pos;
+	Vector2 size;
+	Vector2 scale;
+	Vector2 pivot;
+};
 
 class SceneGame : public Scene
 {
@@ -26,12 +36,31 @@ public:
 
 	// 描画処理
 	virtual void Render(float elapsedTime) override;
+
+	// ゲームリセット
+	void Reset();
+
+	// UI用↓
+	void UIupdate();
+
+	void UiSetting();
+
+	void UiCheng(int num);
+
 private:
 	Player* player = nullptr;
 	StageMain* stageMain = nullptr;
 	StageWall* stageWall = nullptr;
 	CameraControl* cameraController = nullptr;
-	std::unique_ptr<Meta> metaAi;
+	std::shared_ptr<Meta> metaAi;
+	std::shared_ptr<Fog> fog;
+
+	std::shared_ptr<Blender> blender;
+
+	// UI用
+	bool select = false;
+	UI ui[3];
+	int startId = 0;
 };
 
 #endif // !SCENEGAME

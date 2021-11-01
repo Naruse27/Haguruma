@@ -6,7 +6,7 @@
 class GimmickPoint : public Gimmick
 {
 public:
-	GimmickPoint(ID3D11Device* device);
+	GimmickPoint(ID3D11Device* device, Identity itentity, bool goal);
 	~GimmickPoint() override;
 
 	// 更新
@@ -20,8 +20,13 @@ public:
 
 	// メッセージ所得
 	bool OnMessage(const Telegram& telegram) override;
-private:
 
+	bool GetRegistration() { return registration; }
+	void SetRegistration(bool flag) { registration = flag; }
+
+private:
+	bool registration = false;
+	bool goalFlag = false; // ゴールポイントかどうか
 };
 
 

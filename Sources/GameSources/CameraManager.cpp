@@ -25,6 +25,15 @@ void CameraManager::Init(ID3D11Device* device)
     bgEditorView.SetLookAt(DirectX::XMFLOAT3(0, 10, -10),
         DirectX::XMFLOAT3(0, 0, 0),
         DirectX::XMFLOAT3(0, 1, 0));
+
+    float aspectRatio = 1920.0f / 1080.0f;
+
+    mainView.SetPerspectiveFov(
+        DirectX::XMConvertToRadians(30),
+        aspectRatio,
+        0.1f,
+        1000.0f
+    );
 }
 
 void CameraManager::CreateBuffer(ID3D11Device* device)
@@ -47,17 +56,12 @@ void CameraManager::CreateBuffer(ID3D11Device* device)
 
 void CameraManager::SetCameraView(ID3D11DeviceContext* deviceContext, Camera* camera)
 {
-    D3D11_VIEWPORT viewport;
-    UINT numViewports = 1;
-    deviceContext->RSGetViewports(&numViewports, &viewport);
+    //D3D11_VIEWPORT viewport;
+    //UINT numViewports = 1;
+    //deviceContext->RSGetViewports(&numViewports, &viewport);
 
-    float aspectRatio = viewport.Width / viewport.Height;
-    mainView.SetPerspectiveFov(
-        DirectX::XMConvertToRadians(30),
-        aspectRatio,
-        0.1f,
-        1000.0f
-    );
+    //float aspectRatio = viewport.Width / viewport.Height;
+    
     //DirectX::XMMATRIX P = DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(30), aspectRatio, 0.1f, 1000.0f);
     DirectX::XMMATRIX P = DirectX::XMLoadFloat4x4(&camera->GetProjection());
     DirectX::XMVECTOR eye = DirectX::XMLoadFloat3(&camera->GetEye());
@@ -75,6 +79,7 @@ void CameraManager::SetCameraView(ID3D11DeviceContext* deviceContext, Camera* ca
     DirectX::XMStoreFloat4x4(&data.viewProjection, V * P);
     //camera->SetProjection(data.viewProjection);
     data.lightDirection = lightDirection;
+    data.lightColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     data.cameraPosition = c;
     deviceContext->UpdateSubresource(this->constntBuffer.Get(), 0, 0, &data, 0, 0);
     deviceContext->VSSetConstantBuffers(1, 1, this->constntBuffer.GetAddressOf());

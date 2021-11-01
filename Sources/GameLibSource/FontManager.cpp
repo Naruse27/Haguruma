@@ -21,6 +21,7 @@ void FontManager::TexOut(float elapsedTime, Vector2 position, Vector2 size, stat
 	_ASSERT_EXPR(SUCCEEDED(hr), hr_trace(hr));
 }
 
+#include <string>
 void FontManager::TexOut(Vector2 position, Vector2 size, static const wchar_t message[], int num)
 {
 	HRESULT hr{ S_OK };

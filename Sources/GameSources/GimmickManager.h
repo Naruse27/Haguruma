@@ -22,6 +22,9 @@ public:
 	// 描画
 	void Render(ID3D11DeviceContext* deviceContext, float elapsedTIme);
 
+	// デバック用
+	void DebugRender();
+
 	// 初期化
 	void Clear();
 
@@ -40,6 +43,7 @@ public:
 
 	// 付与したIDからエネミーを取得
 	Gimmick* GetGimmickFromId(int id);
+
 private:
 	//std::vector<std::unique_ptr<Gimmick>> gimmicks;
 	std::vector<Gimmick*> gimmicks;

@@ -6,7 +6,6 @@
 #include "texture.h"
 #include <filesystem>
 #include <fstream>
-//#include "shader.h"
 #include "Shader.h"
 #include "ResourceManager.h"
 #include "Light.h"
@@ -47,7 +46,7 @@ void FetchBoneInfluences(const FbxMesh* fbxMesh, std::vector<BoneInfluencesPerCo
 SkinnedMesh::SkinnedMesh(ID3D11Device* device, const char* fbxFilename, bool triangulate, float samplingRate) {
 
 	std::filesystem::path cerealFilename(fbxFilename);
-	cerealFilename.replace_extension("cereal");
+	cerealFilename.replace_extension("Numbers");
 	if (std::filesystem::exists(cerealFilename.c_str())) {
 		std::ifstream ifs(cerealFilename.c_str(), std::ios::binary);
 		cereal::BinaryInputArchive deserialization(ifs);
@@ -254,10 +253,10 @@ void SkinnedMesh::FetchMaterials(FbxScene* fbxScene, std::unordered_map<uint64_t
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
 				if (fbxProperty.IsValid()) {
 					const FbxDouble3 color = fbxProperty.Get<FbxDouble3>();
-					material.Kd.x = static_cast<float>(color[0]);
-					material.Kd.y = static_cast<float>(color[1]);
-					material.Kd.z = static_cast<float>(color[2]);
-					material.Kd.w = 1.0f;
+					material.diffuse.x = static_cast<float>(color[0]);
+					material.diffuse.y = static_cast<float>(color[1]);
+					material.diffuse.z = static_cast<float>(color[2]);
+					material.diffuse.w = 1.0f;
 
 					const FbxFileTexture* fbxTexture = fbxProperty.GetSrcObject<FbxFileTexture>();
 					material.textureFilenames[0] = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
@@ -265,10 +264,10 @@ void SkinnedMesh::FetchMaterials(FbxScene* fbxScene, std::unordered_map<uint64_t
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sAmbient);
 				if (fbxProperty.IsValid()) {
 					const FbxDouble3 color = fbxProperty.Get<FbxDouble3>();
-					material.Ka.x = static_cast<float>(color[0]);
-					material.Ka.y = static_cast<float>(color[1]);
-					material.Ka.z = static_cast<float>(color[2]);
-					material.Ka.w = 1.0f;
+					material.ambient.x = static_cast<float>(color[0]);
+					material.ambient.y = static_cast<float>(color[1]);
+					material.ambient.z = static_cast<float>(color[2]);
+					material.ambient.w = 1.0f;
 
 					const FbxFileTexture* fbxTexture = fbxProperty.GetSrcObject<FbxFileTexture>();
 					material.textureFilenames[1] = fbxTexture ? fbxTexture->GetRelativeFileName() : "";
@@ -276,10 +275,10 @@ void SkinnedMesh::FetchMaterials(FbxScene* fbxScene, std::unordered_map<uint64_t
 				fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::sSpecular);
 				if (fbxProperty.IsValid()) {
 					const FbxDouble3 color = fbxProperty.Get<FbxDouble3>();
-					material.Ks.x = static_cast<float>(color[0]);
-					material.Ks.y = static_cast<float>(color[1]);
-					material.Ks.z = static_cast<float>(color[2]);
-					material.Ks.w = 1.0f;
+					material.speculer.x = static_cast<float>(color[0]);
+					material.speculer.y = static_cast<float>(color[1]);
+					material.speculer.z = static_cast<float>(color[2]);
+					material.speculer.w = 1.0f;
 				}
 				//fbxProperty = fbxMaterial->FindProperty(FbxSurfaceMaterial::)
 
@@ -448,16 +447,6 @@ void SkinnedMesh::CreateComObjects(ID3D11Device* device, const char* fbxFilename
 		}
 	}
 
-	D3D11_INPUT_ELEMENT_DESC inputElementDesc[] = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TANGENT",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "WEIGHTS",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "BONES",    0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	ResourceManager::CreateVsFromCso(device, "Data/Shader/NormalMapSkinnedMeshVS.cso", vertexShader.ReleaseAndGetAddressOf(), inputLayout.ReleaseAndGetAddressOf(), inputElementDesc, ARRAYSIZE(inputElementDesc));
-	ResourceManager::CreatePsFromCso(device, "Data/Shader/NormalMapSkinnedMeshPS.cso", pixelShader.ReleaseAndGetAddressOf());
 
 	//シーン定数バッファオブジェクト生成
 	D3D11_BUFFER_DESC bufferDesc{};
@@ -676,7 +665,7 @@ void SkinnedMesh::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMFL
 		for (const Mesh::Subset& subset : mesh.subsets)
 		{
 			const Material& material{ materials.at(subset.materialUniqueId) };
-			XMStoreFloat4(&data.materialColor, XMLoadFloat4(&materialColor) * XMLoadFloat4(&material.Kd));
+			XMStoreFloat4(&data.materialColor, XMLoadFloat4(&materialColor) * XMLoadFloat4(&material.diffuse));
 			deviceContext->UpdateSubresource(constantBuffer.Get(), 0, 0, &data, 0, 0);
 			deviceContext->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
 
@@ -823,7 +812,10 @@ void SkinnedMesh::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMFL
 		for (const Mesh::Subset& subset : mesh.subsets)
 		{
 			const Material& material{ materials.at(subset.materialUniqueId) };
-			XMStoreFloat4(&data.materialColor, XMLoadFloat4(&materialColor) * XMLoadFloat4(&material.Kd));
+			XMStoreFloat4(&data.materialColor, XMLoadFloat4(&materialColor) * XMLoadFloat4(&material.diffuse));
+			data.ambient = material.ambient;
+			data.diffuse = material.diffuse;
+			data.speculer = material.speculer;
 			deviceContext->UpdateSubresource(constantBuffer.Get(), 0, 0, &data, 0, 0);
 			deviceContext->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
 

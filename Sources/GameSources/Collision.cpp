@@ -458,6 +458,19 @@ void Collision::CircleExtrusion(DirectX::XMFLOAT2& pos1, float radius1, DirectX:
 }
 
 //******************************************************
+//点　vs　矩形
+//******************************************************
+bool Collision::PointVsRect(const DirectX::XMFLOAT2& pos1, const DirectX::XMFLOAT2 pos2, const DirectX::XMFLOAT2 size2)
+{
+	if (pos2.x > pos1.x) return false;
+	if (pos2.y > pos1.y) return false;
+	if (pos2.x + size2.x < pos1.x) return false;
+	if (pos2.y + size2.y < pos1.y) return false;
+
+	return true;
+}
+
+//******************************************************
 //カプセル　vs　円
 //******************************************************
 //bool Collision::CapsuleVsCircleAndExtrusion(DirectX::XMFLOAT3& nowPos1, DirectX::XMFLOAT3 oldPos1, float radius1, DirectX::XMFLOAT3 pos2, float radius2)

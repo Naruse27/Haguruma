@@ -36,45 +36,10 @@ CONST BOOL FULLSCREEN = FALSE;
 CONST LPCWSTR APPLICATION_NAME = L"Rebel";
 
 #include "Input/Input.h"
+#include "Graphics/Graphics.h"
 
 class Framework
 {
-public:
-	enum BLEND_STATE
-	{
-		BS_NONE, BS_ALPHA, BS_ADD, BS_SUBTRACT, BS_REPLACE,
-		BS_MULTIPLY, BS_LIGHTEN, BS_DARKEN, BS_SCREEN, BS_END
-	};
-
-	struct SceneConstants
-	{
-		DirectX::XMFLOAT4X4 viewProjection; //ビュー・プロジェクション変換行列
-		DirectX::XMFLOAT4 lightDirection; //ライトの向き
-		DirectX::XMFLOAT4 cameraPosition;//カメラ位置
-	
-	};
-	//struct TexcoordDa
-	//{
-	//	DirectX::XMFLOAT2 texcoordDa;
-	//	DirectX::XMFLOAT2 texcoordDa2;
-	//};
-	//struct LinearConstants
-	//{
-	//	float startPoint;
-	//	float endPoint;
-	//};
-	//struct BlurConstans
-	//{
-	//	float exposure;
-	//	float gamma;
-	//	float bloomIntensity;
-	//	DirectX::XMFLOAT3 blurColor;
-	//	int gaussianHalfKernelSize;
-	//	float gaussianSigma;
-	//};
-
-	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffers[8];
-
 public:
 	CONST HWND hwnd;
 
@@ -91,27 +56,11 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> renderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencilView;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerStates[3];
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShaders[8];
-
+	//Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShaders[8];
+	//
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rasterizerStates[5];
-
+	//
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depthStencilStates[4];
-	//std::unique_ptr<Blender> blender;
-	//
-	//
-	//std::unique_ptr<Sprite> sprites[8];
-	//std::unique_ptr<SpriteBatch> spriteBatches[8];
-	//std::unique_ptr<Sprite> fonts;
-	////std::unique_ptr<GeometricPrimitive> geometricPrimitives[8];
-	//std::unique_ptr<StaticMesh> staticMeshes[8];
-	//std::unique_ptr<SkinnedMesh> skinnedMeshes[8];
-	//std::unique_ptr<FrameBuffer> framebuffers[11];
-	//std::unique_ptr<FullscreenQuad> bitBlockTransfer;
-
-	std::unique_ptr<Sprite> sprite;
-	std::unique_ptr<SkinnedMesh> skin;
-
-	std::unique_ptr<Model> model;
 
 	enum class SAMPLER_STATE {
 		POINT,
@@ -150,36 +99,8 @@ public:
 	DirectX::XMFLOAT4 rotationAxis = { 1.0f,0.0f,0.0f,0.0f };
 	
 	Input input;
-
-	//const DirectX::XMFLOAT4X4 coordinateSystemTransforms[4] = {
-	//	{ -1, 0, 0, 0,   0, 1,  0, 0,   0, 0, 1, 0,   0, 0, 0, 1 }, // 0:RHS Y-UP
-	//	{  1, 0, 0, 0,   0, 1,  0, 0,   0, 0, 1, 0,   0, 0, 0, 1 }, // 1:LHS Y-UP
-	//	{ -1, 0, 0, 0,   0, 0, -1, 0,   0, 1, 0, 0,   0, 0, 0, 1 }, // 2:RHS Z-UP
-	//	{  1, 0, 0, 0,   0, 0,  1, 0,   0, 1, 0, 0,   0, 0, 0, 1 }, // 3:LHS Z-UP
-	//};
-	//
-	////ImGUI
-	//DirectX::XMFLOAT4 cameraPosition = { 0.0f, 0.0f, -10.0f, 1.0f };
-	//DirectX::XMFLOAT4 lightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
-	//DirectX::XMFLOAT4 scale = { 1.0f,1.0f,1.0f,0.0f };
-	//DirectX::XMFLOAT4 rotate = { 0.0f,0.0f,0.0f,0.0f };
-	//DirectX::XMFLOAT4 translate = { 0.0f,0.0f,0.0f,0.0f };
-	//DirectX::XMFLOAT4 materialColor = { 1.0f,1.0f,1.0f,1.0f };
-	//
-	//DirectX::XMFLOAT4 rotationAxis = { 1.0f,0.0f,0.0f,0.0f };
-	//float rotation = 1.5f;
-	//float trans = 300.0f;
-	//
-	//float factor = 0.5f;
-	//
-	//float startPos = 0.6f;
-	//float endPos = 0.8f;
-	//float exposure = 1.2f;
-	//float gamma = 2.2f;
-	//float bloomIntensity = 1.0f;
-	//DirectX::XMFLOAT3 blurColor = { 0,0,0 };
-	//int gaussianHalfKernelSize = 3;
-	//float gaussianSigma = 1.0f;
+	//Graphics graphics;
+	
 public:
 
 	Framework(HWND hwnd);

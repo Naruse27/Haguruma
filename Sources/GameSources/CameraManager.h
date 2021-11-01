@@ -29,6 +29,7 @@ public:
 	{
 		DirectX::XMFLOAT4X4 viewProjection; //ビュー・プロジェクション変換行列
 		DirectX::XMFLOAT4 lightDirection; //ライトの向き
+		DirectX::XMFLOAT4 lightColor; // ライトの色
 		DirectX::XMFLOAT4 cameraPosition;//カメラ位置
 	};
 

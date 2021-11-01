@@ -27,6 +27,8 @@
     <ClCompile Include="Sources\GameLibSource\FontManager.cpp" />
     <ClCompile Include="Sources\GameLibSource\Framework.cpp" />
     <ClCompile Include="Sources\GameLibSource\GeometricPrimitive.cpp" />
+    <ClCompile Include="Sources\GameLibSource\Graphics\DebugRenderer.cpp" />
+    <ClCompile Include="Sources\GameLibSource\Graphics\Fog.cpp" />
     <ClCompile Include="Sources\GameLibSource\Graphics\Graphics.cpp" />
     <ClCompile Include="Sources\GameLibSource\Light.cpp" />
     <ClCompile Include="Sources\GameLibSource\Main.cpp" />
@@ -47,7 +49,6 @@
     <ClCompile Include="Sources\GameSources\CameraManager.cpp" />
     <ClCompile Include="Sources\GameSources\Character.cpp" />
     <ClCompile Include="Sources\GameSources\Collision.cpp" />
-    <ClCompile Include="Sources\GameSources\DestructionManager.cpp" />
     <ClCompile Include="Sources\GameSources\Easing.cpp" />
     <ClCompile Include="Sources\GameSources\Effect.cpp" />
     <ClCompile Include="Sources\GameSources\EffectManager.cpp" />
@@ -57,12 +58,12 @@
     <ClCompile Include="Sources\GameSources\GimmickPoint.cpp" />
     <ClCompile Include="Sources\GameSources\Mathf.cpp" />
     <ClCompile Include="Sources\GameSources\MetaAI.cpp" />
-    <ClCompile Include="Sources\GameSources\ObjectDestruction.cpp" />
     <ClCompile Include="Sources\GameSources\Player.cpp" />
     <ClCompile Include="Sources\GameSources\PlayerTemp.cpp" />
     <ClCompile Include="Sources\GameSources\SceneGame.cpp" />
     <ClCompile Include="Sources\GameSources\SceneLoading.cpp" />
     <ClCompile Include="Sources\GameSources\SceneManager.cpp" />
+    <ClCompile Include="Sources\GameSources\SceneResoult.cpp" />
     <ClCompile Include="Sources\GameSources\SceneSelect.cpp" />
     <ClCompile Include="Sources\GameSources\SceneSelect2.cpp" />
     <ClCompile Include="Sources\GameSources\SceneTitle.cpp" />
@@ -73,7 +74,6 @@
     <ClCompile Include="Sources\GameSources\StageWall.cpp" />
     <ClCompile Include="Sources\GameSources\StageWindmill.cpp" />
     <ClCompile Include="Sources\GameSources\Stand.cpp" />
-    <ClCompile Include="Sources\GameSources\WoodenBox.cpp" />
     <ClCompile Include="Sources\ImGui\imgui.cpp" />
     <ClCompile Include="Sources\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Sources\ImGui\imgui_impl_dx11.cpp" />
@@ -94,6 +94,8 @@
     <ClInclude Include="Sources\GameLibSource\FontManager.h" />
     <ClInclude Include="Sources\GameLibSource\Framework.h" />
     <ClInclude Include="Sources\GameLibSource\GeometricPrimitive.h" />
+    <ClInclude Include="Sources\GameLibSource\Graphics\DebugRenderer.h" />
+    <ClInclude Include="Sources\GameLibSource\Graphics\Fog.h" />
     <ClInclude Include="Sources\GameLibSource\Graphics\Graphics.h" />
     <ClInclude Include="Sources\GameLibSource\high_resolution_timer.h" />
     <ClInclude Include="Sources\GameLibSource\Light.h" />
@@ -116,7 +118,6 @@
     <ClInclude Include="Sources\GameSources\CameraManager.h" />
     <ClInclude Include="Sources\GameSources\Character.h" />
     <ClInclude Include="Sources\GameSources\Collision.h" />
-    <ClInclude Include="Sources\GameSources\DestructionManager.h" />
     <ClInclude Include="Sources\GameSources\Easing.h" />
     <ClInclude Include="Sources\GameSources\Effect.h" />
     <ClInclude Include="Sources\GameSources\EffectManager.h" />
@@ -126,13 +127,13 @@
     <ClInclude Include="Sources\GameSources\GimmickPoint.h" />
     <ClInclude Include="Sources\GameSources\Mathf.h" />
     <ClInclude Include="Sources\GameSources\MetaAI.h" />
-    <ClInclude Include="Sources\GameSources\ObjectDestruction.h" />
     <ClInclude Include="Sources\GameSources\Player.h" />
     <ClInclude Include="Sources\GameSources\PlayerTemp.h" />
     <ClInclude Include="Sources\GameSources\Scene.h" />
     <ClInclude Include="Sources\GameSources\SceneGame.h" />
     <ClInclude Include="Sources\GameSources\SceneLoading.h" />
     <ClInclude Include="Sources\GameSources\SceneManager.h" />
+    <ClInclude Include="Sources\GameSources\SceneResoult.h" />
     <ClInclude Include="Sources\GameSources\SceneSelect.h" />
     <ClInclude Include="Sources\GameSources\SceneSelect2.h" />
     <ClInclude Include="Sources\GameSources\SceneTitle.h" />
@@ -144,7 +145,6 @@
     <ClInclude Include="Sources\GameSources\StageWindmill.h" />
     <ClInclude Include="Sources\GameSources\Stand.h" />
     <ClInclude Include="Sources\GameSources\Telegram.h" />
-    <ClInclude Include="Sources\GameSources\WoodenBox.h" />
     <ClInclude Include="Sources\ImGui\imconfig.h" />
     <ClInclude Include="Sources\ImGui\imgui.h" />
     <ClInclude Include="Sources\ImGui\imgui_impl_dx11.h" />
@@ -161,7 +161,7 @@
     <None Include="Shader\Billboard.hlsli" />
     <None Include="Shader\Constants.hlsli" />
     <None Include="Shader\ConveyorSkinnedMesh.hlsli" />
-    <None Include="Shader\Destruction.hlsli" />
+    <None Include="Shader\Debug.hlsli" />
     <None Include="Shader\Function.hlsli" />
     <None Include="Shader\GeometricPrimitive.hlsli" />
     <None Include="Shader\NormalMapSkinnedMesh.hlsli" />
@@ -188,26 +188,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\DestructionGS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Shader\DestructionPS.hlsl">
+    <FxCompile Include="Shader\DebugPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\DestructionVS.hlsl">
+    <FxCompile Include="Shader\DebugVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Shader\GeometricPrimitivePS.hlsl">

@@ -22,6 +22,9 @@ cbuffer OBJECT_CONSTANT_BUFFER : register(b0)
 {
     row_major float4x4 world;
     float4 materialColor;
+    float4 ambient;
+    float4 diffuse;
+    float4 speculer;
     row_major float4x4 boneTransforms[MAX_BONES];
 };
 
@@ -30,7 +33,12 @@ cbuffer SCENE_CONSTANT_BUFFER : register(b1)
 {
     row_major float4x4 viewProjection;
     float4 lightDirection;
+    float4 lightColor;
     float4 cameraPosition;
 };
 
-
+cbuffer FOG_CONSTANT_BUFFER : register(b5)
+{
+    float4 fogColor;
+    float4 fogRange;
+}

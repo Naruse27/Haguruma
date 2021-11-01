@@ -23,7 +23,7 @@ public:
 	void PlayAnimation(int index);
 
 	// アニメーション更新
-	void UpdateAnimation(float elapsedTime);
+	void UpdateAnimation(float elapsedTime, bool loop);
 
 	//// アニメーション更新処理
 	//void UpdateAnimation(float elapsedTime);
