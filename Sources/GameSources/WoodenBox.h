@@ -33,6 +33,8 @@ private:
 	float positionFactor = 1.0f;
 	float destruction = 0.0f;
 
+	const float ERACEFLOAT = 0.05f;
+
 	//ジオメトリ用
 	Microsoft::WRL::ComPtr<ID3D11Buffer> destructionBuffer;
 };

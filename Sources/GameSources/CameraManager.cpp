@@ -79,4 +79,5 @@ void CameraManager::SetCameraView(ID3D11DeviceContext* deviceContext, Camera* ca
     deviceContext->UpdateSubresource(this->constntBuffer.Get(), 0, 0, &data, 0, 0);
     deviceContext->VSSetConstantBuffers(1, 1, this->constntBuffer.GetAddressOf());
     deviceContext->PSSetConstantBuffers(1, 1, this->constntBuffer.GetAddressOf());
+    deviceContext->GSSetConstantBuffers(1, 1, this->constntBuffer.GetAddressOf());
 }

@@ -6,7 +6,8 @@ void Shader::LoadCSO(ID3D11Device* device, const char* csoNameOfVertexShader, co
 {
 	ResourceManager::CreateVsFromCso(device, csoNameOfVertexShader, vertexShader.GetAddressOf(), inputLayout.GetAddressOf(), inputElementDesc, numElements);
 	ResourceManager::CreatePsFromCso(device, csoNameOfPixelShader, pixelShader.GetAddressOf());
-	if(csoNameOfGeometryShader != nullptr)ResourceManager::CreateGsFromCso(device, csoNameOfGeometryShader, geometryShader.GetAddressOf());
+	if(csoNameOfGeometryShader != nullptr)
+		ResourceManager::CreateGsFromCso(device, csoNameOfGeometryShader, geometryShader.GetAddressOf());
 }
 
 void ShaderSystem::Init(ID3D11Device* device)

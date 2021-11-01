@@ -2,7 +2,7 @@
 
 WoodenBox::WoodenBox(ID3D11Device* device, DestructionManager* mgr) :ObjectDestruction(device,mgr)
 {
-	model.reset(new Model(device, "Data/Model/Stage/texture1.fbx", true, 0, TRUE));
+	model.reset(new Model(device, "Data/Model/Stage/dai2.fbx", true, 0, TRUE));
 	//シーン定数バッファオブジェクト生成
 	D3D11_BUFFER_DESC bufferDesc{};
 	{
@@ -48,8 +48,8 @@ void WoodenBox::Render(ID3D11DeviceContext* deviceContext, float elapsedTime)
 		deviceContext->UpdateSubresource(destructionBuffer.Get(), 0, 0, &data, 0, 0);
 		deviceContext->GSSetConstantBuffers(3, 1, destructionBuffer.GetAddressOf());
 	}
-	model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::DEFAULT), true);
-	//model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetDestructionShader(), true);
+	//model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::DEFAULT), true);
+	model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetDestructionShader(), true);
 	model->Render(deviceContext);
 }
 

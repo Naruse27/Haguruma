@@ -45,5 +45,4 @@ protected:
 
 	//‰ó‚ê‚½‚©‚Ç‚¤‚©
 	bool dest = false;
-	const float ERACEFLOAT = 0.005f;
 };
