@@ -66,6 +66,7 @@ void Player::Update(float elapsedTime)
         gear[i]->SetTarget(setPosition);
     }
 
+<<<<<<< HEAD
     if (deathFlag) {
         scale2d.x += 1.0f * elapsedTime;
         scale2d.y += 1.0f * elapsedTime;
@@ -73,6 +74,9 @@ void Player::Update(float elapsedTime)
     }
 
     (this->*UpdateState[static_cast<int>(state)])(elapsedTime);
+=======
+    
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
 
      InputMove(elapsedTime);
 
@@ -94,6 +98,14 @@ void Player::Update(float elapsedTime)
     model->UpdateTransform(transform);
 
 
+<<<<<<< HEAD
+=======
+    if (deathFlag) {
+        scale2d.x += 1.0f * elapsedTime;
+        scale2d.y += 1.0f * elapsedTime;
+    }
+
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
     CollisionPlayerVSGimmick();
 }
 
@@ -160,7 +172,11 @@ void Player::CollisionPlayerVSGimmick()
 
         if (Collision::AabbVsAabb(position, width, height, gimmick->GetPosition(), gimmick->GetWidth(), gimmick->GetHeight())) {
             if (static_cast<int>(Identity::Save) == gimmick->GetIdentity()) checkPoint = true;
+<<<<<<< HEAD
             else goalPoint = true;
+=======
+            else checkPoint = true;
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
         }
     }
 }

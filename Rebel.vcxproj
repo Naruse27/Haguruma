@@ -68,7 +68,6 @@
     <ClCompile Include="Sources\GameSources\SceneSelect2.cpp" />
     <ClCompile Include="Sources\GameSources\SceneTitle.cpp" />
     <ClCompile Include="Sources\GameSources\Stage.cpp" />
-    <ClCompile Include="Sources\GameSources\StageConveyor.cpp" />
     <ClCompile Include="Sources\GameSources\StageMain.cpp" />
     <ClCompile Include="Sources\GameSources\StageManager.cpp" />
     <ClCompile Include="Sources\GameSources\StageWall.cpp" />
@@ -138,7 +137,6 @@
     <ClInclude Include="Sources\GameSources\SceneSelect2.h" />
     <ClInclude Include="Sources\GameSources\SceneTitle.h" />
     <ClInclude Include="Sources\GameSources\Stage.h" />
-    <ClInclude Include="Sources\GameSources\StageConveyor.h" />
     <ClInclude Include="Sources\GameSources\StageMain.h" />
     <ClInclude Include="Sources\GameSources\StageManager.h" />
     <ClInclude Include="Sources\GameSources\StageWall.h" />
@@ -160,8 +158,13 @@
   <ItemGroup>
     <None Include="Shader\Billboard.hlsli" />
     <None Include="Shader\Constants.hlsli" />
+<<<<<<< HEAD
     <None Include="Shader\ConveyorSkinnedMesh.hlsli" />
     <None Include="Shader\Debug.hlsli" />
+=======
+    <None Include="Shader\Debug.hlsli" />
+    <None Include="Shader\Destruction.hlsli" />
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
     <None Include="Shader\Function.hlsli" />
     <None Include="Shader\GeometricPrimitive.hlsli" />
     <None Include="Shader\NormalMapSkinnedMesh.hlsli" />
@@ -180,14 +183,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shader\ConveyorSkinnedMeshPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Shader\ConveyorSkinnedMeshVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-    </FxCompile>
     <FxCompile Include="Shader\DebugPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -195,6 +190,25 @@
     <FxCompile Include="Shader\DebugVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+<<<<<<< HEAD
+    <FxCompile Include="Shader\DebugPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+=======
+    <FxCompile Include="Shader\DestructionGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shader\DestructionPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
+    </FxCompile>
+    <FxCompile Include="Shader\DebugVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+<<<<<<< HEAD
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+=======
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
     </FxCompile>
     <FxCompile Include="Shader\GeometricPrimitivePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

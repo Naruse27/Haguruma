@@ -3,6 +3,7 @@
 #include "GameLibSource/Framework.h"
 #include "GimmickManager.h"
 #include "StageManager.h"
+#include "WoodenBox.h"
 
 Gear::Gear(ID3D11Device* device)
 {
@@ -18,6 +19,11 @@ Gear::Gear(ID3D11Device* device)
     GearFunction[STATE::FlyIdle] = &Gear::FryIdeleGear;
     GearFunction[STATE::Back] = &Gear::ComeBackStrait;
     GearFunction[STATE::Set] = &Gear::AdhesionGear;
+
+    //木箱の初期値も設定
+    {
+        WoodenBox* obj = new WoodenBox(device, &destructionManager);
+    }
 }
 
 Gear::~Gear()
@@ -38,6 +44,8 @@ void Gear::Update(float elapsedTime)
 
     //モデル行列更新
     model->UpdateTransform(transform);
+
+    destructionManager.update(elapsedTime);
 }
 
 // 描画
@@ -45,6 +53,8 @@ void Gear::Render(ID3D11DeviceContext* deviceContext, float elapsedTime)
 {
     model->Preparation(deviceContext, ShaderSystem::GetInstance()->GetShaderOfSkinnedMesh(ShaderSystem::ShaderOfSkinnedMesh::NORMAL_MAP), true);
     model->Render(deviceContext);
+
+    destructionManager.render(deviceContext, elapsedTime);
 }
 
 bool Gear::OnMessage(const Telegram& telegram)
@@ -81,6 +91,26 @@ void Gear::Collection()
 void Gear::StraitThrow(float elapsedTime)
 {
     GimmickManager::Instance().CollisionGimmickGimmicks(this);
+    //ギミックと木箱
+    {
+        // すべての敵と総当たり判定
+        int destCount = destructionManager.getDestructionCount();
+        for (int j = 0; j < destCount; ++j)
+        {
+            ObjectDestruction* objD = destructionManager.getDestruction(j);
+            // 衝突処理
+            if (Collision::AabbVsAabb(
+                GetPosition(),
+                GetWidth(),
+                GetHeight(),
+                objD->GetPosition(),
+                objD->GetWidth(),
+                objD->GetHeight()))
+            {
+                objD->setDest();
+            }
+        }
+    }
 
     // 移動先
     Vector3 destination;

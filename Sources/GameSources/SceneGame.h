@@ -6,8 +6,10 @@
 #include "CameraControl.h"
 #include "StageMain.h"
 #include "StageWall.h"
+#include "WoodenBox.h"
 #include "MetaAI.h"
 #include "GameLibSource/Graphics/Fog.h"
+<<<<<<< HEAD
 #include "GameLibSource/Blender.h"
 
 struct UI
@@ -18,6 +20,9 @@ struct UI
 	Vector2 scale;
 	Vector2 pivot;
 };
+=======
+#include "DestructionManager.h"
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
 
 class SceneGame : public Scene
 {
@@ -52,6 +57,7 @@ private:
 	StageMain* stageMain = nullptr;
 	StageWall* stageWall = nullptr;
 	CameraControl* cameraController = nullptr;
+<<<<<<< HEAD
 	std::shared_ptr<Meta> metaAi;
 	std::shared_ptr<Fog> fog;
 
@@ -61,6 +67,11 @@ private:
 	bool select = false;
 	UI ui[3];
 	int startId = 0;
+=======
+
+	std::unique_ptr<Meta> metaAi;
+	std::shared_ptr<Fog> fog;
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
 };
 
 #endif // !SCENEGAME

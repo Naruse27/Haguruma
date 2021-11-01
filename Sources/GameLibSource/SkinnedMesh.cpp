@@ -533,6 +533,7 @@ void SkinnedMesh::Preparation(ID3D11DeviceContext* immediateContext, Shader shad
 	// シェーダーの設定
 	immediateContext->VSSetShader(shader.GetVertexShader().Get(), nullptr, 0);
 	immediateContext->PSSetShader(shader.GetPixelShader().Get(), nullptr, 0);
+	immediateContext->GSSetShader(shader.GetGeometryShader().Get(), nullptr, 0);
 
 }
 

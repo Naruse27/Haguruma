@@ -2,7 +2,7 @@
 #define GEAR
 
 #include "Gimmick.h"
-
+#include "DestructionManager.h"
 class Gear : public Gimmick
 {
 public:
@@ -78,6 +78,9 @@ private:
 	template<class Type, typename Return, typename ...Args>
 	using Temp = Return(Type::*)(Args...);
 	Temp<Gear, void, float> GearFunction[STATE::End];
+
+
+	DestructionManager destructionManager{};
 };
 
 #endif // !GEAR

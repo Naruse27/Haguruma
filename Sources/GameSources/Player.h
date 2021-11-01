@@ -47,16 +47,22 @@ public:
 	bool GetDeathFlag() { return deathFlag; }
 
 	bool GetCheckPointFlag() { return checkPoint; }
+<<<<<<< HEAD
 	void SetCheckPointFlag(bool ok) { checkPoint = ok; }
 
 	bool GetGoalPoint() { return goalPoint; }
+=======
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
 
 	void SetStartGimmickID(int id) { startGimmickID = id; }
 	const int GetStartGimmickID() const { return startGimmickID; }
 
 	void SetCheckPointID(int id) { checkPointID = id; }
 	const int GetCheckPointID() const { return checkPointID; }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
 private:
 	// スティック入力値から移動ベクトルを所得
 	Vector3 GetMoveVec() const;
@@ -113,9 +119,12 @@ private:
 	int checkPointID = 0;
 
 	bool checkPoint = false;
+<<<<<<< HEAD
 	bool goalPoint = false;
 
 	bool animationLoop = true;
+=======
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
 
 	// 2d用
 	Vector2 scale2d = { 1.0f, 1.0f };

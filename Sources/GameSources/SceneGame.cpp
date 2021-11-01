@@ -9,8 +9,13 @@
 #include "Gear.h"
 #include "GimmickPoint.h"
 #include "GameLibSource/Graphics/DebugRenderer.h"
+<<<<<<< HEAD
 #include "SceneResoult.h"
 #include "SceneSelect.h"
+=======
+
+#include "WoodenBox.h"
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
 
 // ‰Šú‰»
 void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -37,8 +42,11 @@ void SceneGame::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCont
     player = new Player(this->device);
     player->SetPosition(point->GetPosition());
     player->SetStartGimmickID(point->GetId());
+<<<<<<< HEAD
     startId = point->GetId();
 
+=======
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
     player->SetCheckPointID(save->GetId());
 
     Stand* stand = new Stand(device);
@@ -141,6 +149,7 @@ void SceneGame::Render(float elapsedTime)
         player->DebugImGui();
         cameraController->RenderDebugGui(&CameraManager::Instance().mainView);
         GimmickManager::Instance().DebugRender();
+<<<<<<< HEAD
     }
 }
 
@@ -210,5 +219,7 @@ void SceneGame::UiCheng(int num)
         select = false;
         break;
     case 2: SceneManager::Instance().ChangeScene(new SceneSelect); break;
+=======
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
     }
 }

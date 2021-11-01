@@ -41,6 +41,7 @@ VS_OUT main(VS_IN vin)
     vout.texcoord = vin.texcoord;
     vout.color = materialColor;
 
+<<<<<<< HEAD
     //// シャドウマップ用のパラメーター計算
 	//{
 	//	// ライトから見たNDC座標を算出
@@ -51,6 +52,18 @@ VS_OUT main(VS_IN vin)
     //    wvpPos.xy = 0.5f * wvpPos.xy + 0.5f;
     //    vout.shadowTexcoord = float4(wvpPos.xyz, 0);
     //}
+=======
+    // シャドウマップ用のパラメーター計算
+	{
+		// ライトから見たNDC座標を算出
+        float4 wvpPos = mul(vin.position, mul(world, lightViewProjection));
+		// NDC座標からUV座標を算出する
+        wvpPos /= wvpPos.w;
+        wvpPos.y = -wvpPos.y;
+        wvpPos.xy = 0.5f * wvpPos.xy + 0.5f;
+        vout.shadowTexcoord = float4(wvpPos.xyz, 0);
+    }
+>>>>>>> 070702319ab3ccce4f6a49339f966afc094a1dd4
     
     return vout;
 }
